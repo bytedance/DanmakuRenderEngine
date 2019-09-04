@@ -67,10 +67,14 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     }
 
     fun setData(dataList: List<IDanmakuData>, current: Long = 0) {
-        mDataManager.setDanmakuList(dataList)
+        mDataManager.setData(dataList)
         if (current > 0) {
             mDataManager.onPlay(current)
         }
+    }
+
+    fun appendData(dataList: List<IDanmakuData>) {
+        mDataManager.appendData(dataList)
     }
 
     fun addFakeData(data: IDanmakuData) {

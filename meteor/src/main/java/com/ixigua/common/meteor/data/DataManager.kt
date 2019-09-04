@@ -23,8 +23,13 @@ class DataManager(controller: DanmakuController) {
     private var mCurrentPlayTime = 0L
 
     @UiThread
-    fun setDanmakuList(dataList: List<IDanmakuData>) {
+    fun setData(dataList: List<IDanmakuData>) {
         mList.clear()
+        mList.addAll(dataList)
+    }
+
+    @UiThread
+    fun appendData(dataList: List<IDanmakuData>) {
         mList.addAll(dataList)
     }
 
