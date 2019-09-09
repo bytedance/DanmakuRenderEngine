@@ -49,8 +49,10 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
     }
 
     fun addItems(items: List<IDanmakuData>) {
-        items.forEach { item ->
-            mRenderLayers.find { it.getLayerType() == item.layerType }?.addItem(wrapData(item))
+        mRenderLayers.forEach { layer ->
+            items.filter { it.layerType == layer.getLayerType() }.takeIf { it.isNotEmpty() }?.let { list ->
+                layer.addItems(list.map { wrapData(it) })
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.ixigua.common.meteor.control
 
 import android.content.Context
 import android.graphics.Canvas
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import com.ixigua.common.meteor.data.DataManager
@@ -95,8 +96,9 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
 
     override fun onConfigChanged(type: Int) {
         when (type) {
-            DanmakuConfig.TYPE_PLAY_SPEED -> mDataManager.onPlaySpeedChanged()
+            DanmakuConfig.TYPE_COMMON_PLAY_SPEED -> mDataManager.onPlaySpeedChanged()
             DanmakuConfig.TYPE_TEXT_SIZE -> mRenderEngine.typesetting(mIsPlaying, true)
+            DanmakuConfig.TYPE_COMMON_TYPESET_BUFFER_SIZE -> clear()
         }
     }
 
@@ -106,11 +108,19 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
 
     internal fun draw(view: View, canvas: Canvas) {
         if (mIsPlaying) {
+            val t0 = System.nanoTime()
             val newItems = mDataManager.queryDanmaku()
+            val t1 = System.nanoTime()
             mRenderEngine.addItems(newItems)
+            val t2 = System.nanoTime()
             mRenderEngine.typesetting(true)
+            val t3 = System.nanoTime()
             mRenderEngine.draw(canvas)
+            val t4 = System.nanoTime()
             view.postInvalidateCompat()
+            if (config.debug.printDrawTimeCostLog) {
+                Log.d("DanmakuController", "draw(): query=${String.format("%07d", t1-t0)}, add=${String.format("%07d", t2-t1)}, typesetting=${String.format("%07d", t3-t2)}, draw=${String.format("%07d", t4-t3)}")
+            }
         } else {
             mRenderEngine.typesetting(false)
             mRenderEngine.draw(canvas)

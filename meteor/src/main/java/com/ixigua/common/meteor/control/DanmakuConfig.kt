@@ -1,45 +1,53 @@
 package com.ixigua.common.meteor.control
 
 import android.graphics.Color
+import com.ixigua.common.meteor.data.IDanmakuData
 
 /**
  * Created by dss886 on 2018/11/6.
  */
 class DanmakuConfig : AbsConfig() {
 
-    @Suppress("MemberVisibilityCanBePrivate", "unused")
+    @Suppress("MemberVisibilityCanBePrivate")
     companion object {
-        const val TYPE_PLAY_SPEED = 1000
-        const val TYPE_TEXT_SIZE = TYPE_PLAY_SPEED + 1
-        const val TYPE_TEXT_COLOR = TYPE_TEXT_SIZE + 1
-        const val TYPE_TEXT_BORDER_WIDTH = TYPE_TEXT_COLOR + 1
-        const val TYPE_TEXT_BORDER_COLOR = TYPE_TEXT_BORDER_WIDTH + 1
-        const val TYPE_TEXT_UNDERLINE_WIDTH = TYPE_TEXT_BORDER_COLOR + 1
-        const val TYPE_TEXT_UNDERLINE_COLOR = TYPE_TEXT_UNDERLINE_WIDTH + 1
-        const val TYPE_TEXT_UNDERLINE_STROKE_WIDTH = TYPE_TEXT_UNDERLINE_COLOR + 1
-        const val TYPE_TEXT_UNDERLINE_STROKE_COLOR = TYPE_TEXT_UNDERLINE_STROKE_WIDTH + 1
-        const val TYPE_TEXT_UNDERLINE_MARGIN_TOP = TYPE_TEXT_UNDERLINE_STROKE_COLOR + 1
-        const val TYPE_TEXT_INCLUDE_FONT_PADDING = TYPE_TEXT_UNDERLINE_MARGIN_TOP + 1
-        const val TYPE_MOVE_TIME = TYPE_TEXT_INCLUDE_FONT_PADDING + 1
-        const val TYPE_SCROLL_LINE_HEIGHT = TYPE_MOVE_TIME + 1
-        const val TYPE_SCROLL_DISPLAY_PERCENT = TYPE_SCROLL_LINE_HEIGHT + 1
-        const val TYPE_SCROLL_ITEM_MARGIN = TYPE_SCROLL_DISPLAY_PERCENT + 1
-        const val TYPE_SCROLL_LINE_MARGIN = TYPE_SCROLL_ITEM_MARGIN + 1
-        const val TYPE_DEBUG_SHOW_LAYOUT_BOUNDS = TYPE_SCROLL_LINE_MARGIN + 1
+        const val TYPE_DEBUG_SHOW_LAYOUT_BOUNDS = 1000
+        const val TYPE_DEBUG_PRINT_DRAW_TIME_COST = 1001
+
+        const val TYPE_COMMON_PLAY_SPEED = 2000
+        const val TYPE_COMMON_TYPESET_BUFFER_SIZE = 2001
+        const val TYPE_COMMON_BUFFER_DISCARD_RULE = 2002
+
+        const val TYPE_TEXT_SIZE = 3001
+        const val TYPE_TEXT_COLOR = 3002
+        const val TYPE_TEXT_STROKE_WIDTH = 3003
+        const val TYPE_TEXT_STROKE_COLOR = 3004
+        const val TYPE_TEXT_INCLUDE_FONT_PADDING = 3005
+
+        const val TYPE_UNDERLINE_WIDTH = 4001
+        const val TYPE_UNDERLINE_COLOR = 4002
+        const val TYPE_UNDERLINE_STROKE_WIDTH = 4003
+        const val TYPE_UNDERLINE_STROKE_COLOR = 4004
+        const val TYPE_UNDERLINE_MARGIN_TOP = 4005
+
+        const val TYPE_SCROLL_MOVE_TIME = 5001
+        const val TYPE_SCROLL_LINE_HEIGHT = 5002
+        const val TYPE_SCROLL_DISPLAY_PERCENT = 5003
+        const val TYPE_SCROLL_ITEM_MARGIN = 5004
+        const val TYPE_SCROLL_LINE_MARGIN = 5005
     }
 
     /**
-     * The speed of playback in percent, used for time axis synchronous by DataManager
-     * default is 100 (means 100%)
+     * Config for Debug
      */
-    var playSpeed = 100
-        set(value) {
-            field = if (value <= 0) 100 else value
-            notifyConfigChanged(TYPE_PLAY_SPEED)
-        }
+    val debug = DebugConfig(this)
 
     /**
-     * Common Config for text drawing
+     * Config for common usage
+     */
+    val common = CommonConfig(this)
+
+    /**
+     * Config for text drawing
      */
     val text = TextConfig(this)
 
@@ -53,14 +61,64 @@ class DanmakuConfig : AbsConfig() {
      */
     val scroll = ScrollLayerConfig(this)
 
-    /**
-     * Config for Debug
-     */
-    val debug = DebugConfig(this)
-
     ////////////////////////////////////////////////////
     //               Config Definition                //
     ////////////////////////////////////////////////////
+
+    class DebugConfig(private val config: AbsConfig) {
+        /**
+         * Works like the 'Show Layout Bounds' option in Android Developer Settings
+         */
+        var showLayoutBounds = false
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_DEBUG_SHOW_LAYOUT_BOUNDS)
+            }
+
+        /**
+         * Print the cost time of every method in draw(),
+         * usually used to debug the draw performance.
+         * Log Tag: DanmakuController
+         */
+        var printDrawTimeCostLog = false
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_DEBUG_PRINT_DRAW_TIME_COST)
+            }
+    }
+
+    class CommonConfig(private val config: AbsConfig) {
+        /**
+         * The speed of playback in percent, used for time axis synchronous by DataManager
+         * default is 100 (means 100%)
+         */
+        var playSpeed = 100
+            set(value) {
+                field = if (value <= 0) 100 else value
+                config.notifyConfigChanged(TYPE_COMMON_PLAY_SPEED)
+            }
+
+        /**
+         * The buffer size when there are no enough space to add item right now.
+         * Large buffer size will have slight impact on performance.
+         */
+        var typesetBufferSize = 10
+            set(value) {
+                field = if (value <= 0) 10 else value
+                config.notifyConfigChanged(TYPE_COMMON_TYPESET_BUFFER_SIZE)
+            }
+
+        /**
+         * The discard rule when the buffer size is out of limit.
+         * The rule is used in the minBy() function, that is to say the minimal one will be discard first.
+         * By default, items in the buffer will be discard by their showAtTime.
+         */
+        var bufferDiscardRule: ((IDanmakuData?) -> Comparable<*>) = { it?.showAtTime ?: 0}
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_COMMON_BUFFER_DISCARD_RULE)
+            }
+    }
 
     class TextConfig(private val config: AbsConfig) {
         /**
@@ -84,13 +142,13 @@ class DanmakuConfig : AbsConfig() {
         var strokeWidth = 2.75f
             set(value) {
                 field = if (value <= 0) 2.75f else value
-                config.notifyConfigChanged(TYPE_TEXT_BORDER_WIDTH)
+                config.notifyConfigChanged(TYPE_TEXT_STROKE_WIDTH)
             }
 
         var strokeColor = Color.argb(97, 0, 0, 0)
             set(value) {
                 field = value
-                config.notifyConfigChanged(TYPE_TEXT_BORDER_COLOR)
+                config.notifyConfigChanged(TYPE_TEXT_STROKE_COLOR)
             }
 
         var includeFontPadding = true
@@ -104,13 +162,13 @@ class DanmakuConfig : AbsConfig() {
         var width = 0f
             set(value) {
                 field = if (value <= 0) 0f else value
-                config.notifyConfigChanged(TYPE_TEXT_UNDERLINE_WIDTH)
+                config.notifyConfigChanged(TYPE_UNDERLINE_WIDTH)
             }
 
         var color = Color.argb(230, 255, 255, 255)
             set(value) {
                 field = value
-                config.notifyConfigChanged(TYPE_TEXT_UNDERLINE_COLOR)
+                config.notifyConfigChanged(TYPE_UNDERLINE_COLOR)
             }
 
         /**
@@ -119,19 +177,19 @@ class DanmakuConfig : AbsConfig() {
         var strokeWidth = 1f
             set(value) {
                 field = if (value <= 0) 1f else value
-                config.notifyConfigChanged(TYPE_TEXT_UNDERLINE_STROKE_WIDTH)
+                config.notifyConfigChanged(TYPE_UNDERLINE_STROKE_WIDTH)
             }
 
         var strokeColor = Color.argb(97, 0, 0, 0)
             set(value) {
                 field = value
-                config.notifyConfigChanged(TYPE_TEXT_UNDERLINE_STROKE_COLOR)
+                config.notifyConfigChanged(TYPE_UNDERLINE_STROKE_COLOR)
             }
 
         var marginTop = 0f
             set(value) {
                 field = value
-                config.notifyConfigChanged(TYPE_TEXT_UNDERLINE_MARGIN_TOP)
+                config.notifyConfigChanged(TYPE_UNDERLINE_MARGIN_TOP)
             }
     }
 
@@ -145,7 +203,7 @@ class DanmakuConfig : AbsConfig() {
         var moveTime = 8000L
             set(value) {
                 field = if (value <= 0) 8000L else value
-                config.notifyConfigChanged(TYPE_MOVE_TIME)
+                config.notifyConfigChanged(TYPE_SCROLL_MOVE_TIME)
             }
 
         /**
@@ -187,14 +245,6 @@ class DanmakuConfig : AbsConfig() {
             set(value) {
                 field = if (value <= 0) 18f else value
                 config.notifyConfigChanged(TYPE_SCROLL_LINE_MARGIN)
-            }
-    }
-
-    class DebugConfig(private val config: AbsConfig) {
-        var showLayoutBounds = false
-            set(value) {
-                field = value
-                config.notifyConfigChanged(TYPE_DEBUG_SHOW_LAYOUT_BOUNDS)
             }
     }
 }

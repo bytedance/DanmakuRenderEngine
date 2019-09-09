@@ -12,7 +12,7 @@ interface IRenderLayer {
 
     fun onLayoutSizeChanged(width: Int, height: Int)
 
-    fun addItem(item: IDrawItem<IDanmakuData>)
+    fun addItems(list: List<IDrawItem<IDanmakuData>>)
 
     fun typesetting(isPlaying: Boolean, configChanged: Boolean = false)
 

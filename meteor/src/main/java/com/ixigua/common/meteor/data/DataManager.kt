@@ -65,7 +65,7 @@ class DataManager(controller: DanmakuController) {
             return mQueryList.apply { clear() }
         }
         val now = System.currentTimeMillis()
-        val playTime = ((now - mStartTimestamp) * mConfig.playSpeed / 100f + mStartPlayTime).toLong()
+        val playTime = ((now - mStartTimestamp) * mConfig.common.playSpeed / 100f + mStartPlayTime).toLong()
         mCurrentPlayTime = playTime
         mQueryList.clear()
         mQueryList.addAll(mFakeList)
