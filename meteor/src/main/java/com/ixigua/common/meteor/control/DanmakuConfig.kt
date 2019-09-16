@@ -31,9 +31,10 @@ class DanmakuConfig : AbsConfig() {
 
         const val TYPE_SCROLL_MOVE_TIME = 5001
         const val TYPE_SCROLL_LINE_HEIGHT = 5002
-        const val TYPE_SCROLL_DISPLAY_PERCENT = 5003
-        const val TYPE_SCROLL_ITEM_MARGIN = 5004
-        const val TYPE_SCROLL_LINE_MARGIN = 5005
+        const val TYPE_SCROLL_LINE_COUNT = 5003
+        const val TYPE_SCROLL_LINE_SPACE = 5004
+        const val TYPE_SCROLL_MARGIN_TOP = 5005
+        const val TYPE_SCROLL_ITEM_MARGIN = 5006
     }
 
     /**
@@ -211,9 +212,9 @@ class DanmakuConfig : AbsConfig() {
          * If LineHeight is larger than the item inside, item will be drawn at the top of the line.
          * Gravity will be supported in future.
          */
-        var lineHeight = 50f
+        var lineHeight = 54f
             set(value) {
-                field = if (value <= 0) 48f else value
+                field = if (value <= 0) 54f else value
                 config.notifyConfigChanged(TYPE_SCROLL_LINE_HEIGHT)
             }
 
@@ -221,10 +222,26 @@ class DanmakuConfig : AbsConfig() {
          * The percent of scroll layer's display area by the screen height
          * for example 1/4, 1/2, 3/4, etc.
          */
-        var displayPercent = 0.75f
+        var lineCount = 4
             set(value) {
-                field = if (value <= 0 || value > 1) 0.75f else value
-                config.notifyConfigChanged(TYPE_SCROLL_DISPLAY_PERCENT)
+                field = if (value <= 0) 4 else value
+                config.notifyConfigChanged(TYPE_SCROLL_LINE_COUNT)
+            }
+
+        /**
+         * Margin between lines.
+         * In pixel units.
+         */
+        var lineSpace = 18f
+            set(value) {
+                field = if (value <= 0) 18f else value
+                config.notifyConfigChanged(TYPE_SCROLL_LINE_SPACE)
+            }
+
+        var marginTop = 0f
+            set(value) {
+                field = if (value < 0) 0f else value
+                config.notifyConfigChanged(TYPE_SCROLL_MARGIN_TOP)
             }
 
         /**
@@ -237,14 +254,5 @@ class DanmakuConfig : AbsConfig() {
                 config.notifyConfigChanged(TYPE_SCROLL_ITEM_MARGIN)
             }
 
-        /**
-         * Margin between lines.
-         * In pixel units.
-         */
-        var lineMargin = 18f
-            set(value) {
-                field = if (value <= 0) 18f else value
-                config.notifyConfigChanged(TYPE_SCROLL_LINE_MARGIN)
-            }
     }
 }

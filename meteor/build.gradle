@@ -5,8 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 ext {
     GROUP = 'com.ixigua.common'
     POM_ARTIFACT_ID = 'meteor'
-    VERSION_NAME = '0.0.3'
-    VERSION_CODE = 3
+    VERSION_NAME = '0.0.4-rc1'
 }
 
 android {
@@ -14,8 +13,6 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode VERSION_CODE
-        versionName VERSION_NAME
     }
 
     buildTypes {

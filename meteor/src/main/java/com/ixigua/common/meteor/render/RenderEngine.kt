@@ -1,8 +1,6 @@
 package com.ixigua.common.meteor.render
 
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 import android.view.MotionEvent
 import com.ixigua.common.meteor.control.DanmakuController
 import com.ixigua.common.meteor.data.IDanmakuData
@@ -23,7 +21,6 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
     private val mRenderLayers = mutableListOf<IRenderLayer>()
     private val mPreDrawItems = mutableListOf<IDrawItem<IDanmakuData>>()
     private val mDrawCachePool = DrawCachePool()
-    private val mDebugPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
 
     init {
         addLayers()
@@ -63,6 +60,11 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
     }
 
     fun draw(canvas: Canvas) {
+        if (mController.config.debug.showLayoutBounds) {
+            mRenderLayers.forEach {
+                it.drawLayoutBounds(canvas)
+            }
+        }
         mPreDrawItems.clear()
         mRenderLayers.forEach {
             mPreDrawItems.addAll(it.getPreDrawItems())
@@ -71,7 +73,6 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
         mPreDrawItems.sortBy { it.data?.drawOrder }
         mPreDrawItems.forEach {
             it.draw(canvas, mController.config)
-            tryDrawLayoutBounds(canvas, it)
         }
         mPreDrawItems.clear()
     }
@@ -96,16 +97,6 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
             bindData(data)
             measure(mController.config)
         }
-    }
-
-    private fun tryDrawLayoutBounds(canvas: Canvas, item: IDrawItem<IDanmakuData>) {
-        if (!mController.config.debug.showLayoutBounds) {
-            return
-        }
-        mDebugPaint.color = Color.RED
-        mDebugPaint.strokeWidth = 2F
-        mDebugPaint.style = Paint.Style.STROKE
-        canvas.drawRect(item.x, item.y, item.x + item.width, item.y + item.height, mDebugPaint)
     }
 
 }

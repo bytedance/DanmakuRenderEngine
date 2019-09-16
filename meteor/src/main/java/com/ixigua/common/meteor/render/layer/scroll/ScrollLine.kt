@@ -1,7 +1,6 @@
 package com.ixigua.common.meteor.render.layer.scroll
 
-import android.graphics.PointF
-import android.graphics.RectF
+import android.graphics.*
 import android.view.MotionEvent
 import com.ixigua.common.meteor.control.DanmakuCommand
 import com.ixigua.common.meteor.control.DanmakuController
@@ -25,6 +24,7 @@ class ScrollLine(private val mController: DanmakuController,
     private var mCurrentTouchItem: IDrawItem<IDanmakuData>? = null
     private var mClickPositionRect = RectF()
     private var mClickPoint = PointF()
+    private val mLayoutBoundsPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
 
     var width: Float = 0F
     var height: Float = 0F
@@ -34,6 +34,7 @@ class ScrollLine(private val mController: DanmakuController,
         this.width = width
         this.height = height
         this.y = y
+        measureAndLayout()
     }
 
     fun getPreDrawItems(): List<IDrawItem<IDanmakuData>> {
@@ -77,6 +78,16 @@ class ScrollLine(private val mController: DanmakuController,
         }
         if (configChanged) {
             measureAndLayout()
+        }
+    }
+
+    fun drawLayoutBounds(canvas: Canvas) {
+        mLayoutBoundsPaint.color = Color.argb(50, 0, 255, 0)
+        mLayoutBoundsPaint.style = Paint.Style.FILL
+        canvas.drawRect(0F, y, width, y + height, mLayoutBoundsPaint)
+        mDrawingItems.forEach { item ->
+            mLayoutBoundsPaint.color = Color.argb(50, 255, 0, 0)
+            canvas.drawRect(item.x, item.y, item.x + item.width, item.y + item.height, mLayoutBoundsPaint)
         }
     }
 
@@ -167,6 +178,7 @@ class ScrollLine(private val mController: DanmakuController,
         var lastItem: IDrawItem<IDanmakuData>? = null
         var lastWidthDiff = 0F
         mDrawingItems.forEach { item ->
+            item.y = y
             val oldWidth = item.width
             item.measure(mConfig)
             // if width of the last item increased, check whether there is enough space

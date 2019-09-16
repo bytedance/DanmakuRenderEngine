@@ -1,6 +1,9 @@
 package com.ixigua.common.meteor.render.layer.scroll
 
+import android.graphics.Canvas
 import android.view.MotionEvent
+import com.ixigua.common.meteor.control.ConfigChangeListener
+import com.ixigua.common.meteor.control.DanmakuConfig
 import com.ixigua.common.meteor.control.DanmakuController
 import com.ixigua.common.meteor.data.IDanmakuData
 import com.ixigua.common.meteor.render.IRenderLayer
@@ -15,13 +18,17 @@ import java.util.*
  * Created by dss886 on 2018/11/8.
  */
 class ScrollLayer(private val mController: DanmakuController,
-                  private val mCachePool: IDrawCachePool) : IRenderLayer, ITouchDelegate {
+                  private val mCachePool: IDrawCachePool) : IRenderLayer, ITouchDelegate, ConfigChangeListener {
 
     private val mScrollLines = mutableListOf<ScrollLine>()
     private val mPreDrawItems = LinkedList<IDrawItem<IDanmakuData>>()
     private val mBufferItems = LinkedList<IDrawItem<IDanmakuData>>()
     private var mWidth = 0
     private var mHeight = 0
+
+    init {
+        mController.config.addListener(this)
+    }
 
     override fun getLayerType(): Int {
         return LAYER_TYPE_SCROLL
@@ -30,12 +37,7 @@ class ScrollLayer(private val mController: DanmakuController,
     override fun onLayoutSizeChanged(width: Int, height: Int) {
         mWidth = width
         mHeight = height
-        val config = mController.config
-        val lineHeight = config.scroll.lineHeight
-        val lineMargin = config.scroll.lineMargin
-        val displayHeight = height * config.scroll.displayPercent
-        val maxLineCount = (displayHeight / (lineHeight + lineMargin)).toInt()
-        configScrollLine(maxLineCount, lineHeight, lineMargin)
+        configScrollLine()
     }
 
     override fun addItems(list: List<IDrawItem<IDanmakuData>>) {
@@ -67,6 +69,15 @@ class ScrollLayer(private val mController: DanmakuController,
         mScrollLines.forEach { line ->
             line.typesetting(isPlaying, configChanged)
         }
+        if (configChanged) {
+            mBufferItems.forEach { it.measure(mController.config) }
+        }
+    }
+
+    override fun drawLayoutBounds(canvas: Canvas) {
+        mScrollLines.forEach { line ->
+            line.drawLayoutBounds(canvas)
+        }
     }
 
     override fun getPreDrawItems(): List<IDrawItem<IDanmakuData>> {
@@ -96,23 +107,37 @@ class ScrollLayer(private val mController: DanmakuController,
         }
     }
 
-    private fun configScrollLine(maxLineCount: Int, lineHeight: Float, lineMargin: Float) {
-        if (maxLineCount > mScrollLines.size) {
-            for (i in 1..(maxLineCount - mScrollLines.size)) {
+    override fun onConfigChanged(type: Int) {
+        when (type) {
+            DanmakuConfig.TYPE_SCROLL_LINE_HEIGHT,
+            DanmakuConfig.TYPE_SCROLL_LINE_COUNT,
+            DanmakuConfig.TYPE_SCROLL_LINE_SPACE,
+            DanmakuConfig.TYPE_SCROLL_MARGIN_TOP -> configScrollLine()
+        }
+    }
+
+    private fun configScrollLine() {
+        val config = mController.config
+        val lineCount = config.scroll.lineCount
+        val lineHeight = config.scroll.lineHeight
+        val lineSpace = config.scroll.lineSpace
+        val marginTop = config.scroll.marginTop
+        if (lineCount > mScrollLines.size) {
+            for (i in 1..(lineCount - mScrollLines.size)) {
                 mScrollLines.add(ScrollLine(mController, mCachePool).apply {
                     mController.registerCmdMonitor(this)
                 })
             }
-        } else if (maxLineCount < mScrollLines.size) {
-            val subLines = mScrollLines.take(maxLineCount)
-            mScrollLines.takeLast(mScrollLines.size - maxLineCount).forEach {
+        } else if (lineCount < mScrollLines.size) {
+            val subLines = mScrollLines.take(lineCount)
+            mScrollLines.takeLast(mScrollLines.size - lineCount).forEach {
                 mController.unRegisterCmdMonitor(it)
             }
             mScrollLines.clear()
             mScrollLines.addAll(subLines)
         }
         mScrollLines.forEachIndexed { index, line ->
-            line.onLayoutChanged(mWidth.toFloat(), lineHeight, (index + 1) * lineMargin + index * lineHeight)
+            line.onLayoutChanged(mWidth.toFloat(), lineHeight, marginTop + index * (lineSpace + lineHeight))
         }
     }
 

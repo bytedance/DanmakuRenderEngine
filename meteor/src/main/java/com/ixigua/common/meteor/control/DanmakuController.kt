@@ -11,6 +11,8 @@ import com.ixigua.common.meteor.render.RenderEngine
 import com.ixigua.common.meteor.render.draw.IDrawItemFactory
 import com.ixigua.common.meteor.touch.IItemClickListener
 import com.ixigua.common.meteor.touch.TouchHelper
+import com.ixigua.common.meteor.utils.CMD_PAUSE_ITEM
+import com.ixigua.common.meteor.utils.CMD_RESUME_ITEM
 import com.ixigua.common.meteor.utils.CMD_SET_TOUCHABLE
 import com.ixigua.common.meteor.utils.postInvalidateCompat
 
@@ -25,15 +27,17 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     val context: Context = mDanmakuView.context
     var itemClickListener: IItemClickListener? = null
 
+    private val mCmdMonitors: MutableList<ICommandMonitor> = mutableListOf()
     private val mRenderEngine: RenderEngine = RenderEngine(this)
     private val mDataManager: DataManager = DataManager(this)
     private val mTouchHelper: TouchHelper = TouchHelper()
-    private val mCmdMonitors: MutableList<ICommandMonitor> = mutableListOf<ICommandMonitor>().apply {
-        add(this@DanmakuController)
-    }
 
     private var mIsPlaying = false
     private var mIsTouchable = true
+
+    init {
+        mCmdMonitors.add(this)
+    }
 
     //////////////////////////////////////////////////////
     //                 Public Interface                 //
@@ -155,6 +159,8 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     override fun onCommand(cmd: DanmakuCommand) {
         when (cmd.what) {
             CMD_SET_TOUCHABLE -> (cmd.param as? Boolean)?.let { mIsTouchable = it }
+            CMD_PAUSE_ITEM -> mDanmakuView.postInvalidateCompat()
+            CMD_RESUME_ITEM -> mDanmakuView.postInvalidateCompat()
         }
     }
 }
