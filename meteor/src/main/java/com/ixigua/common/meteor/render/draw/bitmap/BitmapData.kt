@@ -1,20 +1,15 @@
 package com.ixigua.common.meteor.render.draw.bitmap
 
 import android.graphics.Bitmap
-import com.ixigua.common.meteor.data.IDanmakuData
-import com.ixigua.common.meteor.utils.DRAW_ORDER_DEFAULT
+import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.utils.DRAW_TYPE_BITMAP
-import com.ixigua.common.meteor.utils.LAYER_TYPE_UNDEFINE
 
 /**
  * Created by dss886 on 2019-05-20.
  */
-class BitmapData: IDanmakuData {
+class BitmapData: DanmakuData() {
 
-    override var showAtTime: Long = 0
-    override var layerType: Int = LAYER_TYPE_UNDEFINE
     override var drawType: Int = DRAW_TYPE_BITMAP
-    override var drawOrder: Int = DRAW_ORDER_DEFAULT
 
     /**
      * The bitmap will not be automatically recycled,
@@ -22,6 +17,10 @@ class BitmapData: IDanmakuData {
      * Please check the possible memory problems carefully.
      */
     var bitmap: Bitmap? = null
+    /**
+     * TintColor will be used with the mode of PorterDuff.Mode.SRC_IN
+     */
+    var tintColor: Int? = null
     /**
      * Zero means using the origin width of the bitmap
      */

@@ -5,8 +5,8 @@ import android.graphics.Canvas
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.data.DataManager
-import com.ixigua.common.meteor.data.IDanmakuData
 import com.ixigua.common.meteor.render.RenderEngine
 import com.ixigua.common.meteor.render.draw.IDrawItemFactory
 import com.ixigua.common.meteor.touch.IItemClickListener
@@ -71,18 +71,18 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         mRenderEngine.registerDrawItemFactory(factory)
     }
 
-    fun setData(dataList: List<IDanmakuData>, current: Long = 0) {
+    fun setData(dataList: List<DanmakuData>, current: Long = 0) {
         mDataManager.setData(dataList)
         if (current > 0) {
             mDataManager.onPlay(current)
         }
     }
 
-    fun appendData(dataList: List<IDanmakuData>) {
+    fun appendData(dataList: List<DanmakuData>) {
         mDataManager.appendData(dataList)
     }
 
-    fun addFakeData(data: IDanmakuData) {
+    fun addFakeData(data: DanmakuData) {
         mDataManager.addFakeData(data)
     }
 
@@ -90,7 +90,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         mDanmakuView.postInvalidateCompat()
     }
 
-    fun executeCommand(cmd: Int, data: IDanmakuData? = null, param: Any? = null) {
+    fun executeCommand(cmd: Int, data: DanmakuData? = null, param: Any? = null) {
         executeCommand(DanmakuCommand(cmd, data, param))
     }
 
@@ -101,7 +101,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     override fun onConfigChanged(type: Int) {
         when (type) {
             DanmakuConfig.TYPE_COMMON_PLAY_SPEED -> mDataManager.onPlaySpeedChanged()
-            DanmakuConfig.TYPE_TEXT_SIZE -> mRenderEngine.typesetting(mIsPlaying, true)
+            DanmakuConfig.TYPE_TEXT_SIZE -> mRenderEngine.typesetting(mDataManager.queryPlayTime(), mIsPlaying, true)
             DanmakuConfig.TYPE_COMMON_TYPESET_BUFFER_SIZE -> clear()
         }
     }
@@ -111,13 +111,14 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     }
 
     internal fun draw(view: View, canvas: Canvas) {
+        val playTime = mDataManager.queryPlayTime()
         if (mIsPlaying) {
             val t0 = System.nanoTime()
             val newItems = mDataManager.queryDanmaku()
             val t1 = System.nanoTime()
-            mRenderEngine.addItems(newItems)
+            mRenderEngine.addItems(playTime, newItems)
             val t2 = System.nanoTime()
-            mRenderEngine.typesetting(true)
+            mRenderEngine.typesetting(playTime, true)
             val t3 = System.nanoTime()
             mRenderEngine.draw(canvas)
             val t4 = System.nanoTime()
@@ -126,7 +127,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
                 Log.d("DanmakuController", "draw(): query=${String.format("%07d", t1-t0)}, add=${String.format("%07d", t2-t1)}, typesetting=${String.format("%07d", t3-t2)}, draw=${String.format("%07d", t4-t3)}")
             }
         } else {
-            mRenderEngine.typesetting(false)
+            mRenderEngine.typesetting(playTime, false)
             mRenderEngine.draw(canvas)
         }
     }

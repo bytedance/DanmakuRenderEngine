@@ -3,12 +3,14 @@ package com.ixigua.common.meteor.render
 import android.graphics.Canvas
 import android.view.MotionEvent
 import com.ixigua.common.meteor.control.DanmakuController
-import com.ixigua.common.meteor.data.IDanmakuData
+import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.render.cache.DrawCachePool
-import com.ixigua.common.meteor.render.draw.IDrawItem
+import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.render.draw.IDrawItemFactory
 import com.ixigua.common.meteor.render.draw.bitmap.BitmapDrawItemFactory
 import com.ixigua.common.meteor.render.draw.text.TextDrawItemFactory
+import com.ixigua.common.meteor.render.layer.bottom.BottomCenterLayer
+import com.ixigua.common.meteor.render.layer.top.TopCenterLayer
 import com.ixigua.common.meteor.render.layer.scroll.ScrollLayer
 import com.ixigua.common.meteor.touch.ITouchDelegate
 import com.ixigua.common.meteor.touch.ITouchTarget
@@ -19,7 +21,7 @@ import com.ixigua.common.meteor.touch.ITouchTarget
 class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
 
     private val mRenderLayers = mutableListOf<IRenderLayer>()
-    private val mPreDrawItems = mutableListOf<IDrawItem<IDanmakuData>>()
+    private val mPreDrawItems = mutableListOf<DrawItem<DanmakuData>>()
     private val mDrawCachePool = DrawCachePool()
 
     init {
@@ -33,6 +35,8 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
      */
     private fun addLayers() {
         mRenderLayers.add(ScrollLayer(mController, mDrawCachePool))
+        mRenderLayers.add(TopCenterLayer(mController, mDrawCachePool))
+        mRenderLayers.add(BottomCenterLayer(mController, mDrawCachePool))
     }
 
     fun registerDrawItemFactory(factory: IDrawItemFactory) {
@@ -45,17 +49,17 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
         }
     }
 
-    fun addItems(items: List<IDanmakuData>) {
+    fun addItems(playTime: Long, items: List<DanmakuData>) {
         mRenderLayers.forEach { layer ->
             items.filter { it.layerType == layer.getLayerType() }.takeIf { it.isNotEmpty() }?.let { list ->
-                layer.addItems(list.map { wrapData(it) })
+                layer.addItems(playTime, list.map { wrapData(it) })
             }
         }
     }
 
-    fun typesetting(isPlaying: Boolean, configChanged: Boolean = false) {
+    fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean = false) {
         mRenderLayers.forEach {
-            it.typesetting(isPlaying, configChanged)
+            it.typesetting(playTime, isPlaying, configChanged)
         }
     }
 
@@ -69,7 +73,7 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
         mRenderLayers.forEach {
             mPreDrawItems.addAll(it.getPreDrawItems())
         }
-        mPreDrawItems.sortBy { it.data?.showAtTime }
+        mPreDrawItems.sortBy { it.showTime }
         mPreDrawItems.sortBy { it.data?.drawOrder }
         mPreDrawItems.forEach {
             it.draw(canvas, mController.config)
@@ -92,7 +96,7 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
         }
     }
 
-    private fun wrapData(data: IDanmakuData): IDrawItem<IDanmakuData> {
+    private fun wrapData(data: DanmakuData): DrawItem<DanmakuData> {
         return mDrawCachePool.acquire(data.drawType).apply {
             bindData(data)
             measure(mController.config)

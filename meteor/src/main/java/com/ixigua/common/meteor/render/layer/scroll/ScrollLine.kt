@@ -1,47 +1,24 @@
 package com.ixigua.common.meteor.render.layer.scroll
 
-import android.graphics.*
-import android.view.MotionEvent
-import com.ixigua.common.meteor.control.DanmakuCommand
 import com.ixigua.common.meteor.control.DanmakuController
-import com.ixigua.common.meteor.control.ICommandMonitor
-import com.ixigua.common.meteor.data.IDanmakuData
+import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.render.cache.IDrawCachePool
-import com.ixigua.common.meteor.render.draw.IDrawItem
-import com.ixigua.common.meteor.touch.ITouchTarget
-import com.ixigua.common.meteor.utils.CMD_PAUSE_ITEM
-import com.ixigua.common.meteor.utils.CMD_RESUME_ITEM
-import java.util.*
+import com.ixigua.common.meteor.render.draw.DrawItem
+import com.ixigua.common.meteor.render.layer.line.BaseRenderLine
+import com.ixigua.common.meteor.utils.STEPPER_TIME
 
 /**
  * Created by dss886 on 2018/11/8.
  */
-class ScrollLine(private val mController: DanmakuController,
-                 private val mCachePool: IDrawCachePool) : ITouchTarget, ICommandMonitor {
+class ScrollLine(mController: DanmakuController,
+                 private val mCachePool: IDrawCachePool) : BaseRenderLine(mController) {
 
-    private val mConfig = mController.config
-    private val mDrawingItems = LinkedList<IDrawItem<IDanmakuData>>()
-    private var mCurrentTouchItem: IDrawItem<IDanmakuData>? = null
-    private var mClickPositionRect = RectF()
-    private var mClickPoint = PointF()
-    private val mLayoutBoundsPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
-
-    var width: Float = 0F
-    var height: Float = 0F
-    var y: Float = 0F
-
-    fun onLayoutChanged(width: Float, height: Float, y: Float) {
-        this.width = width
-        this.height = height
-        this.y = y
+    override fun onLayoutChanged(width: Float, height: Float, x: Float, y: Float) {
+        super.onLayoutChanged(width, height, x, y)
         measureAndLayout()
     }
 
-    fun getPreDrawItems(): List<IDrawItem<IDanmakuData>> {
-        return mDrawingItems
-    }
-
-    fun addItem(item: IDrawItem<IDanmakuData>): Boolean {
+    override fun addItem(playTime: Long, item: DrawItem<DanmakuData>): Boolean {
         mDrawingItems.maxBy { it.x + it.width }
                 ?.takeUnless { hasEnoughSpace(it, item) }
                 ?.let {
@@ -49,6 +26,7 @@ class ScrollLine(private val mController: DanmakuController,
                 }
         item.x = this.width
         item.y = this.y
+        item.showTime = playTime
         mDrawingItems.add(item)
         return true
     }
@@ -58,12 +36,13 @@ class ScrollLine(private val mController: DanmakuController,
      * @param isPlaying move item forward if is playing
      * @param configChanged need to re-measure and re-layout items if config changed
      */
-    fun typesetting(isPlaying: Boolean, configChanged: Boolean = false) {
+    override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean) {
         if (isPlaying) {
             // move drawing items if is playing
             mDrawingItems.forEach { item ->
                 if (!item.isPaused) {
-                    item.x -= getItemSpeed(item) * 16L
+                    item.x -= getItemSpeed(item) * STEPPER_TIME
+                    item.showDuration += STEPPER_TIME
                 }
             }
             // remove items that already out of screen
@@ -81,81 +60,7 @@ class ScrollLine(private val mController: DanmakuController,
         }
     }
 
-    fun drawLayoutBounds(canvas: Canvas) {
-        mLayoutBoundsPaint.color = Color.argb(50, 0, 255, 0)
-        mLayoutBoundsPaint.style = Paint.Style.FILL
-        canvas.drawRect(0F, y, width, y + height, mLayoutBoundsPaint)
-        mDrawingItems.forEach { item ->
-            mLayoutBoundsPaint.color = Color.argb(50, 255, 0, 0)
-            canvas.drawRect(item.x, item.y, item.x + item.width, item.y + item.height, mLayoutBoundsPaint)
-        }
-    }
-
-    fun clearRender() {
-        mDrawingItems.clear()
-    }
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                mDrawingItems.asReversed().forEach { item ->
-                    if (event.x >= item.x && event.x <= item.x + item.width) {
-                        mCurrentTouchItem = item
-                        return true
-                    }
-                }
-            }
-            MotionEvent.ACTION_UP -> {
-                mCurrentTouchItem?.let { item ->
-                    handleItemClick(item, event.x, event.y)
-                    return true
-                }
-                mCurrentTouchItem = null
-            }
-        }
-        return false
-    }
-
-    override fun onCommand(cmd: DanmakuCommand) {
-        when (cmd.what) {
-            CMD_PAUSE_ITEM -> cmd.data?.let { pauseItem(it) }
-            CMD_RESUME_ITEM -> cmd.data?.let { resumeItem(it) }
-        }
-    }
-
-    private fun pauseItem(data: IDanmakuData) {
-        mDrawingItems.forEach { item ->
-            if (item.data == data) {
-                item.isPaused = true
-            }
-        }
-    }
-
-    private fun resumeItem(data: IDanmakuData) {
-        mDrawingItems.forEach { item ->
-            if (item.data == data) {
-                item.isPaused = false
-            }
-        }
-    }
-
-    private fun handleItemClick(item: IDrawItem<IDanmakuData>, upX: Float, upY: Float) {
-        mController.itemClickListener?.let { listener ->
-            item.data?.let { danmaku ->
-                listener.onDanmakuClick(danmaku, mClickPositionRect.apply {
-                    left = item.x
-                    top = y
-                    right = item.x + item.width
-                    bottom = y + height
-                }, mClickPoint.apply {
-                    x = upX
-                    y = upY
-                })
-            }
-        }
-    }
-
-    private fun hasEnoughSpace(item: IDrawItem<IDanmakuData>, newItem: IDrawItem<IDanmakuData>): Boolean {
+    private fun hasEnoughSpace(item: DrawItem<DanmakuData>, newItem: DrawItem<DanmakuData>): Boolean {
         val nowSpace = width - item.x - item.width
         if (nowSpace < mConfig.scroll.itemMargin) {
             return false
@@ -167,7 +72,7 @@ class ScrollLine(private val mController: DanmakuController,
         }
     }
 
-    private fun getItemSpeed(item: IDrawItem<IDanmakuData>): Float {
+    private fun getItemSpeed(item: DrawItem<DanmakuData>): Float {
         return (item.width + width) / mConfig.scroll.moveTime
     }
 
@@ -175,7 +80,7 @@ class ScrollLine(private val mController: DanmakuController,
      * Re-measure and re-layout current drawing items
      */
     private fun measureAndLayout() {
-        var lastItem: IDrawItem<IDanmakuData>? = null
+        var lastItem: DrawItem<DanmakuData>? = null
         var lastWidthDiff = 0F
         mDrawingItems.forEach { item ->
             item.y = y

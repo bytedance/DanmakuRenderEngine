@@ -1,4 +1,4 @@
-package com.ixigua.common.meteor.render.layer.scroll
+package com.ixigua.common.meteor.render.layer.top
 
 import android.graphics.Canvas
 import android.view.MotionEvent
@@ -12,16 +12,16 @@ import com.ixigua.common.meteor.render.cache.LayerBuffer
 import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.touch.ITouchDelegate
 import com.ixigua.common.meteor.touch.ITouchTarget
-import com.ixigua.common.meteor.utils.LAYER_TYPE_SCROLL
+import com.ixigua.common.meteor.utils.LAYER_TYPE_TOP_CENTER
 import java.util.*
 
 /**
- * Created by dss886 on 2018/11/8.
+ * Created by dss886 on 2019/9/23.
  */
-class ScrollLayer(private val mController: DanmakuController,
-                  private val mCachePool: IDrawCachePool) : IRenderLayer, ITouchDelegate, ConfigChangeListener {
+class TopCenterLayer(private val mController: DanmakuController,
+                     private val mCachePool: IDrawCachePool) : IRenderLayer, ITouchDelegate, ConfigChangeListener {
 
-    private val mLines = LinkedList<ScrollLine>()
+    private val mLines = LinkedList<TopCenterLine>()
     private val mPreDrawItems = LinkedList<DrawItem<DanmakuData>>()
     private val mBuffer = LayerBuffer(mController.config, mCachePool)
     private var mWidth = 0
@@ -32,7 +32,7 @@ class ScrollLayer(private val mController: DanmakuController,
     }
 
     override fun getLayerType(): Int {
-        return LAYER_TYPE_SCROLL
+        return LAYER_TYPE_TOP_CENTER
     }
 
     override fun onLayoutSizeChanged(width: Int, height: Int) {
@@ -51,9 +51,15 @@ class ScrollLayer(private val mController: DanmakuController,
 
     /**
      * Try add item to lines.
-     * Return true if find a line has enough space to add, return false otherwise.
+     * Return true if find a line to add, return false otherwise.
      */
     private fun addItemImpl(playTime: Long, item: DrawItem<DanmakuData>): Boolean {
+        mLines.forEach { line ->
+            if (line.isEmpty()) {
+                line.addItem(playTime, item)
+                return true
+            }
+        }
         mLines.forEach { line ->
             if (line.addItem(playTime, item)) {
                 return true
@@ -107,22 +113,22 @@ class ScrollLayer(private val mController: DanmakuController,
 
     override fun onConfigChanged(type: Int) {
         when (type) {
-            DanmakuConfig.TYPE_SCROLL_LINE_HEIGHT,
-            DanmakuConfig.TYPE_SCROLL_LINE_COUNT,
-            DanmakuConfig.TYPE_SCROLL_LINE_MARGIN,
-            DanmakuConfig.TYPE_SCROLL_MARGIN_TOP -> configLines()
+            DanmakuConfig.TYPE_TOP_CENTER_LINE_HEIGHT,
+            DanmakuConfig.TYPE_TOP_CENTER_LINE_COUNT,
+            DanmakuConfig.TYPE_TOP_CENTER_LINE_MARGIN,
+            DanmakuConfig.TYPE_TOP_CENTER_MARGIN_TOP -> configLines()
         }
     }
 
     private fun configLines() {
         val config = mController.config
-        val lineCount = config.scroll.lineCount
-        val lineHeight = config.scroll.lineHeight
-        val lineSpace = config.scroll.lineMargin
-        val marginTop = config.scroll.marginTop
+        val lineCount = config.top.lineCount
+        val lineHeight = config.top.lineHeight
+        val lineSpace = config.top.lineMargin
+        val marginTop = config.top.marginTop
         if (lineCount > mLines.size) {
             for (i in 1..(lineCount - mLines.size)) {
-                mLines.add(ScrollLine(mController, mCachePool).apply {
+                mLines.add(TopCenterLine(mController, mCachePool).apply {
                     mController.registerCmdMonitor(this)
                 })
             }

@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.text.TextUtils
 import com.ixigua.common.meteor.control.DanmakuConfig
-import com.ixigua.common.meteor.render.draw.IDrawItem
+import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.utils.DRAW_TYPE_TEXT
 
 /**
@@ -18,14 +18,7 @@ import com.ixigua.common.meteor.utils.DRAW_TYPE_TEXT
  *
  * Turn TextData.includeFontPadding to false will cut the space between Top and Ascent.
  */
-class TextDrawItem: IDrawItem<TextData> {
-
-    override var data: TextData? = null
-    override var x: Float = 0F
-    override var y: Float = 0F
-    override var width: Float = 0F
-    override var height: Float = 0F
-    override var isPaused: Boolean = false
+class TextDrawItem: DrawItem<TextData>() {
 
     private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
     private val mUnderlinePaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
@@ -72,6 +65,9 @@ class TextDrawItem: IDrawItem<TextData> {
             (data?.textStrokeWidth ?: config.text.strokeWidth).takeIf { it > 0 }?.let { width ->
                 paint.style = Paint.Style.STROKE
                 paint.color = data?.textStrokeColor ?: config.text.strokeColor
+                if (config.common.alpha < 255) {
+                    paint.alpha = config.common.alpha
+                }
                 paint.textSize = data?.textSize ?: config.text.size
                 paint.strokeWidth = width
                 val baseline = getBaseline(data?.includeFontPadding ?: true, y, paint)
@@ -80,6 +76,9 @@ class TextDrawItem: IDrawItem<TextData> {
             // draw drawText
             paint.style = Paint.Style.FILL
             paint.color = data?.textColor ?: config.text.color
+            if (config.common.alpha < 255) {
+                paint.alpha = config.common.alpha
+            }
             paint.textSize = data?.textSize ?: config.text.size
             paint.strokeWidth = 0f
             val includeFontPadding = data?.includeFontPadding ?: config.text.includeFontPadding
@@ -96,12 +95,18 @@ class TextDrawItem: IDrawItem<TextData> {
             takeIf {config.underline.strokeWidth > 0 }?.let {
                 underlinePaint.style = Paint.Style.STROKE
                 underlinePaint.color = config.underline.strokeColor
+                if (config.common.alpha < 255) {
+                    underlinePaint.alpha = config.common.alpha
+                }
                 underlinePaint.strokeWidth = config.underline.strokeWidth
                 canvas.drawRect(x, underlineY, x + width, underlineY + config.underline.width, underlinePaint)
             }
             // draw underline
             underlinePaint.style = Paint.Style.FILL
             underlinePaint.color = config.underline.color
+            if (config.common.alpha < 255) {
+                underlinePaint.alpha = config.common.alpha
+            }
             underlinePaint.strokeWidth = 0f
             canvas.drawRect(x, underlineY, x + width, underlineY + config.underline.width, underlinePaint)
         }

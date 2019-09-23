@@ -1,23 +1,14 @@
 package com.ixigua.common.meteor.render.draw.bitmap
 
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import com.ixigua.common.meteor.control.DanmakuConfig
-import com.ixigua.common.meteor.render.draw.IDrawItem
+import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.utils.DRAW_TYPE_BITMAP
 
 /**
  * Created by dss886 on 2019-05-20.
  */
-class BitmapDrawItem: IDrawItem<BitmapData> {
-
-    override var data: BitmapData? = null
-    override var x: Float = 0F
-    override var y: Float = 0F
-    override var width: Float = 0F
-    override var height: Float = 0F
-    override var isPaused: Boolean = false
+class BitmapDrawItem: DrawItem<BitmapData>() {
 
     private val mBitmapPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
     private val mRectF = RectF()
@@ -46,6 +37,9 @@ class BitmapDrawItem: IDrawItem<BitmapData> {
     override fun draw(canvas: Canvas, config: DanmakuConfig) {
         data?.bitmap?.let { bitmap ->
             mRectF.set(x, y, x + width, y + height)
+            val tint = data?.tintColor
+            mBitmapPaint.colorFilter = if (tint == null) null else PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN)
+            mBitmapPaint.alpha = config.common.alpha
             canvas.drawBitmap(bitmap, null, mRectF, mBitmapPaint)
         }
     }

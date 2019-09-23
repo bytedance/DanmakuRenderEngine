@@ -11,9 +11,9 @@ import kotlin.math.max
  */
 class DataManager(controller: DanmakuController) {
 
-    private val mList = LinkedList<IDanmakuData>()
-    private val mQueryList = LinkedList<IDanmakuData>()
-    private val mFakeList = LinkedList<IDanmakuData>()
+    private val mList = LinkedList<DanmakuData>()
+    private val mQueryList = LinkedList<DanmakuData>()
+    private val mFakeList = LinkedList<DanmakuData>()
     private val mConfig: DanmakuConfig = controller.config
 
     private var mIsPlaying = false
@@ -23,18 +23,18 @@ class DataManager(controller: DanmakuController) {
     private var mCurrentPlayTime = 0L
 
     @UiThread
-    fun setData(dataList: List<IDanmakuData>) {
+    fun setData(dataList: List<DanmakuData>) {
         mList.clear()
         mList.addAll(dataList)
     }
 
     @UiThread
-    fun appendData(dataList: List<IDanmakuData>) {
+    fun appendData(dataList: List<DanmakuData>) {
         mList.addAll(dataList)
     }
 
     @UiThread
-    fun addFakeData(data: IDanmakuData) {
+    fun addFakeData(data: DanmakuData) {
         mFakeList.add(data)
     }
 
@@ -60,13 +60,21 @@ class DataManager(controller: DanmakuController) {
     }
 
     @UiThread
-    fun queryDanmaku(): List<IDanmakuData> {
+    fun queryPlayTime(): Long {
         if (!mIsPlaying) {
-            return mQueryList.apply { clear() }
+            return mCurrentPlayTime
         }
         val now = System.currentTimeMillis()
         val playTime = ((now - mStartTimestamp) * mConfig.common.playSpeed / 100f + mStartPlayTime).toLong()
         mCurrentPlayTime = playTime
+        return mCurrentPlayTime
+    }
+
+    @UiThread
+    fun queryDanmaku(): List<DanmakuData> {
+        if (!mIsPlaying) {
+            return mQueryList.apply { clear() }
+        }
         mQueryList.clear()
         mQueryList.addAll(mFakeList)
         mFakeList.clear()
@@ -75,7 +83,7 @@ class DataManager(controller: DanmakuController) {
                 break
             }
             val item = mList[mCurrentIndex]
-            if (item.showAtTime > playTime) {
+            if (item.showAtTime > mCurrentPlayTime) {
                 break
             }
             mQueryList.add(item)

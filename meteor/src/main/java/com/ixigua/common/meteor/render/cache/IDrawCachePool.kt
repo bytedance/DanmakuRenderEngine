@@ -1,14 +1,14 @@
 package com.ixigua.common.meteor.render.cache
 
-import com.ixigua.common.meteor.data.IDanmakuData
-import com.ixigua.common.meteor.render.draw.IDrawItem
+import com.ixigua.common.meteor.data.DanmakuData
+import com.ixigua.common.meteor.render.draw.DrawItem
 
 /**
  * Created by dss886 on 2019-08-16.
  */
 interface IDrawCachePool {
 
-    fun acquire(drawType: Int): IDrawItem<IDanmakuData>?
+    fun acquire(drawType: Int): DrawItem<DanmakuData>?
 
-    fun release(item: IDrawItem<IDanmakuData>)
+    fun release(item: DrawItem<DanmakuData>)
 }

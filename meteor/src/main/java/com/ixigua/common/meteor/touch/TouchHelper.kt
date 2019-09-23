@@ -15,7 +15,7 @@ class TouchHelper {
                 val target = delegate.findTouchTarget(event)
                 return if (target == null) false else {
                     mCurrentTarget = target
-                    return target.onTouchEvent(event)
+                    return true
                 }
             }
             MotionEvent.ACTION_MOVE -> {

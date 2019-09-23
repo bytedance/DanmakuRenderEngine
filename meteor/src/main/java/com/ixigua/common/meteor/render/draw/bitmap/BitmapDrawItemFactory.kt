@@ -1,7 +1,7 @@
 package com.ixigua.common.meteor.render.draw.bitmap
 
-import com.ixigua.common.meteor.data.IDanmakuData
-import com.ixigua.common.meteor.render.draw.IDrawItem
+import com.ixigua.common.meteor.data.DanmakuData
+import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.render.draw.IDrawItemFactory
 import com.ixigua.common.meteor.utils.DRAW_TYPE_BITMAP
 
@@ -14,7 +14,7 @@ class BitmapDrawItemFactory: IDrawItemFactory {
         return DRAW_TYPE_BITMAP
     }
 
-    override fun generateDrawItem(): IDrawItem<out IDanmakuData> {
+    override fun generateDrawItem(): DrawItem<out DanmakuData> {
         return BitmapDrawItem()
     }
 

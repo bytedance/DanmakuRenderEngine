@@ -1,8 +1,8 @@
 package com.ixigua.common.meteor.render
 
 import android.graphics.Canvas
-import com.ixigua.common.meteor.data.IDanmakuData
-import com.ixigua.common.meteor.render.draw.IDrawItem
+import com.ixigua.common.meteor.data.DanmakuData
+import com.ixigua.common.meteor.render.draw.DrawItem
 
 /**
  * Created by dss886 on 2018/11/8.
@@ -13,13 +13,16 @@ interface IRenderLayer {
 
     fun onLayoutSizeChanged(width: Int, height: Int)
 
-    fun addItems(list: List<IDrawItem<IDanmakuData>>)
+    /**
+     * Items has been measured already.
+     */
+    fun addItems(playTime: Long, list: List<DrawItem<DanmakuData>>)
 
-    fun typesetting(isPlaying: Boolean, configChanged: Boolean = false)
+    fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean = false)
 
     fun drawLayoutBounds(canvas: Canvas)
 
-    fun getPreDrawItems(): List<IDrawItem<IDanmakuData>>
+    fun getPreDrawItems(): List<DrawItem<DanmakuData>>
 
     fun clear()
 

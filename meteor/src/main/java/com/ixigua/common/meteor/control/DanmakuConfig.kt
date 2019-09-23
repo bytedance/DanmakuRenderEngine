@@ -1,7 +1,7 @@
 package com.ixigua.common.meteor.control
 
 import android.graphics.Color
-import com.ixigua.common.meteor.data.IDanmakuData
+import com.ixigua.common.meteor.data.DanmakuData
 
 /**
  * Created by dss886 on 2018/11/6.
@@ -13,28 +13,43 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_DEBUG_SHOW_LAYOUT_BOUNDS = 1000
         const val TYPE_DEBUG_PRINT_DRAW_TIME_COST = 1001
 
-        const val TYPE_COMMON_PLAY_SPEED = 2000
-        const val TYPE_COMMON_TYPESET_BUFFER_SIZE = 2001
-        const val TYPE_COMMON_BUFFER_DISCARD_RULE = 2002
+        const val TYPE_COMMON_ALPHA = 2000
+        const val TYPE_COMMON_PLAY_SPEED = 2001
+        const val TYPE_COMMON_TYPESET_BUFFER_SIZE = 2002
+        const val TYPE_COMMON_BUFFER_DISCARD_RULE = 2003
 
-        const val TYPE_TEXT_SIZE = 3001
-        const val TYPE_TEXT_COLOR = 3002
-        const val TYPE_TEXT_STROKE_WIDTH = 3003
-        const val TYPE_TEXT_STROKE_COLOR = 3004
-        const val TYPE_TEXT_INCLUDE_FONT_PADDING = 3005
+        const val TYPE_TEXT_SIZE = 3000
+        const val TYPE_TEXT_COLOR = 3001
+        const val TYPE_TEXT_STROKE_WIDTH = 3002
+        const val TYPE_TEXT_STROKE_COLOR = 3003
+        const val TYPE_TEXT_INCLUDE_FONT_PADDING = 3004
 
-        const val TYPE_UNDERLINE_WIDTH = 4001
-        const val TYPE_UNDERLINE_COLOR = 4002
-        const val TYPE_UNDERLINE_STROKE_WIDTH = 4003
-        const val TYPE_UNDERLINE_STROKE_COLOR = 4004
-        const val TYPE_UNDERLINE_MARGIN_TOP = 4005
+        const val TYPE_UNDERLINE_WIDTH = 4000
+        const val TYPE_UNDERLINE_COLOR = 4001
+        const val TYPE_UNDERLINE_STROKE_WIDTH = 4002
+        const val TYPE_UNDERLINE_STROKE_COLOR = 4003
+        const val TYPE_UNDERLINE_MARGIN_TOP = 4004
 
-        const val TYPE_SCROLL_MOVE_TIME = 5001
-        const val TYPE_SCROLL_LINE_HEIGHT = 5002
-        const val TYPE_SCROLL_LINE_COUNT = 5003
-        const val TYPE_SCROLL_LINE_SPACE = 5004
-        const val TYPE_SCROLL_MARGIN_TOP = 5005
-        const val TYPE_SCROLL_ITEM_MARGIN = 5006
+        const val TYPE_SCROLL_MOVE_TIME = 5000
+        const val TYPE_SCROLL_LINE_HEIGHT = 5001
+        const val TYPE_SCROLL_LINE_COUNT = 5002
+        const val TYPE_SCROLL_LINE_MARGIN = 5003
+        const val TYPE_SCROLL_MARGIN_TOP = 5004
+        const val TYPE_SCROLL_ITEM_MARGIN = 5005
+
+        const val TYPE_TOP_CENTER_SHOW_TIME_MAX = 6000
+        const val TYPE_TOP_CENTER_SHOW_TIME_MIN = 6001
+        const val TYPE_TOP_CENTER_LINE_HEIGHT = 6002
+        const val TYPE_TOP_CENTER_LINE_COUNT = 6003
+        const val TYPE_TOP_CENTER_LINE_MARGIN = 6004
+        const val TYPE_TOP_CENTER_MARGIN_TOP = 6005
+
+        const val TYPE_BOTTOM_CENTER_SHOW_TIME_MAX = 7000
+        const val TYPE_BOTTOM_CENTER_SHOW_TIME_MIN = 7001
+        const val TYPE_BOTTOM_CENTER_LINE_HEIGHT = 7002
+        const val TYPE_BOTTOM_CENTER_LINE_COUNT = 7003
+        const val TYPE_BOTTOM_CENTER_LINE_MARGIN = 7004
+        const val TYPE_BOTTOM_CENTER_MARGIN_BOTTOM = 7005
     }
 
     /**
@@ -62,12 +77,23 @@ class DanmakuConfig : AbsConfig() {
      */
     val scroll = ScrollLayerConfig(this)
 
+    /**
+     * Config for TopCenterLayer
+     */
+    val top = TopCenterLayerConfig(this)
+
+    /**
+     * Config for BottomCenterLayer
+     */
+    val bottom = BottomCenterLayerConfig(this)
+
     ////////////////////////////////////////////////////
     //               Config Definition                //
     ////////////////////////////////////////////////////
 
     class DebugConfig(private val config: AbsConfig) {
         /**
+         * Draw layout bounds of the lines and items in layers
          * Works like the 'Show Layout Bounds' option in Android Developer Settings
          */
         var showLayoutBounds = false
@@ -89,6 +115,19 @@ class DanmakuConfig : AbsConfig() {
     }
 
     class CommonConfig(private val config: AbsConfig) {
+        /**
+         * Please do not set both common.alpha and text.alpha,
+         * or set alpha in other color ints.
+         * If common.alpha < 255, it will overwrite all other alphas.
+         *
+         * value is in the range [0..255]
+         */
+        var alpha = 255
+            set(value) {
+                field = if (value < 0) 0 else if (value > 255) 255 else value
+                config.notifyConfigChanged(TYPE_COMMON_ALPHA)
+            }
+
         /**
          * The speed of playback in percent, used for time axis synchronous by DataManager
          * default is 100 (means 100%)
@@ -114,7 +153,7 @@ class DanmakuConfig : AbsConfig() {
          * The rule is used in the minBy() function, that is to say the minimal one will be discard first.
          * By default, items in the buffer will be discard by their showAtTime.
          */
-        var bufferDiscardRule: ((IDanmakuData?) -> Comparable<*>) = { it?.showAtTime ?: 0}
+        var bufferDiscardRule: ((DanmakuData?) -> Comparable<*>) = { it?.showAtTime ?: 0}
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_COMMON_BUFFER_DISCARD_RULE)
@@ -166,7 +205,7 @@ class DanmakuConfig : AbsConfig() {
                 config.notifyConfigChanged(TYPE_UNDERLINE_WIDTH)
             }
 
-        var color = Color.argb(230, 255, 255, 255)
+        var color = Color.WHITE
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_UNDERLINE_COLOR)
@@ -219,8 +258,8 @@ class DanmakuConfig : AbsConfig() {
             }
 
         /**
-         * The percent of scroll layer's display area by the screen height
-         * for example 1/4, 1/2, 3/4, etc.
+         * The line count of the scroll layer.
+         * Lines will be arranged from top to bottom.
          */
         var lineCount = 4
             set(value) {
@@ -232,12 +271,16 @@ class DanmakuConfig : AbsConfig() {
          * Margin between lines.
          * In pixel units.
          */
-        var lineSpace = 18f
+        var lineMargin = 18f
             set(value) {
                 field = if (value <= 0) 18f else value
-                config.notifyConfigChanged(TYPE_SCROLL_LINE_SPACE)
+                config.notifyConfigChanged(TYPE_SCROLL_LINE_MARGIN)
             }
 
+        /**
+         * Margin from DanmakuView's top.
+         * In pixel units.
+         */
         var marginTop = 0f
             set(value) {
                 field = if (value < 0) 0f else value
@@ -253,6 +296,115 @@ class DanmakuConfig : AbsConfig() {
                 field = if (value <= 0) 24 else value
                 config.notifyConfigChanged(TYPE_SCROLL_ITEM_MARGIN)
             }
+    }
 
+    class TopCenterLayerConfig(private val config: AbsConfig) {
+        var showTimeMax = 4000L
+            set(value) {
+                field = if (value <= 0) 4000L else value
+                config.notifyConfigChanged(TYPE_TOP_CENTER_SHOW_TIME_MAX)
+            }
+
+        var showTimeMin = 2000L
+            set(value) {
+                field = if (value <= 0) 4000L else value
+                config.notifyConfigChanged(TYPE_TOP_CENTER_SHOW_TIME_MIN)
+            }
+
+        /**
+         * In pixel units.
+         * If LineHeight is larger than the item inside, item will be drawn at the top of the line.
+         * Gravity will be supported in future.
+         */
+        var lineHeight = 54f
+            set(value) {
+                field = if (value <= 0) 54f else value
+                config.notifyConfigChanged(TYPE_TOP_CENTER_LINE_HEIGHT)
+            }
+
+        /**
+         * The line count of the scroll layer.
+         * Lines will be arranged from top to bottom.
+         */
+        var lineCount = 2
+            set(value) {
+                field = if (value <= 0) 4 else value
+                config.notifyConfigChanged(TYPE_TOP_CENTER_LINE_COUNT)
+            }
+
+        /**
+         * Margin between lines.
+         * In pixel units.
+         */
+        var lineMargin = 18f
+            set(value) {
+                field = if (value <= 0) 18f else value
+                config.notifyConfigChanged(TYPE_TOP_CENTER_LINE_MARGIN)
+            }
+
+        /**
+         * Margin from DanmakuView's bottom.
+         * In pixel units.
+         */
+        var marginTop = 0f
+            set(value) {
+                field = if (value < 0) 0f else value
+                config.notifyConfigChanged(TYPE_TOP_CENTER_MARGIN_TOP)
+            }
+    }
+
+    class BottomCenterLayerConfig(private val config: AbsConfig) {
+        var showTimeMax = 4000L
+            set(value) {
+                field = if (value <= 0) 4000L else value
+                config.notifyConfigChanged(TYPE_BOTTOM_CENTER_SHOW_TIME_MAX)
+            }
+
+        var showTimeMin = 2000L
+            set(value) {
+                field = if (value <= 0) 4000L else value
+                config.notifyConfigChanged(TYPE_BOTTOM_CENTER_SHOW_TIME_MIN)
+            }
+
+        /**
+         * In pixel units.
+         * If LineHeight is larger than the item inside, item will be drawn at the top of the line.
+         * Gravity will be supported in future.
+         */
+        var lineHeight = 54f
+            set(value) {
+                field = if (value <= 0) 54f else value
+                config.notifyConfigChanged(TYPE_BOTTOM_CENTER_LINE_HEIGHT)
+            }
+
+        /**
+         * The line count of the scroll layer.
+         * Lines will be arranged from top to bottom.
+         */
+        var lineCount = 2
+            set(value) {
+                field = if (value <= 0) 4 else value
+                config.notifyConfigChanged(TYPE_BOTTOM_CENTER_LINE_COUNT)
+            }
+
+        /**
+         * Margin between lines.
+         * In pixel units.
+         */
+        var lineMargin = 18f
+            set(value) {
+                field = if (value <= 0) 18f else value
+                config.notifyConfigChanged(TYPE_BOTTOM_CENTER_LINE_MARGIN)
+            }
+
+        /**
+         * Margin from DanmakuView's bottom.
+         * In pixel units.
+         */
+        var marginBottom = 0f
+            set(value) {
+                field = if (value < 0) 0f else value
+                config.notifyConfigChanged(TYPE_BOTTOM_CENTER_MARGIN_BOTTOM)
+            }
     }
 }
