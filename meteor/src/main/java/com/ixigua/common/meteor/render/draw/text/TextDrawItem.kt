@@ -68,6 +68,7 @@ class TextDrawItem: DrawItem<TextData>() {
                 if (config.common.alpha < 255) {
                     paint.alpha = config.common.alpha
                 }
+                paint.typeface = data?.typeface ?: config.text.typeface
                 paint.textSize = data?.textSize ?: config.text.size
                 paint.strokeWidth = width
                 val baseline = getBaseline(data?.includeFontPadding ?: true, y, paint)
@@ -79,6 +80,7 @@ class TextDrawItem: DrawItem<TextData>() {
             if (config.common.alpha < 255) {
                 paint.alpha = config.common.alpha
             }
+            paint.typeface = data?.typeface ?: config.text.typeface
             paint.textSize = data?.textSize ?: config.text.size
             paint.strokeWidth = 0f
             val includeFontPadding = data?.includeFontPadding ?: config.text.includeFontPadding

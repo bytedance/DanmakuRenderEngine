@@ -1,5 +1,6 @@
 package com.ixigua.common.meteor.render.draw.text
 
+import android.graphics.Typeface
 import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.utils.DRAW_TYPE_TEXT
 
@@ -13,6 +14,7 @@ class TextData: DanmakuData() {
     var text: String? = null
     var textSize: Float? = null
     var textColor: Int? = null
+    var typeface: Typeface? = null
     var textStrokeWidth: Float? = null
     var textStrokeColor: Int? = null
     var includeFontPadding: Boolean? = null

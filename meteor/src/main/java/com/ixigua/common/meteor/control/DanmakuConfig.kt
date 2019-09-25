@@ -1,6 +1,7 @@
 package com.ixigua.common.meteor.control
 
 import android.graphics.Color
+import android.graphics.Typeface
 import com.ixigua.common.meteor.data.DanmakuData
 
 /**
@@ -20,9 +21,10 @@ class DanmakuConfig : AbsConfig() {
 
         const val TYPE_TEXT_SIZE = 3000
         const val TYPE_TEXT_COLOR = 3001
-        const val TYPE_TEXT_STROKE_WIDTH = 3002
-        const val TYPE_TEXT_STROKE_COLOR = 3003
-        const val TYPE_TEXT_INCLUDE_FONT_PADDING = 3004
+        const val TYPE_TEXT_TYPEFACE = 3002
+        const val TYPE_TEXT_STROKE_WIDTH = 3003
+        const val TYPE_TEXT_STROKE_COLOR = 3004
+        const val TYPE_TEXT_INCLUDE_FONT_PADDING = 3005
 
         const val TYPE_UNDERLINE_WIDTH = 4000
         const val TYPE_UNDERLINE_COLOR = 4001
@@ -174,6 +176,12 @@ class DanmakuConfig : AbsConfig() {
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_TEXT_COLOR)
+            }
+
+        var typeface: Typeface = Typeface.DEFAULT
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_TEXT_TYPEFACE)
             }
 
         /**
