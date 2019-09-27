@@ -2,7 +2,7 @@ package com.ixigua.common.meteor.render.layer.scroll
 
 import com.ixigua.common.meteor.control.DanmakuController
 import com.ixigua.common.meteor.data.DanmakuData
-import com.ixigua.common.meteor.render.cache.IDrawCachePool
+import com.ixigua.common.meteor.render.IRenderLayer
 import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.render.layer.line.BaseRenderLine
 import com.ixigua.common.meteor.utils.STEPPER_TIME
@@ -10,8 +10,8 @@ import com.ixigua.common.meteor.utils.STEPPER_TIME
 /**
  * Created by dss886 on 2018/11/8.
  */
-class ScrollLine(mController: DanmakuController,
-                 private val mCachePool: IDrawCachePool) : BaseRenderLine(mController) {
+class ScrollLine(controller: DanmakuController,
+                 private val mLayer: IRenderLayer) : BaseRenderLine(controller, mLayer) {
 
     override fun onLayoutChanged(width: Float, height: Float, x: Float, y: Float) {
         super.onLayoutChanged(width, height, x, y)
@@ -50,7 +50,7 @@ class ScrollLine(mController: DanmakuController,
             while (iterator.hasNext()) {
                 val item = iterator.next()
                 if (item.x + item.width <= 0) {
-                    mCachePool.release(item)
+                    mLayer.releaseItem(item)
                     iterator.remove()
                 }
             }

@@ -27,7 +27,8 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     val context: Context = mDanmakuView.context
     var itemClickListener: IItemClickListener? = null
 
-    private val mCmdMonitors: MutableList<ICommandMonitor> = mutableListOf()
+    private val mCmdMonitors = mutableListOf<ICommandMonitor>()
+    private val mEventListeners = mutableListOf<IEventListener>()
     private val mRenderEngine: RenderEngine = RenderEngine(this)
     private val mDataManager: DataManager = DataManager(this)
     private val mTouchHelper: TouchHelper = TouchHelper()
@@ -94,6 +95,16 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         executeCommand(DanmakuCommand(cmd, data, param))
     }
 
+    @Suppress("unused")
+    fun addEventListener(listener: IEventListener) {
+        mEventListeners.add(listener)
+    }
+
+    @Suppress("unused")
+    fun removeEventListener(listener: IEventListener) {
+        mEventListeners.remove(listener)
+    }
+
     //////////////////////////////////////////////////////
     //                Internal Methods                  //
     //////////////////////////////////////////////////////
@@ -145,6 +156,13 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
 
     internal fun unRegisterCmdMonitor(monitor: ICommandMonitor) {
         mCmdMonitors.remove(monitor)
+    }
+
+    internal fun notifyEvent(event: DanmakuEvent) {
+        mEventListeners.forEach {
+            it.onEvent(event)
+        }
+        Events.recycleEvent(event)
     }
 
     //////////////////////////////////////////////////////

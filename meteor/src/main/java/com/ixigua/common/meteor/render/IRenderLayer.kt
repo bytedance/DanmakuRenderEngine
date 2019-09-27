@@ -18,6 +18,8 @@ interface IRenderLayer {
      */
     fun addItems(playTime: Long, list: List<DrawItem<DanmakuData>>)
 
+    fun releaseItem(item: DrawItem<DanmakuData>)
+
     fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean = false)
 
     fun drawLayoutBounds(canvas: Canvas)

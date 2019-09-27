@@ -2,7 +2,7 @@ package com.ixigua.common.meteor.render.layer.top
 
 import com.ixigua.common.meteor.control.DanmakuController
 import com.ixigua.common.meteor.data.DanmakuData
-import com.ixigua.common.meteor.render.cache.IDrawCachePool
+import com.ixigua.common.meteor.render.IRenderLayer
 import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.render.layer.line.BaseRenderLine
 import com.ixigua.common.meteor.utils.STEPPER_TIME
@@ -10,8 +10,8 @@ import com.ixigua.common.meteor.utils.STEPPER_TIME
 /**
  * Created by dss886 on 2019/9/22.
  */
-class TopCenterLine(mController: DanmakuController,
-                    private val mCachePool: IDrawCachePool) : BaseRenderLine(mController) {
+class TopCenterLine(controller: DanmakuController,
+                    private val mLayer: IRenderLayer) : BaseRenderLine(controller, mLayer) {
 
     override fun onLayoutChanged(width: Float, height: Float, x: Float, y: Float) {
         super.onLayoutChanged(width, height, x, y)
@@ -27,7 +27,7 @@ class TopCenterLine(mController: DanmakuController,
                 return false
             }
             mDrawingItems.clear()
-            mCachePool.release(it)
+            mLayer.releaseItem(it)
         }
         item.x = (width - item.width) / 2
         item.y = this.y
@@ -49,7 +49,7 @@ class TopCenterLine(mController: DanmakuController,
             }
             // remove items that has shown enough time
             if (item.showDuration >= mConfig.bottom.showTimeMax) {
-                mCachePool.release(item)
+                mLayer.releaseItem(item)
                 mDrawingItems.clear()
             }
         }

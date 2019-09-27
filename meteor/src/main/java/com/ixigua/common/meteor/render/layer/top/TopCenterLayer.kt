@@ -5,6 +5,7 @@ import android.view.MotionEvent
 import com.ixigua.common.meteor.control.ConfigChangeListener
 import com.ixigua.common.meteor.control.DanmakuConfig
 import com.ixigua.common.meteor.control.DanmakuController
+import com.ixigua.common.meteor.control.Events
 import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.render.IRenderLayer
 import com.ixigua.common.meteor.render.cache.IDrawCachePool
@@ -12,6 +13,8 @@ import com.ixigua.common.meteor.render.cache.LayerBuffer
 import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.touch.ITouchDelegate
 import com.ixigua.common.meteor.touch.ITouchTarget
+import com.ixigua.common.meteor.utils.EVENT_DANMAKU_DISMISS
+import com.ixigua.common.meteor.utils.EVENT_DANMAKU_SHOW
 import com.ixigua.common.meteor.utils.LAYER_TYPE_TOP_CENTER
 import java.util.*
 
@@ -49,6 +52,11 @@ class TopCenterLayer(private val mController: DanmakuController,
         mBuffer.trimBuffer()
     }
 
+    override fun releaseItem(item: DrawItem<DanmakuData>) {
+        mController.notifyEvent(Events.obtainEvent( EVENT_DANMAKU_DISMISS, item.data))
+        mCachePool.release(item)
+    }
+
     /**
      * Try add item to lines.
      * Return true if find a line to add, return false otherwise.
@@ -57,11 +65,13 @@ class TopCenterLayer(private val mController: DanmakuController,
         mLines.forEach { line ->
             if (line.isEmpty()) {
                 line.addItem(playTime, item)
+                mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
                 return true
             }
         }
         mLines.forEach { line ->
             if (line.addItem(playTime, item)) {
+                mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
                 return true
             }
         }
@@ -128,7 +138,7 @@ class TopCenterLayer(private val mController: DanmakuController,
         val marginTop = config.top.marginTop
         if (lineCount > mLines.size) {
             for (i in 1..(lineCount - mLines.size)) {
-                mLines.add(TopCenterLine(mController, mCachePool).apply {
+                mLines.add(TopCenterLine(mController, this).apply {
                     mController.registerCmdMonitor(this)
                 })
             }

@@ -6,6 +6,7 @@ import com.ixigua.common.meteor.control.DanmakuCommand
 import com.ixigua.common.meteor.control.DanmakuController
 import com.ixigua.common.meteor.control.ICommandMonitor
 import com.ixigua.common.meteor.data.DanmakuData
+import com.ixigua.common.meteor.render.IRenderLayer
 import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.touch.ITouchTarget
 import com.ixigua.common.meteor.utils.CMD_MEASURE_ITEM
@@ -16,7 +17,8 @@ import java.util.*
 /**
  * Created by dss886 on 2019/9/22.
  */
-abstract class BaseRenderLine(private val mController: DanmakuController): IRenderLine, ITouchTarget, ICommandMonitor {
+abstract class BaseRenderLine(private val mController: DanmakuController,
+                              private val mLayer: IRenderLayer): IRenderLine, ITouchTarget, ICommandMonitor {
 
     protected val mConfig = mController.config
     protected val mDrawingItems = LinkedList<DrawItem<DanmakuData>>()
@@ -39,6 +41,9 @@ abstract class BaseRenderLine(private val mController: DanmakuController): IRend
     }
 
     override fun clearRender() {
+        mDrawingItems.forEach {
+            mLayer.releaseItem(it)
+        }
         mDrawingItems.clear()
     }
 
