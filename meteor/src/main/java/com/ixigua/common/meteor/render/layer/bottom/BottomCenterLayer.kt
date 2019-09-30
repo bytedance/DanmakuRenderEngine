@@ -49,9 +49,6 @@ class BottomCenterLayer(private val mController: DanmakuController,
 
     override fun addItems(playTime: Long, list: List<DrawItem<DanmakuData>>) {
         mBuffer.addItems(list)
-        mBuffer.forEach {
-            addItemImpl(playTime, it)
-        }
         mBuffer.trimBuffer()
     }
 
@@ -60,28 +57,10 @@ class BottomCenterLayer(private val mController: DanmakuController,
         mCachePool.release(item)
     }
 
-    /**
-     * Try add item to lines.
-     * Return true if find a line to add, return false otherwise.
-     */
-    private fun addItemImpl(playTime: Long, item: DrawItem<DanmakuData>): Boolean {
-        mLines.forEach { line ->
-            if (line.isEmpty()) {
-                line.addItem(playTime, item)
-                mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
-                return true
-            }
-        }
-        mLines.forEach { line ->
-            if (line.addItem(playTime, item)) {
-                mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
-                return true
-            }
-        }
-        return false
-    }
-
     override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean) {
+        mBuffer.forEach {
+            addItemImpl(playTime, it)
+        }
         mLines.forEach { line ->
             line.typesetting(playTime, isPlaying, configChanged)
         }
@@ -131,6 +110,27 @@ class BottomCenterLayer(private val mController: DanmakuController,
             DanmakuConfig.TYPE_BOTTOM_CENTER_LINE_MARGIN,
             DanmakuConfig.TYPE_BOTTOM_CENTER_MARGIN_BOTTOM -> configLines()
         }
+    }
+
+    /**
+     * Try add item to lines.
+     * Return true if find a line to add, return false otherwise.
+     */
+    private fun addItemImpl(playTime: Long, item: DrawItem<DanmakuData>): Boolean {
+        mLines.forEach { line ->
+            if (line.isEmpty()) {
+                line.addItem(playTime, item)
+                mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
+                return true
+            }
+        }
+        mLines.forEach { line ->
+            if (line.addItem(playTime, item)) {
+                mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
+                return true
+            }
+        }
+        return false
     }
 
     private fun configLines() {
