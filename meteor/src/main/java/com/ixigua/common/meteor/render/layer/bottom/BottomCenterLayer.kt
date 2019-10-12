@@ -25,7 +25,7 @@ class BottomCenterLayer(private val mController: DanmakuController,
                         private val mCachePool: IDrawCachePool) : IRenderLayer, ITouchDelegate, ConfigChangeListener {
 
     /**
-     * Line order is reversed: the first line is align the bottom of layer
+     * The last line is align the bottom of layer
      */
     private val mLines = LinkedList<BottomCenterLine>()
     private val mPreDrawItems = LinkedList<DrawItem<DanmakuData>>()
@@ -91,7 +91,7 @@ class BottomCenterLayer(private val mController: DanmakuController,
     }
 
     override fun findTouchTarget(event: MotionEvent): ITouchTarget? {
-        mLines.asReversed().forEach { line ->
+        mLines.forEach { line ->
             if (event.y > line.y + line.height) {
                 return@forEach
             }
@@ -117,14 +117,14 @@ class BottomCenterLayer(private val mController: DanmakuController,
      * Return true if find a line to add, return false otherwise.
      */
     private fun addItemImpl(playTime: Long, item: DrawItem<DanmakuData>): Boolean {
-        mLines.forEach { line ->
+        mLines.asReversed().forEach { line ->
             if (line.isEmpty()) {
                 line.addItem(playTime, item)
                 mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
                 return true
             }
         }
-        mLines.forEach { line ->
+        mLines.asReversed().forEach { line ->
             if (line.addItem(playTime, item)) {
                 mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
                 return true
@@ -153,7 +153,8 @@ class BottomCenterLayer(private val mController: DanmakuController,
             }
         }
         mLines.forEachIndexed { index, line ->
-            line.onLayoutChanged(mWidth.toFloat(), lineHeight, 0F, mHeight - marginBottom - index * (lineSpace + lineHeight) - lineHeight)
+            val lineY = mHeight - marginBottom - (mLines.size - index - 1) * (lineSpace + lineHeight) - lineHeight
+            line.onLayoutChanged(mWidth.toFloat(), lineHeight, 0F, lineY)
         }
     }
 
