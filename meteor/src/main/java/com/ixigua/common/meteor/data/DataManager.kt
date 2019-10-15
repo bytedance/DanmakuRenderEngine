@@ -51,6 +51,7 @@ class DataManager(controller: DanmakuController) {
             }
             mCurrentIndex = index + 1
         }
+        mFakeList.clear()
     }
 
     @UiThread
@@ -97,6 +98,7 @@ class DataManager(controller: DanmakuController) {
         mIsPlaying = false
         mList.clear()
         mQueryList.clear()
+        mFakeList.clear()
         mCurrentIndex = 0
         mStartPlayTime = 0L
         mStartTimestamp = 0L

@@ -146,7 +146,7 @@ class DanmakuConfig : AbsConfig() {
          */
         var typesetBufferSize = 10
             set(value) {
-                field = if (value <= 0) 10 else value
+                field = if (value < 0) 10 else value
                 config.notifyConfigChanged(TYPE_COMMON_TYPESET_BUFFER_SIZE)
             }
 
@@ -189,7 +189,7 @@ class DanmakuConfig : AbsConfig() {
          */
         var strokeWidth = 2.75f
             set(value) {
-                field = if (value <= 0) 2.75f else value
+                field = if (value < 0) 2.75f else value
                 config.notifyConfigChanged(TYPE_TEXT_STROKE_WIDTH)
             }
 
@@ -209,7 +209,7 @@ class DanmakuConfig : AbsConfig() {
     class UnderlineConfig(private val config: AbsConfig) {
         var width = 0f
             set(value) {
-                field = if (value <= 0) 0f else value
+                field = if (value < 0) 0f else value
                 config.notifyConfigChanged(TYPE_UNDERLINE_WIDTH)
             }
 
@@ -224,7 +224,7 @@ class DanmakuConfig : AbsConfig() {
          */
         var strokeWidth = 1f
             set(value) {
-                field = if (value <= 0) 1f else value
+                field = if (value < 0) 1f else value
                 config.notifyConfigChanged(TYPE_UNDERLINE_STROKE_WIDTH)
             }
 
@@ -271,7 +271,7 @@ class DanmakuConfig : AbsConfig() {
          */
         var lineCount = 4
             set(value) {
-                field = if (value <= 0) 4 else value
+                field = if (value < 0) 4 else value
                 config.notifyConfigChanged(TYPE_SCROLL_LINE_COUNT)
             }
 
@@ -281,7 +281,7 @@ class DanmakuConfig : AbsConfig() {
          */
         var lineMargin = 18f
             set(value) {
-                field = if (value <= 0) 18f else value
+                field = if (value < 0) 18f else value
                 config.notifyConfigChanged(TYPE_SCROLL_LINE_MARGIN)
             }
 
@@ -301,7 +301,7 @@ class DanmakuConfig : AbsConfig() {
          */
         var itemMargin = 24
             set(value) {
-                field = if (value <= 0) 24 else value
+                field = if (value < 0) 24 else value
                 config.notifyConfigChanged(TYPE_SCROLL_ITEM_MARGIN)
             }
     }
@@ -336,7 +336,7 @@ class DanmakuConfig : AbsConfig() {
          */
         var lineCount = 2
             set(value) {
-                field = if (value <= 0) 4 else value
+                field = if (value < 0) 4 else value
                 config.notifyConfigChanged(TYPE_TOP_CENTER_LINE_COUNT)
             }
 
@@ -346,7 +346,7 @@ class DanmakuConfig : AbsConfig() {
          */
         var lineMargin = 18f
             set(value) {
-                field = if (value <= 0) 18f else value
+                field = if (value < 0) 18f else value
                 config.notifyConfigChanged(TYPE_TOP_CENTER_LINE_MARGIN)
             }
 
@@ -391,7 +391,7 @@ class DanmakuConfig : AbsConfig() {
          */
         var lineCount = 2
             set(value) {
-                field = if (value <= 0) 4 else value
+                field = if (value < 0) 4 else value
                 config.notifyConfigChanged(TYPE_BOTTOM_CENTER_LINE_COUNT)
             }
 
@@ -401,7 +401,7 @@ class DanmakuConfig : AbsConfig() {
          */
         var lineMargin = 18f
             set(value) {
-                field = if (value <= 0) 18f else value
+                field = if (value < 0) 18f else value
                 config.notifyConfigChanged(TYPE_BOTTOM_CENTER_LINE_MARGIN)
             }
 
