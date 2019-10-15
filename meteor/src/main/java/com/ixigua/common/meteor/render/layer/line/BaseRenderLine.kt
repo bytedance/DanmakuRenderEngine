@@ -87,9 +87,9 @@ abstract class BaseRenderLine(private val mController: DanmakuController,
             item.data?.let { danmaku ->
                 listener.onDanmakuClick(danmaku, mClickPositionRect.apply {
                     left = item.x
-                    top = y
+                    top = item.y
                     right = item.x + item.width
-                    bottom = y + height
+                    bottom = item.y + item.height
                 }, mClickPoint.apply {
                     x = upX
                     y = upY
