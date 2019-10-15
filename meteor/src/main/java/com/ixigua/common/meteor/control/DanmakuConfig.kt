@@ -16,8 +16,7 @@ class DanmakuConfig : AbsConfig() {
 
         const val TYPE_COMMON_ALPHA = 2000
         const val TYPE_COMMON_PLAY_SPEED = 2001
-        const val TYPE_COMMON_TYPESET_BUFFER_SIZE = 2002
-        const val TYPE_COMMON_BUFFER_DISCARD_RULE = 2003
+        const val TYPE_COMMON_BUFFER_DISCARD_RULE = 2002
 
         const val TYPE_TEXT_SIZE = 3000
         const val TYPE_TEXT_COLOR = 3001
@@ -38,6 +37,8 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_SCROLL_LINE_MARGIN = 5003
         const val TYPE_SCROLL_MARGIN_TOP = 5004
         const val TYPE_SCROLL_ITEM_MARGIN = 5005
+        const val TYPE_SCROLL_BUFFER_SIZE = 5006
+        const val TYPE_SCROLL_BUFFER_MAX_TIME = 5007
 
         const val TYPE_TOP_CENTER_SHOW_TIME_MAX = 6000
         const val TYPE_TOP_CENTER_SHOW_TIME_MIN = 6001
@@ -45,6 +46,8 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_TOP_CENTER_LINE_COUNT = 6003
         const val TYPE_TOP_CENTER_LINE_MARGIN = 6004
         const val TYPE_TOP_CENTER_MARGIN_TOP = 6005
+        const val TYPE_TOP_CENTER_BUFFER_SIZE = 6006
+        const val TYPE_TOP_CENTER_BUFFER_MAX_TIME = 6007
 
         const val TYPE_BOTTOM_CENTER_SHOW_TIME_MAX = 7000
         const val TYPE_BOTTOM_CENTER_SHOW_TIME_MIN = 7001
@@ -52,6 +55,8 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_BOTTOM_CENTER_LINE_COUNT = 7003
         const val TYPE_BOTTOM_CENTER_LINE_MARGIN = 7004
         const val TYPE_BOTTOM_CENTER_MARGIN_BOTTOM = 7005
+        const val TYPE_BOTTOM_CENTER_BUFFER_SIZE = 7006
+        const val TYPE_BOTTOM_CENTER_BUFFER_MAX_TIME = 7007
     }
 
     /**
@@ -138,16 +143,6 @@ class DanmakuConfig : AbsConfig() {
             set(value) {
                 field = if (value <= 0) 100 else value
                 config.notifyConfigChanged(TYPE_COMMON_PLAY_SPEED)
-            }
-
-        /**
-         * The buffer size when there are no enough space to add item right now.
-         * Large buffer size will have slight impact on performance.
-         */
-        var typesetBufferSize = 10
-            set(value) {
-                field = if (value < 0) 10 else value
-                config.notifyConfigChanged(TYPE_COMMON_TYPESET_BUFFER_SIZE)
             }
 
         /**
@@ -304,6 +299,28 @@ class DanmakuConfig : AbsConfig() {
                 field = if (value < 0) 24 else value
                 config.notifyConfigChanged(TYPE_SCROLL_ITEM_MARGIN)
             }
+
+        /**
+         * The size of buffer when there are no enough space to add item.
+         * When the limit size of buffer is reached, [CommonConfig.bufferDiscardRule] will be used to discard the item in the buffer.
+         * Large buffer size will have slight negative impact on performance.
+         */
+        var bufferSize = 8
+            set(value) {
+                field = if (value < 0) 8 else value
+                config.notifyConfigChanged(TYPE_SCROLL_BUFFER_SIZE)
+            }
+
+        /**
+         * The maximum time the item stays in the buffer.
+         * Items that exceed the time will be discarded regardless the [CommonConfig.bufferDiscardRule].
+         * Value in milliseconds.
+         */
+        var bufferMaxTime = 4000L
+            set(value) {
+                field = if (value <= 0) 4000L else value
+                config.notifyConfigChanged(TYPE_SCROLL_BUFFER_MAX_TIME)
+            }
     }
 
     class TopCenterLayerConfig(private val config: AbsConfig) {
@@ -359,6 +376,28 @@ class DanmakuConfig : AbsConfig() {
                 field = if (value < 0) 0f else value
                 config.notifyConfigChanged(TYPE_TOP_CENTER_MARGIN_TOP)
             }
+
+        /**
+         * The size of buffer when there are no enough space to add item.
+         * When the limit size of buffer is reached, [CommonConfig.bufferDiscardRule] will be used to discard the item in the buffer.
+         * Large buffer size will have slight negative impact on performance.
+         */
+        var bufferSize = 4
+            set(value) {
+                field = if (value < 0) 4 else value
+                config.notifyConfigChanged(TYPE_TOP_CENTER_BUFFER_SIZE)
+            }
+
+        /**
+         * The maximum time the item stays in the buffer.
+         * Items that exceed the time will be discarded regardless the [CommonConfig.bufferDiscardRule].
+         * Value in milliseconds.
+         */
+        var bufferMaxTime = 2000L
+            set(value) {
+                field = if (value <= 0) 2000L else value
+                config.notifyConfigChanged(TYPE_TOP_CENTER_BUFFER_MAX_TIME)
+            }
     }
 
     class BottomCenterLayerConfig(private val config: AbsConfig) {
@@ -413,6 +452,28 @@ class DanmakuConfig : AbsConfig() {
             set(value) {
                 field = if (value < 0) 0f else value
                 config.notifyConfigChanged(TYPE_BOTTOM_CENTER_MARGIN_BOTTOM)
+            }
+
+        /**
+         * The size of buffer when there are no enough space to add item.
+         * When the limit size of buffer is reached, [CommonConfig.bufferDiscardRule] will be used to discard the item in the buffer.
+         * Large buffer size will have slight negative impact on performance.
+         */
+        var bufferSize = 4
+            set(value) {
+                field = if (value < 0) 4 else value
+                config.notifyConfigChanged(TYPE_BOTTOM_CENTER_BUFFER_SIZE)
+            }
+
+        /**
+         * The maximum time the item stays in the buffer.
+         * Items that exceed the time will be discarded regardless the [CommonConfig.bufferDiscardRule].
+         * Value in milliseconds.
+         */
+        var bufferMaxTime = 2000L
+            set(value) {
+                field = if (value <= 0) 2000L else value
+                config.notifyConfigChanged(TYPE_BOTTOM_CENTER_BUFFER_MAX_TIME)
             }
     }
 }

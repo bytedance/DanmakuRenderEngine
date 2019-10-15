@@ -26,12 +26,13 @@ class TopCenterLayer(private val mController: DanmakuController,
 
     private val mLines = LinkedList<TopCenterLine>()
     private val mPreDrawItems = LinkedList<DrawItem<DanmakuData>>()
-    private val mBuffer = LayerBuffer(mController.config, mCachePool)
+    private val mConfig = mController.config
+    private val mBuffer = LayerBuffer(mConfig, mCachePool, mConfig.top.bufferSize, mConfig.top.bufferMaxTime)
     private var mWidth = 0
     private var mHeight = 0
 
     init {
-        mController.config.addListener(this)
+        mConfig.addListener(this)
     }
 
     override fun getLayerType(): Int {
@@ -46,7 +47,7 @@ class TopCenterLayer(private val mController: DanmakuController,
 
     override fun addItems(playTime: Long, list: List<DrawItem<DanmakuData>>) {
         mBuffer.addItems(list)
-        mBuffer.trimBuffer()
+        mBuffer.trimBuffer(playTime)
     }
 
     override fun releaseItem(item: DrawItem<DanmakuData>) {
@@ -106,6 +107,10 @@ class TopCenterLayer(private val mController: DanmakuController,
             DanmakuConfig.TYPE_TOP_CENTER_LINE_COUNT,
             DanmakuConfig.TYPE_TOP_CENTER_LINE_MARGIN,
             DanmakuConfig.TYPE_TOP_CENTER_MARGIN_TOP -> configLines()
+            DanmakuConfig.TYPE_TOP_CENTER_BUFFER_MAX_TIME,
+            DanmakuConfig.TYPE_TOP_CENTER_BUFFER_SIZE -> {
+                mBuffer.onBufferChanged(mConfig.top.bufferSize, mConfig.top.bufferMaxTime)
+            }
         }
     }
 
@@ -131,11 +136,10 @@ class TopCenterLayer(private val mController: DanmakuController,
     }
 
     private fun configLines() {
-        val config = mController.config
-        val lineCount = config.top.lineCount
-        val lineHeight = config.top.lineHeight
-        val lineSpace = config.top.lineMargin
-        val marginTop = config.top.marginTop
+        val lineCount = mConfig.top.lineCount
+        val lineHeight = mConfig.top.lineHeight
+        val lineSpace = mConfig.top.lineMargin
+        val marginTop = mConfig.top.marginTop
         if (lineCount > mLines.size) {
             for (i in 1..(lineCount - mLines.size)) {
                 mLines.add(TopCenterLine(mController, this).apply {

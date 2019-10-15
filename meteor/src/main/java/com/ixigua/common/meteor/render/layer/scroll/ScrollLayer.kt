@@ -26,12 +26,13 @@ class ScrollLayer(private val mController: DanmakuController,
 
     private val mLines = LinkedList<ScrollLine>()
     private val mPreDrawItems = LinkedList<DrawItem<DanmakuData>>()
-    private val mBuffer = LayerBuffer(mController.config, mCachePool)
+    private val mConfig = mController.config
+    private val mBuffer = LayerBuffer(mConfig, mCachePool, mConfig.scroll.bufferSize, mConfig.scroll.bufferMaxTime)
     private var mWidth = 0
     private var mHeight = 0
 
     init {
-        mController.config.addListener(this)
+        mConfig.addListener(this)
     }
 
     override fun getLayerType(): Int {
@@ -46,7 +47,7 @@ class ScrollLayer(private val mController: DanmakuController,
 
     override fun addItems(playTime: Long, list: List<DrawItem<DanmakuData>>) {
         mBuffer.addItems(list)
-        mBuffer.trimBuffer()
+        mBuffer.trimBuffer(playTime)
     }
 
     override fun releaseItem(item: DrawItem<DanmakuData>) {
@@ -106,6 +107,10 @@ class ScrollLayer(private val mController: DanmakuController,
             DanmakuConfig.TYPE_SCROLL_LINE_COUNT,
             DanmakuConfig.TYPE_SCROLL_LINE_MARGIN,
             DanmakuConfig.TYPE_SCROLL_MARGIN_TOP -> configLines()
+            DanmakuConfig.TYPE_SCROLL_BUFFER_MAX_TIME,
+            DanmakuConfig.TYPE_SCROLL_BUFFER_SIZE -> {
+                mBuffer.onBufferChanged(mConfig.scroll.bufferSize, mConfig.scroll.bufferMaxTime)
+            }
         }
     }
 
@@ -124,11 +129,10 @@ class ScrollLayer(private val mController: DanmakuController,
     }
 
     private fun configLines() {
-        val config = mController.config
-        val lineCount = config.scroll.lineCount
-        val lineHeight = config.scroll.lineHeight
-        val lineSpace = config.scroll.lineMargin
-        val marginTop = config.scroll.marginTop
+        val lineCount = mConfig.scroll.lineCount
+        val lineHeight = mConfig.scroll.lineHeight
+        val lineSpace = mConfig.scroll.lineMargin
+        val marginTop = mConfig.scroll.marginTop
         if (lineCount > mLines.size) {
             for (i in 1..(lineCount - mLines.size)) {
                 mLines.add(ScrollLine(mController, this).apply {

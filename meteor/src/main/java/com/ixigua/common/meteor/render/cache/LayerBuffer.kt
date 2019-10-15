@@ -9,7 +9,9 @@ import java.util.*
  * Created by dss886 on 2019/9/22.
  */
 class LayerBuffer(private val mConfig: DanmakuConfig,
-                  private val mCachePool: IDrawCachePool) {
+                  private val mCachePool: IDrawCachePool,
+                  private var mBufferSize: Int,
+                  private var mBufferMaxTime: Long) {
 
     private val mBufferItems = LinkedList<DrawItem<DanmakuData>>()
 
@@ -31,12 +33,14 @@ class LayerBuffer(private val mConfig: DanmakuConfig,
         }
     }
 
-    fun trimBuffer() {
-        if (mBufferItems.isEmpty() || mBufferItems.size <= mConfig.common.typesetBufferSize) {
+    fun trimBuffer(playTime: Long) {
+        if (mBufferItems.isEmpty() || mBufferItems.size <= mBufferSize) {
             return
         }
-        // TODO: 2019/9/22 @dss886 It will be better to sort it first, to be optimized in the Future.
-        while (mBufferItems.size > mConfig.common.typesetBufferSize) {
+        mBufferItems.removeWhen {
+            playTime - (it.data?.showAtTime ?: 0L) > mBufferMaxTime
+        }
+        while (mBufferItems.size > mBufferSize) {
             val item = mBufferItems.minBy {
                 @Suppress("UNCHECKED_CAST")
                 mConfig.common.bufferDiscardRule.invoke(it.data) as Comparable<Any?>
@@ -56,5 +60,32 @@ class LayerBuffer(private val mConfig: DanmakuConfig,
 
     fun clear() {
         mBufferItems.clear()
+    }
+
+    /**
+     * Changing the buffer size will clear items in the buffer right now.
+     */
+    fun onBufferChanged(newSize: Int, maxTime: Long) {
+        mBufferItems.forEach {
+            mCachePool.release(it)
+        }
+        mBufferItems.clear()
+        mBufferSize = newSize
+        mBufferMaxTime = maxTime
+    }
+
+    /**
+     * Copy from Collection.removeIf(), api 26+.
+     */
+    private fun <T> MutableList<T>.removeWhen(filter: (T) -> Boolean): Boolean {
+        var removed = false
+        val each = iterator()
+        while (each.hasNext()) {
+            if (filter.invoke(each.next())) {
+                each.remove()
+                removed = true
+            }
+        }
+        return removed
     }
 }
