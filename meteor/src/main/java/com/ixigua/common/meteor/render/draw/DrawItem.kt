@@ -32,6 +32,8 @@ abstract class DrawItem<T: DanmakuData> {
         y = 0F
         width = 0F
         height = 0F
+        showTime = 0L
+        showDuration = 0L
         isPaused = false
     }
 

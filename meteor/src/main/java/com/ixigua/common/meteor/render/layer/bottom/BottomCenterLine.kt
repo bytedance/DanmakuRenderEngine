@@ -23,7 +23,7 @@ class BottomCenterLine(controller: DanmakuController,
             if (it.isPaused) {
                 return false
             }
-            if (item.showDuration < mConfig.bottom.showTimeMin) {
+            if (it.showDuration < mConfig.bottom.showTimeMin) {
                 return false
             }
             mDrawingItems.clear()

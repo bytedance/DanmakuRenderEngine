@@ -23,7 +23,7 @@ class TopCenterLine(controller: DanmakuController,
             if (it.isPaused) {
                 return false
             }
-            if (item.showDuration < mConfig.top.showTimeMin) {
+            if (it.showDuration < mConfig.top.showTimeMin) {
                 return false
             }
             mDrawingItems.clear()
