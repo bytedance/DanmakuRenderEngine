@@ -37,8 +37,8 @@ class BottomCenterLine(controller: DanmakuController,
         return true
     }
 
-    fun isEmpty(): Boolean {
-        return mDrawingItems.isEmpty()
+    fun getCurrentItemShowDuration(): Long? {
+        return mDrawingItems.takeIf { it.isNotEmpty() }?.get(0)?.showDuration
     }
 
     override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean) {

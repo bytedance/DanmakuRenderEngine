@@ -122,14 +122,7 @@ class BottomCenterLayer(private val mController: DanmakuController,
      * Return true if find a line to add, return false otherwise.
      */
     private fun addItemImpl(playTime: Long, item: DrawItem<DanmakuData>): Boolean {
-        mLines.asReversed().forEach { line ->
-            if (line.isEmpty()) {
-                line.addItem(playTime, item)
-                mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
-                return true
-            }
-        }
-        mLines.asReversed().forEach { line ->
+        mLines.asReversed().maxBy { it.getCurrentItemShowDuration() ?: Long.MAX_VALUE }?.let { line ->
             if (line.addItem(playTime, item)) {
                 mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
                 return true
