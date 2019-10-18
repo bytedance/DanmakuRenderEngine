@@ -173,7 +173,7 @@ class DanmakuConfig : AbsConfig() {
                 config.notifyConfigChanged(TYPE_TEXT_COLOR)
             }
 
-        var typeface: Typeface = Typeface.DEFAULT
+        var typeface: Typeface? = Typeface.DEFAULT
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_TEXT_TYPEFACE)
