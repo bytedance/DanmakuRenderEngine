@@ -4,14 +4,16 @@ import android.graphics.*
 import android.view.MotionEvent
 import com.ixigua.common.meteor.control.DanmakuCommand
 import com.ixigua.common.meteor.control.DanmakuController
+import com.ixigua.common.meteor.control.Events
 import com.ixigua.common.meteor.control.ICommandMonitor
 import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.render.IRenderLayer
 import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.touch.ITouchTarget
-import com.ixigua.common.meteor.utils.CMD_MEASURE_ITEM
 import com.ixigua.common.meteor.utils.CMD_PAUSE_ITEM
+import com.ixigua.common.meteor.utils.CMD_REMEASURE_ITEM
 import com.ixigua.common.meteor.utils.CMD_RESUME_ITEM
+import com.ixigua.common.meteor.utils.EVENT_DANMAKU_REMEASURE
 import java.util.*
 
 /**
@@ -102,7 +104,7 @@ abstract class BaseRenderLine(private val mController: DanmakuController,
         when (cmd.what) {
             CMD_PAUSE_ITEM -> cmd.data?.let { pauseItem(it) }
             CMD_RESUME_ITEM -> cmd.data?.let { resumeItem(it) }
-            CMD_MEASURE_ITEM -> cmd.data?.let { measureItem(it) }
+            CMD_REMEASURE_ITEM -> cmd.data?.let { measureItem(it) }
         }
     }
 
@@ -125,7 +127,14 @@ abstract class BaseRenderLine(private val mController: DanmakuController,
     private fun measureItem(data: DanmakuData) {
         mDrawingItems.forEach { item ->
             if (item.data == data) {
+                item.bindData(data)
                 item.measure(mConfig)
+                mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_REMEASURE, data, mClickPositionRect.apply {
+                    left = item.x
+                    top = item.y
+                    right = item.x + item.width
+                    bottom = item.y + item.height
+                }))
             }
         }
     }

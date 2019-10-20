@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 ext {
     GROUP = 'com.ixigua.common'
     POM_ARTIFACT_ID = 'meteor'
-    VERSION_NAME = '0.0.4-rc12'
+    VERSION_NAME = '0.0.4-rc13'
 }
 
 android {
