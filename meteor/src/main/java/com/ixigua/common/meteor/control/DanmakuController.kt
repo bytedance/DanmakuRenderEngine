@@ -18,6 +18,7 @@ import com.ixigua.common.meteor.utils.postInvalidateCompat
 
 /**
  * Created by dss886 on 2018/11/6.
+ * Main entrance for controlling Danmaku
  */
 class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, ICommandMonitor {
 

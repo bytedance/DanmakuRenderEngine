@@ -6,10 +6,10 @@ import com.ixigua.common.meteor.data.DanmakuData
 
 /**
  * Created by dss886 on 2018/11/6.
+ * Common configuration of danmakus.
  */
 class DanmakuConfig : AbsConfig() {
 
-    @Suppress("MemberVisibilityCanBePrivate")
     companion object {
         const val TYPE_DEBUG_SHOW_LAYOUT_BOUNDS = 1000
         const val TYPE_DEBUG_PRINT_DRAW_TIME_COST = 1001
@@ -59,49 +59,31 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_BOTTOM_CENTER_BUFFER_MAX_TIME = 7007
     }
 
-    /**
-     * Config for Debug
-     */
     val debug = DebugConfig(this)
 
-    /**
-     * Config for common usage
-     */
     val common = CommonConfig(this)
 
-    /**
-     * Config for text drawing
-     */
     val text = TextConfig(this)
 
-    /**
-     * Config for item underline
-     */
     val underline = UnderlineConfig(this)
 
-    /**
-     * Config for ScrollLayer
-     */
     val scroll = ScrollLayerConfig(this)
 
-    /**
-     * Config for TopCenterLayer
-     */
     val top = TopCenterLayerConfig(this)
 
-    /**
-     * Config for BottomCenterLayer
-     */
     val bottom = BottomCenterLayerConfig(this)
 
     ////////////////////////////////////////////////////
     //               Config Definition                //
     ////////////////////////////////////////////////////
 
+    /**
+     * Configuration for Debug
+     */
     class DebugConfig(private val config: AbsConfig) {
         /**
-         * Draw layout bounds of the lines and items in layers
-         * Works like the 'Show Layout Bounds' option in Android Developer Settings
+         * Draw layout bounds of the lines and items in layers,
+         * Works like the 'Show Layout Bounds' option in Android Developer Settings.
          */
         var showLayoutBounds = false
             set(value) {
@@ -111,8 +93,8 @@ class DanmakuConfig : AbsConfig() {
 
         /**
          * Print the cost time of every method in draw(),
-         * usually used to debug the draw performance.
-         * Log Tag: DanmakuController
+         * usually used to debug the drawing performance.
+         * Log Tag: DanmakuController.
          */
         var printDrawTimeCostLog = false
             set(value) {
@@ -121,13 +103,15 @@ class DanmakuConfig : AbsConfig() {
             }
     }
 
+    /**
+     * Configuration for common usage.
+     */
     class CommonConfig(private val config: AbsConfig) {
         /**
-         * Please do not set both common.alpha and text.alpha,
-         * or set alpha in other color ints.
-         * If common.alpha < 255, it will overwrite all other alphas.
-         *
-         * value is in the range [0..255]
+         * Overall transparency, value is in the range [0..255]:
+         *   1. If common.alpha < 255, it will overwrite all other alphas,
+         *      including text.alpha and alpha in any other color ints.
+         *   2. If you implement your own drawItem, you should also use this alpha value.
          */
         var alpha = 255
             set(value) {
@@ -136,8 +120,8 @@ class DanmakuConfig : AbsConfig() {
             }
 
         /**
-         * The speed of playback in percent, used for time axis synchronous by DataManager
-         * default is 100 (means 100%)
+         * The speed of playback in percent, used for time axis synchronous by DataManager.
+         * Default is 100 (means 100%), value must be greater than or equal to zero.
          */
         var playSpeed = 100
             set(value) {
@@ -157,9 +141,13 @@ class DanmakuConfig : AbsConfig() {
             }
     }
 
+    /**
+     * Configuration for text drawing.
+     */
     class TextConfig(private val config: AbsConfig) {
         /**
-         * text size in pixel units.
+         * Text size of the TextDrawItem.
+         * Value in pixel units.
          */
         var size = 48f
             set(value) {
@@ -167,12 +155,19 @@ class DanmakuConfig : AbsConfig() {
                 config.notifyConfigChanged(TYPE_TEXT_SIZE)
             }
 
+        /**
+         * Text color of the TextDrawItem.
+         * Allow alpha values, but with a lower priority than [CommonConfig.alpha]
+         */
         var color = Color.WHITE
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_TEXT_COLOR)
             }
 
+        /**
+         * Text typeface of the TextDrawItem.
+         */
         var typeface: Typeface? = Typeface.DEFAULT
             set(value) {
                 field = value
@@ -180,7 +175,8 @@ class DanmakuConfig : AbsConfig() {
             }
 
         /**
-         * stroke width of text in pixel units
+         * Stroke width of of the TextDrawItem.
+         * Value in pixel units.
          */
         var strokeWidth = 2.75f
             set(value) {
@@ -188,12 +184,22 @@ class DanmakuConfig : AbsConfig() {
                 config.notifyConfigChanged(TYPE_TEXT_STROKE_WIDTH)
             }
 
+        /**
+         * Stroke color of of the TextDrawItem.
+         * Allow alpha values, but with a lower priority than [CommonConfig.alpha]
+         */
         var strokeColor = Color.argb(97, 0, 0, 0)
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_TEXT_STROKE_COLOR)
             }
 
+        /**
+         * Set whether the TextDrawItem includes extra top and bottom padding to make
+         * room for accents that go above the normal ascent and descent.
+         * The default is true.
+         * Works like the [android.widget.TextView.setIncludeFontPadding]
+         */
         var includeFontPadding = true
             set(value) {
                 field = value
@@ -201,13 +207,24 @@ class DanmakuConfig : AbsConfig() {
             }
     }
 
+    /**
+     * Configuration for text underline
+     */
     class UnderlineConfig(private val config: AbsConfig) {
+        /**
+         * Underline width of of the TextDrawItem.
+         * Value in pixel units.
+         */
         var width = 0f
             set(value) {
                 field = if (value < 0) 0f else value
                 config.notifyConfigChanged(TYPE_UNDERLINE_WIDTH)
             }
 
+        /**
+         * Underline color of of the TextDrawItem.
+         * Allow alpha values, but with a lower priority than [CommonConfig.alpha].
+         */
         var color = Color.WHITE
             set(value) {
                 field = value
@@ -215,7 +232,8 @@ class DanmakuConfig : AbsConfig() {
             }
 
         /**
-         * stroke width of underline in pixel units
+         * Underline stroke width of the TextDrawItem.
+         * Value in pixel units.
          */
         var strokeWidth = 1f
             set(value) {
@@ -223,12 +241,20 @@ class DanmakuConfig : AbsConfig() {
                 config.notifyConfigChanged(TYPE_UNDERLINE_STROKE_WIDTH)
             }
 
+        /**
+         * Underline stroke color of the TextDrawItem.
+         * Allow alpha values, but with a lower priority than [CommonConfig.alpha].
+         */
         var strokeColor = Color.argb(97, 0, 0, 0)
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_UNDERLINE_STROKE_COLOR)
             }
 
+        /**
+         * Margin between underline and text.
+         * Value in pixel units.
+         */
         var marginTop = 0f
             set(value) {
                 field = value
@@ -236,12 +262,16 @@ class DanmakuConfig : AbsConfig() {
             }
     }
 
+    /**
+     * Configuration of the ScrollLayer
+     */
     class ScrollLayerConfig(private val config: AbsConfig) {
         /**
-         * Speed of item is based on the screen width, for user experience reasons.
-         * Generally, long item move faster and short item move slower.
-         * This variable means the millisecond used through the screen.
-         * In millisecond units.
+         * Time cost of the scrolling item move through the screen.
+         * Value in millisecond units.
+         *
+         * For user experience reasons, speed of item is based on the screen width.
+         * That is to say, longer item move faster and shorter item move slower.
          */
         var moveTime = 8000L
             set(value) {
@@ -250,9 +280,9 @@ class DanmakuConfig : AbsConfig() {
             }
 
         /**
-         * In pixel units.
-         * If LineHeight is larger than the item inside, item will be drawn at the top of the line.
-         * Gravity will be supported in future.
+         * The height of the scroll line in pixel units.
+         * Item will be drawn from the top of the line.
+         * Gravity will be supported in the future.
          */
         var lineHeight = 54f
             set(value) {
@@ -272,7 +302,7 @@ class DanmakuConfig : AbsConfig() {
 
         /**
          * Margin between lines.
-         * In pixel units.
+         * Value in pixel units.
          */
         var lineMargin = 18f
             set(value) {
@@ -282,7 +312,7 @@ class DanmakuConfig : AbsConfig() {
 
         /**
          * Margin from DanmakuView's top.
-         * In pixel units.
+         * Value in pixel units.
          */
         var marginTop = 0f
             set(value) {
@@ -292,11 +322,11 @@ class DanmakuConfig : AbsConfig() {
 
         /**
          * Minimum margin of items horizontal in the same line.
-         * In pixel units.
+         * Value in pixel units.
          */
-        var itemMargin = 24
+        var itemMargin = 24f
             set(value) {
-                field = if (value < 0) 24 else value
+                field = if (value < 0) 24f else value
                 config.notifyConfigChanged(TYPE_SCROLL_ITEM_MARGIN)
             }
 
@@ -323,13 +353,26 @@ class DanmakuConfig : AbsConfig() {
             }
     }
 
+    /**
+     * Configuration of the TopCenterLayer
+     */
     class TopCenterLayerConfig(private val config: AbsConfig) {
+        /**
+         * The maximal time a item will be shown.
+         * The show time of a item may be in range [showTimeMin, showTimeMax].
+         */
         var showTimeMax = 4000L
             set(value) {
                 field = if (value <= 0) 4000L else value
                 config.notifyConfigChanged(TYPE_TOP_CENTER_SHOW_TIME_MAX)
             }
 
+        /**
+         * The minimum time a item will be shown.
+         * When a new item needs to be displayed,
+         * only items whose display time exceeds showTimeMin will be replaced.
+         * The show time of a item may be in range [showTimeMin, showTimeMax].
+         */
         var showTimeMin = 2000L
             set(value) {
                 field = if (value <= 0) 4000L else value
@@ -337,9 +380,9 @@ class DanmakuConfig : AbsConfig() {
             }
 
         /**
-         * In pixel units.
          * If LineHeight is larger than the item inside, item will be drawn at the top of the line.
          * Gravity will be supported in future.
+         * Value in pixel units.
          */
         var lineHeight = 54f
             set(value) {
@@ -359,7 +402,7 @@ class DanmakuConfig : AbsConfig() {
 
         /**
          * Margin between lines.
-         * In pixel units.
+         * Value in pixel units.
          */
         var lineMargin = 18f
             set(value) {
@@ -369,7 +412,7 @@ class DanmakuConfig : AbsConfig() {
 
         /**
          * Margin from DanmakuView's bottom.
-         * In pixel units.
+         * Value in pixel units.
          */
         var marginTop = 0f
             set(value) {
@@ -400,13 +443,26 @@ class DanmakuConfig : AbsConfig() {
             }
     }
 
+    /**
+     * Configuration of the BottomCenterLayer
+     */
     class BottomCenterLayerConfig(private val config: AbsConfig) {
+        /**
+         * The maximal time a item will be shown.
+         * The show time of a item may be in range [showTimeMin, showTimeMax].
+         */
         var showTimeMax = 4000L
             set(value) {
                 field = if (value <= 0) 4000L else value
                 config.notifyConfigChanged(TYPE_BOTTOM_CENTER_SHOW_TIME_MAX)
             }
 
+        /**
+         * The minimum time a item will be shown.
+         * When a new item needs to be displayed,
+         * only items whose display time exceeds showTimeMin will be replaced.
+         * The show time of a item may be in range [showTimeMin, showTimeMax].
+         */
         var showTimeMin = 2000L
             set(value) {
                 field = if (value <= 0) 4000L else value
@@ -414,9 +470,9 @@ class DanmakuConfig : AbsConfig() {
             }
 
         /**
-         * In pixel units.
          * If LineHeight is larger than the item inside, item will be drawn at the top of the line.
          * Gravity will be supported in future.
+         * Value in pixel units.
          */
         var lineHeight = 54f
             set(value) {
@@ -436,7 +492,7 @@ class DanmakuConfig : AbsConfig() {
 
         /**
          * Margin between lines.
-         * In pixel units.
+         * Value in pixel units.
          */
         var lineMargin = 18f
             set(value) {
@@ -446,7 +502,7 @@ class DanmakuConfig : AbsConfig() {
 
         /**
          * Margin from DanmakuView's bottom.
-         * In pixel units.
+         * Value in pixel units.
          */
         var marginBottom = 0f
             set(value) {

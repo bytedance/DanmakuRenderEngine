@@ -3,16 +3,24 @@ package com.ixigua.common.meteor.data
 import android.support.annotation.UiThread
 import com.ixigua.common.meteor.control.DanmakuConfig
 import com.ixigua.common.meteor.control.DanmakuController
+import com.ixigua.common.meteor.render.cache.LayerBuffer
 import java.util.*
 import kotlin.math.max
 
 /**
  * Created by dss886 on 2018/11/6.
+ * DataManager is the timeline controller for the danmakus
  */
 class DataManager(controller: DanmakuController) {
 
     private val mList = LinkedList<DanmakuData>()
     private val mQueryList = LinkedList<DanmakuData>()
+    /**
+     * Fake items will be added to the return list in [queryDanmaku] immediately.
+     * Even so, there is no guarantee that them will be displayed,
+     * as the render layers will discard data when the amount of data is too large.
+     * See [LayerBuffer]
+     */
     private val mFakeList = LinkedList<DanmakuData>()
     private val mConfig: DanmakuConfig = controller.config
 

@@ -11,4 +11,5 @@ interface IDrawCachePool {
     fun acquire(drawType: Int): DrawItem<DanmakuData>?
 
     fun release(item: DrawItem<DanmakuData>)
+
 }

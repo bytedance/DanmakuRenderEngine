@@ -8,6 +8,7 @@ import com.ixigua.common.meteor.render.draw.IDrawItemFactory
 
 /**
  * Created by dss886 on 2019-08-15.
+ * Cache Pools for multi-type DrawItem.
  */
 class DrawCachePool : IDrawCachePool {
 

@@ -10,6 +10,7 @@ import com.ixigua.common.meteor.control.DanmakuController
 
 /**
  * Created by dss886 on 2018/11/6.
+ * The view danmaku will be drawn on.
  */
 class DanmakuView @JvmOverloads constructor(context: Context,
                                             attrs: AttributeSet? = null,

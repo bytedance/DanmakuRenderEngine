@@ -1,11 +1,13 @@
 package com.ixigua.common.meteor.render.draw.text
 
 import android.graphics.Typeface
+import com.ixigua.common.meteor.control.DanmakuConfig
 import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.utils.DRAW_TYPE_TEXT
 
 /**
  * Created by dss886 on 2018/11/6.
+ * If defined, attributes in TextData will override the same value in [DanmakuConfig.text]
  */
 class TextData: DanmakuData() {
 

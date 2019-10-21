@@ -7,6 +7,7 @@ import java.util.*
 
 /**
  * Created by dss886 on 2019/9/22.
+ * Buffer for render layers.
  */
 class LayerBuffer(private val mConfig: DanmakuConfig,
                   private val mCachePool: IDrawCachePool,
@@ -33,6 +34,10 @@ class LayerBuffer(private val mConfig: DanmakuConfig,
         }
     }
 
+    /**
+     * Trim Buffer down to the mBufferSize.
+     * Using [DanmakuConfig.common.bufferDiscardRule] to discard items.
+     */
     fun trimBuffer(playTime: Long) {
         if (mBufferItems.isEmpty() || mBufferItems.size <= mBufferSize) {
             return
@@ -52,6 +57,10 @@ class LayerBuffer(private val mConfig: DanmakuConfig,
         }
     }
 
+    /**
+     * When need to measure (config changed, or measure items manually),
+     * items in the buffer should be measured too.
+     */
     fun measureItems() {
         mBufferItems.forEach {
             it.measure(mConfig)
@@ -63,7 +72,7 @@ class LayerBuffer(private val mConfig: DanmakuConfig,
     }
 
     /**
-     * Changing the buffer size will clear items in the buffer right now.
+     * Changing the buffer size will clear items in the buffer.
      */
     fun onBufferChanged(newSize: Int, maxTime: Long) {
         mBufferItems.forEach {
