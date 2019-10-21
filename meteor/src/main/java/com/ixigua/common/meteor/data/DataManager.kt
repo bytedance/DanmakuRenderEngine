@@ -51,7 +51,6 @@ class DataManager(controller: DanmakuController) {
             }
             mCurrentIndex = index + 1
         }
-        mFakeList.clear()
     }
 
     @UiThread
