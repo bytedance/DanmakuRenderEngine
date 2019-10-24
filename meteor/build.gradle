@@ -25,7 +25,6 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
-    api APPCOMPAT_LIB
-    api KOTLIN_LIB
+    implementation APPCOMPAT_LIB
+    implementation KOTLIN_LIB
 }
