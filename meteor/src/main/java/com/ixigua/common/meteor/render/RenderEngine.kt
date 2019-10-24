@@ -10,8 +10,8 @@ import com.ixigua.common.meteor.render.draw.IDrawItemFactory
 import com.ixigua.common.meteor.render.draw.bitmap.BitmapDrawItemFactory
 import com.ixigua.common.meteor.render.draw.text.TextDrawItemFactory
 import com.ixigua.common.meteor.render.layer.bottom.BottomCenterLayer
-import com.ixigua.common.meteor.render.layer.top.TopCenterLayer
 import com.ixigua.common.meteor.render.layer.scroll.ScrollLayer
+import com.ixigua.common.meteor.render.layer.top.TopCenterLayer
 import com.ixigua.common.meteor.touch.ITouchDelegate
 import com.ixigua.common.meteor.touch.ITouchTarget
 
@@ -25,18 +25,19 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
     private val mDrawCachePool = DrawCachePool()
 
     init {
-        addLayers()
+        mRenderLayers.add(ScrollLayer(mController, mDrawCachePool))
+        mRenderLayers.add(TopCenterLayer(mController, mDrawCachePool))
+        mRenderLayers.add(BottomCenterLayer(mController, mDrawCachePool))
         registerDrawItemFactory(TextDrawItemFactory())
         registerDrawItemFactory(BitmapDrawItemFactory())
     }
 
-    /**
-     * add layers by z-index (asc)
-     */
-    private fun addLayers() {
-        mRenderLayers.add(ScrollLayer(mController, mDrawCachePool))
-        mRenderLayers.add(TopCenterLayer(mController, mDrawCachePool))
-        mRenderLayers.add(BottomCenterLayer(mController, mDrawCachePool))
+    fun addRenderLayer(layer: IRenderLayer) {
+        if (mRenderLayers.contains(layer)) {
+            return
+        }
+        mRenderLayers.add(layer)
+        mRenderLayers.sortBy { it.getLayerZIndex() }
     }
 
     fun registerDrawItemFactory(factory: IDrawItemFactory) {

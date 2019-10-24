@@ -17,7 +17,7 @@ class DataManager(controller: DanmakuController) {
     private val mQueryList = LinkedList<DanmakuData>()
     /**
      * Fake items will be added to the return list in [queryDanmaku] immediately.
-     * Even so, there is no guarantee that them will be displayed,
+     * Even so, there is no guarantee that them will be displayed 100%,
      * as the render layers will discard data when the amount of data is too large.
      * See [LayerBuffer]
      */

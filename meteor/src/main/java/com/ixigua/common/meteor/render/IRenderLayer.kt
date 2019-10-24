@@ -11,6 +11,8 @@ interface IRenderLayer {
 
     fun getLayerType(): Int
 
+    fun getLayerZIndex(): Int
+
     fun onLayoutSizeChanged(width: Int, height: Int)
 
     /**

@@ -7,7 +7,9 @@ import android.view.MotionEvent
 import android.view.View
 import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.data.DataManager
+import com.ixigua.common.meteor.render.IRenderLayer
 import com.ixigua.common.meteor.render.RenderEngine
+import com.ixigua.common.meteor.render.cache.LayerBuffer
 import com.ixigua.common.meteor.render.draw.IDrawItemFactory
 import com.ixigua.common.meteor.touch.IItemClickListener
 import com.ixigua.common.meteor.touch.TouchHelper
@@ -45,6 +47,9 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     //                 Public Interface                 //
     //////////////////////////////////////////////////////
 
+    /**
+     * Play or resume from paused
+     */
     fun start(playTime: Long) {
         if (mIsPlaying) {
             return
@@ -54,25 +59,53 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         mDanmakuView.postInvalidateCompat()
     }
 
+    /**
+     * Pause Danmakus and keep them on the screen
+     */
     fun pause() {
         mIsPlaying = false
     }
 
+    /**
+     * Stop playing and clear all items on the screen
+     */
     fun stop() {
         mIsPlaying = false
         mDataManager.onStop()
         clear()
     }
 
+    /**
+     * Simply clear the items on the screen,
+     * and has no effect on the data set or timeline.
+     */
     fun clear() {
         mRenderEngine.clear()
         mDanmakuView.postInvalidateCompat()
     }
 
+    /**
+     * Add your custom RenderLayer to RenderEngine.
+     * Make sure your LayerType is not the same as the others.
+     * Changing the LayerZIndex to adjust the order of your RenderLayer.
+     */
+    @Suppress("unused")
+    fun addRenderLayer(layer: IRenderLayer) {
+        mRenderEngine.addRenderLayer(layer)
+    }
+
+    /**
+     * Register the factory of your custom DrawItem.
+     * Make sure your DrawType is not the same as the others.
+     */
     fun registerDrawItemFactory(factory: IDrawItemFactory) {
         mRenderEngine.registerDrawItemFactory(factory)
     }
 
+    /**
+     * Set data to the [DataManager].
+     * Replacing the data source when started is allowed.
+     */
     fun setData(dataList: List<DanmakuData>, current: Long = 0) {
         mDataManager.setData(dataList)
         if (current > 0) {
@@ -80,27 +113,50 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         }
     }
 
+    /**
+     * Append data to end of the [DataManager].
+     * You need to ensure the chronological order of the data by yourself.
+     */
     fun appendData(dataList: List<DanmakuData>) {
         mDataManager.appendData(dataList)
     }
 
+    /**
+     * Fake items will be added to the DataManager and push into RenderEngine immediately.
+     * Even so, there is no guarantee that them will be displayed 100%,
+     * as the render layers will discard data when the amount of data is too large.
+     * See [LayerBuffer]
+     */
     fun addFakeData(data: DanmakuData) {
         mDataManager.addFakeData(data)
     }
 
+    /**
+     * If you change the configs of Danmakus when paused, please invalidate the view.
+     */
     fun invalidateView() {
         mDanmakuView.postInvalidateCompat()
     }
 
+    /**
+     * Tell [DanmakuController] to do something.
+     */
     fun executeCommand(cmd: Int, data: DanmakuData? = null, param: Any? = null) {
         executeCommand(DanmakuCommand(cmd, data, param))
     }
 
-    @Suppress("unused")
+    /**
+     * Add event listener to the [DanmakuController].
+     * Event is used by [DanmakuController] to tell you what is happening.
+     */
     fun addEventListener(listener: IEventListener) {
         mEventListeners.add(listener)
     }
 
+    /**
+     * Remove event listener to the [DanmakuController].
+     * Event is used by [DanmakuController] to tell you what is happening.
+     */
     @Suppress("unused")
     fun removeEventListener(listener: IEventListener) {
         mEventListeners.remove(listener)

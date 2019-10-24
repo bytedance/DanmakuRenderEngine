@@ -16,6 +16,7 @@ import com.ixigua.common.meteor.touch.ITouchTarget
 import com.ixigua.common.meteor.utils.EVENT_DANMAKU_DISMISS
 import com.ixigua.common.meteor.utils.EVENT_DANMAKU_SHOW
 import com.ixigua.common.meteor.utils.LAYER_TYPE_BOTTOM_CENTER
+import com.ixigua.common.meteor.utils.LAYER_Z_INDEX_BOTTOM_CENTER
 import java.util.*
 
 /**
@@ -40,6 +41,10 @@ class BottomCenterLayer(private val mController: DanmakuController,
 
     override fun getLayerType(): Int {
         return LAYER_TYPE_BOTTOM_CENTER
+    }
+
+    override fun getLayerZIndex(): Int {
+        return LAYER_Z_INDEX_BOTTOM_CENTER
     }
 
     override fun onLayoutSizeChanged(width: Int, height: Int) {

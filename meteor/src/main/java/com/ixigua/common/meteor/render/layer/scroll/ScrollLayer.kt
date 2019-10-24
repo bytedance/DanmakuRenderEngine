@@ -16,6 +16,7 @@ import com.ixigua.common.meteor.touch.ITouchTarget
 import com.ixigua.common.meteor.utils.EVENT_DANMAKU_DISMISS
 import com.ixigua.common.meteor.utils.EVENT_DANMAKU_SHOW
 import com.ixigua.common.meteor.utils.LAYER_TYPE_SCROLL
+import com.ixigua.common.meteor.utils.LAYER_Z_INDEX_SCROLL
 import java.util.*
 
 /**
@@ -37,6 +38,10 @@ class ScrollLayer(private val mController: DanmakuController,
 
     override fun getLayerType(): Int {
         return LAYER_TYPE_SCROLL
+    }
+
+    override fun getLayerZIndex(): Int {
+        return LAYER_Z_INDEX_SCROLL
     }
 
     override fun onLayoutSizeChanged(width: Int, height: Int) {
