@@ -1,6 +1,7 @@
 package com.ixigua.common.meteor.render.draw.text
 
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.text.TextUtils
 import com.ixigua.common.meteor.control.DanmakuConfig
@@ -65,7 +66,7 @@ class TextDrawItem: DrawItem<TextData>() {
             (data?.textStrokeWidth ?: config.text.strokeWidth).takeIf { it > 0 }?.let { width ->
                 paint.style = Paint.Style.STROKE
                 paint.color = data?.textStrokeColor ?: config.text.strokeColor
-                if (config.common.alpha < 255) {
+                if (config.common.alpha <= 255) {
                     paint.alpha = config.common.alpha
                 }
                 paint.typeface = data?.typeface ?: config.text.typeface
@@ -76,8 +77,8 @@ class TextDrawItem: DrawItem<TextData>() {
             }
             // draw drawText
             paint.style = Paint.Style.FILL
-            paint.color = data?.textColor ?: config.text.color
-            if (config.common.alpha < 255) {
+            paint.color = data?.textDrawColor ?: config.text.color
+            if (config.common.alpha <= 255) {
                 paint.alpha = config.common.alpha
             }
             paint.typeface = data?.typeface ?: config.text.typeface
@@ -97,7 +98,7 @@ class TextDrawItem: DrawItem<TextData>() {
             takeIf {config.underline.strokeWidth > 0 }?.let {
                 underlinePaint.style = Paint.Style.STROKE
                 underlinePaint.color = config.underline.strokeColor
-                if (config.common.alpha < 255) {
+                if (config.common.alpha <= 255) {
                     underlinePaint.alpha = config.common.alpha
                 }
                 underlinePaint.strokeWidth = config.underline.strokeWidth
@@ -105,8 +106,8 @@ class TextDrawItem: DrawItem<TextData>() {
             }
             // draw underline
             underlinePaint.style = Paint.Style.FILL
-            underlinePaint.color = config.underline.color
-            if (config.common.alpha < 255) {
+            underlinePaint.color = data?.textDrawColor ?: config.text.color
+            if (config.common.alpha <= 255) {
                 underlinePaint.alpha = config.common.alpha
             }
             underlinePaint.strokeWidth = 0f

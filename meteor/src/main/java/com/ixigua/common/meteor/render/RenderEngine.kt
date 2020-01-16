@@ -14,11 +14,12 @@ import com.ixigua.common.meteor.render.layer.scroll.ScrollLayer
 import com.ixigua.common.meteor.render.layer.top.TopCenterLayer
 import com.ixigua.common.meteor.touch.ITouchDelegate
 import com.ixigua.common.meteor.touch.ITouchTarget
+import com.ixigua.common.meteor.utils.LAYER_TYPE_UNDEFINE
 
 /**
  * Created by dss886 on 2018/11/6.
  */
-class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
+class RenderEngine(private val mController: DanmakuController) : ITouchDelegate {
 
     private val mRenderLayers = mutableListOf<IRenderLayer>()
     private val mPreDrawItems = mutableListOf<DrawItem<DanmakuData>>()
@@ -91,9 +92,17 @@ class RenderEngine(private val mController: DanmakuController): ITouchDelegate {
         return null
     }
 
-    fun clear() {
-        for (layer in mRenderLayers) {
-            layer.clear()
+    fun clear(layerType : Int = LAYER_TYPE_UNDEFINE, notClearOneself : Boolean = false) {
+        if (layerType == LAYER_TYPE_UNDEFINE) {
+            for (layer in mRenderLayers) {
+                layer.clear(notClearOneself)
+            }
+        } else {
+            mRenderLayers.forEach {
+                if (it.getLayerType() == layerType) {
+                    it.clear(notClearOneself)
+                }
+            }
         }
     }
 

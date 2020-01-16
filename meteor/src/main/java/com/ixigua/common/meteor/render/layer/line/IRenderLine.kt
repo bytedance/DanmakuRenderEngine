@@ -19,6 +19,6 @@ interface IRenderLine {
 
     fun drawLayoutBounds(canvas: Canvas)
 
-    fun clearRender()
-    
+    fun clearRender(notClearOneself : Boolean = false)
+
 }

@@ -47,7 +47,7 @@ abstract class DrawItem<T: DanmakuData> {
     abstract fun bindData(data: T)
 
     /**
-     * Measure x/y/width/height according to the content of [data].
+     * Measure width/height according to the content of [data].
      */
     abstract fun measure(config: DanmakuConfig)
 

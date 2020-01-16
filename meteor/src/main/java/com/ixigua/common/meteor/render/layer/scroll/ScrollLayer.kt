@@ -56,13 +56,13 @@ class ScrollLayer(private val mController: DanmakuController,
     }
 
     override fun releaseItem(item: DrawItem<DanmakuData>) {
-        mController.notifyEvent(Events.obtainEvent( EVENT_DANMAKU_DISMISS, item.data))
+        mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_DISMISS, item.data))
         mCachePool.release(item)
     }
 
     override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean) {
         mBuffer.forEach {
-            addItemImpl(playTime, it)
+            distributeItemToLines(playTime, it)
         }
         mLines.forEach { line ->
             line.typesetting(playTime, isPlaying, configChanged)
@@ -86,11 +86,13 @@ class ScrollLayer(private val mController: DanmakuController,
         return mPreDrawItems
     }
 
-    override fun clear() {
+    override fun clear(notClearOneself : Boolean) {
         mLines.forEach { line ->
-            line.clearRender()
+            line.clearRender(notClearOneself)
         }
-        mBuffer.clear()
+        if (!notClearOneself) {
+            mBuffer.clear()
+        }
     }
 
     override fun findTouchTarget(event: MotionEvent): ITouchTarget? {
@@ -123,7 +125,7 @@ class ScrollLayer(private val mController: DanmakuController,
      * Try add item to lines.
      * Return true if find a line has enough space to add, return false otherwise.
      */
-    private fun addItemImpl(playTime: Long, item: DrawItem<DanmakuData>): Boolean {
+    private fun distributeItemToLines(playTime: Long, item: DrawItem<DanmakuData>): Boolean {
         mLines.forEach { line ->
             if (line.addItem(playTime, item)) {
                 mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))

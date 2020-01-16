@@ -47,6 +47,11 @@ class DataManager(controller: DanmakuController) {
     }
 
     @UiThread
+    fun getData() : List<DanmakuData>{
+        return mList
+    }
+
+    @UiThread
     fun onPlay(playTime: Long) {
         mIsPlaying = true
         mCurrentIndex = 0
@@ -98,6 +103,11 @@ class DataManager(controller: DanmakuController) {
             mCurrentIndex++
         }
         return mQueryList
+    }
+
+    @UiThread
+    fun onPause() {
+        mIsPlaying = false
     }
 
     @UiThread

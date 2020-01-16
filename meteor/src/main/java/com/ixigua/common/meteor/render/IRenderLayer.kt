@@ -28,6 +28,6 @@ interface IRenderLayer {
 
     fun getPreDrawItems(): List<DrawItem<DanmakuData>>
 
-    fun clear()
+    fun clear(notClearOneself : Boolean = false)
 
 }

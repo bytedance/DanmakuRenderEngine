@@ -13,10 +13,7 @@ import com.ixigua.common.meteor.render.cache.LayerBuffer
 import com.ixigua.common.meteor.render.draw.IDrawItemFactory
 import com.ixigua.common.meteor.touch.IItemClickListener
 import com.ixigua.common.meteor.touch.TouchHelper
-import com.ixigua.common.meteor.utils.CMD_PAUSE_ITEM
-import com.ixigua.common.meteor.utils.CMD_RESUME_ITEM
-import com.ixigua.common.meteor.utils.CMD_SET_TOUCHABLE
-import com.ixigua.common.meteor.utils.postInvalidateCompat
+import com.ixigua.common.meteor.utils.*
 
 /**
  * Created by dss886 on 2018/11/6.
@@ -64,6 +61,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      */
     fun pause() {
         mIsPlaying = false
+        mDataManager.onPause()
     }
 
     /**
@@ -79,9 +77,11 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      * Simply clear the items on the screen,
      * and has no effect on the data set or timeline.
      */
-    fun clear() {
-        mRenderEngine.clear()
-        mDanmakuView.postInvalidateCompat()
+    fun clear(layerType: Int = LAYER_TYPE_UNDEFINE, notClearOneself : Boolean = false) {
+        mRenderEngine.clear(layerType, notClearOneself)
+        if (layerType == LAYER_TYPE_UNDEFINE) {
+            mDanmakuView.postInvalidateCompat()
+        }
     }
 
     /**
@@ -171,6 +171,30 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
             DanmakuConfig.TYPE_COMMON_PLAY_SPEED -> mDataManager.onPlaySpeedChanged()
             DanmakuConfig.TYPE_TEXT_SIZE -> mRenderEngine.typesetting(mDataManager.queryPlayTime(), mIsPlaying, true)
         }
+
+        /**
+         * Render a frame effect with pause
+         */
+        if (mIsPlaying) {
+            return
+        }
+        when (type) {
+            DanmakuConfig.TYPE_COMMON_TOP_CENTER_VISIBLE_CHANGE -> {
+                if (!config.common.topVisible) {
+                    mRenderEngine.clear(LAYER_TYPE_TOP_CENTER, true)
+                }
+            }
+            DanmakuConfig.TYPE_COMMON_BOTTOM_CENTER_VISIBLE_CHANGE -> {
+                if (!config.common.bottomVisible) {
+                    mRenderEngine.clear(LAYER_TYPE_BOTTOM_CENTER, true)
+                }
+            }
+        }
+        mDanmakuView.postInvalidateCompat()
+    }
+
+    fun getDanmakuData() : List<DanmakuData>{
+        return mDataManager.getData()
     }
 
     internal fun onLayoutSizeChanged(width: Int, height: Int) {

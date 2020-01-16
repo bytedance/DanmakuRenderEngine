@@ -42,11 +42,22 @@ abstract class BaseRenderLine(private val mController: DanmakuController,
         this.y = y
     }
 
-    override fun clearRender() {
-        mDrawingItems.forEach {
-            mLayer.releaseItem(it)
+    override fun clearRender(notClearOneself : Boolean) {
+        if (!notClearOneself) {
+            mDrawingItems.forEach {
+                mLayer.releaseItem(it)
+            }
+            mDrawingItems.clear()
+        } else {
+            val iterator = mDrawingItems.iterator()
+            while (iterator.hasNext()) {
+                val next = iterator.next()
+                if (next.data?.isOneselfSend == false) {
+                    mLayer.releaseItem(next)
+                    iterator.remove()
+                }
+            }
         }
-        mDrawingItems.clear()
     }
 
     override fun getPreDrawItems(): List<DrawItem<DanmakuData>> {

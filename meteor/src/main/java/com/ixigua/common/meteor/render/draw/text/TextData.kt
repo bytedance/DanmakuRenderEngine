@@ -16,10 +16,14 @@ class TextData: DanmakuData() {
     var text: String? = null
     var textSize: Float? = null
     var textColor: Int? = null
+    var textDrawColor: Int? = null
     var typeface: Typeface? = null
     var textStrokeWidth: Float? = null
     var textStrokeColor: Int? = null
     var includeFontPadding: Boolean? = null
     var hasUnderline: Boolean = false
 
+    override fun toString(): String {
+        return "TextData(text=$text)"
+    }
 }

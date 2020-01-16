@@ -17,6 +17,10 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_COMMON_ALPHA = 2000
         const val TYPE_COMMON_PLAY_SPEED = 2001
         const val TYPE_COMMON_BUFFER_DISCARD_RULE = 2002
+        const val TYPE_COMMON_AVATAR_VISIBLE_CHANGE = 2003
+        const val TYPE_COMMON_TOP_CENTER_VISIBLE_CHANGE = 2004
+        const val TYPE_COMMON_BOTTOM_CENTER_VISIBLE_CHANGE = 2005
+        const val TYPE_COMMON_COLOURS_CHANGE = 2006
 
         const val TYPE_TEXT_SIZE = 3000
         const val TYPE_TEXT_COLOR = 3001
@@ -138,6 +142,42 @@ class DanmakuConfig : AbsConfig() {
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_COMMON_BUFFER_DISCARD_RULE)
+            }
+
+        /**
+         * whether to display avatar
+         */
+        var avatarVisible = true
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_COMMON_AVATAR_VISIBLE_CHANGE)
+            }
+
+        /**
+         * whether to display top center danmaku
+         */
+        var topVisible = true
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_COMMON_TOP_CENTER_VISIBLE_CHANGE)
+            }
+
+        /**
+         * whether to display bottom center danmaku
+         */
+        var bottomVisible = true
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_COMMON_BOTTOM_CENTER_VISIBLE_CHANGE)
+            }
+
+        /**
+         * whether to display color text
+         */
+        var coloursEnable = true
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_COMMON_COLOURS_CHANGE)
             }
     }
 
