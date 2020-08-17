@@ -15,14 +15,14 @@ import com.ixigua.common.meteor.render.layer.top.TopCenterLayer
 import com.ixigua.common.meteor.touch.ITouchDelegate
 import com.ixigua.common.meteor.touch.ITouchTarget
 import com.ixigua.common.meteor.utils.LAYER_TYPE_UNDEFINE
+import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * Created by dss886 on 2018/11/6.
  */
 class RenderEngine(private val mController: DanmakuController) : ITouchDelegate {
 
-    private val mRenderLayers = mutableListOf<IRenderLayer>()
-    private val mPreDrawItems = mutableListOf<DrawItem<DanmakuData>>()
+    private val mRenderLayers = CopyOnWriteArrayList<IRenderLayer>()
     private val mDrawCachePool = DrawCachePool()
 
     init {
@@ -71,16 +71,17 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
                 it.drawLayoutBounds(canvas)
             }
         }
-        mPreDrawItems.clear()
+        val drawItems = mutableListOf<DrawItem<DanmakuData>>()
+        drawItems.clear()
         mRenderLayers.forEach {
-            mPreDrawItems.addAll(it.getPreDrawItems())
+            drawItems.addAll(it.getPreDrawItems())
         }
-        mPreDrawItems.sortBy { it.showTime }
-        mPreDrawItems.sortBy { it.data?.drawOrder }
-        mPreDrawItems.forEach {
+        drawItems.sortBy { it.showTime }
+        drawItems.sortBy { it.data?.drawOrder }
+        drawItems.forEach {
             it.draw(canvas, mController.config)
         }
-        mPreDrawItems.clear()
+        drawItems.clear()
     }
 
     override fun findTouchTarget(event: MotionEvent): ITouchTarget? {
