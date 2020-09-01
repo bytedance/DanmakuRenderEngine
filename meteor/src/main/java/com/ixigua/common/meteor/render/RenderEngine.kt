@@ -24,6 +24,9 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
 
     private val mRenderLayers = CopyOnWriteArrayList<IRenderLayer>()
     private val mDrawCachePool = DrawCachePool()
+    private var mWidth = 0
+    private var mHeight = 0
+    private var mSaveLayerValue = 0
 
     init {
         mRenderLayers.add(ScrollLayer(mController, mDrawCachePool))
@@ -49,6 +52,8 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
         mRenderLayers.forEach {
             it.onLayoutSizeChanged(width, height)
         }
+        mWidth = width
+        mHeight = height
     }
 
     fun addItems(playTime: Long, items: List<DanmakuData>) {
@@ -78,8 +83,16 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
         }
         drawItems.sortBy { it.showTime }
         drawItems.sortBy { it.data?.drawOrder }
+        if (mController.config.mask.enable) {
+            mSaveLayerValue = canvas.saveLayer(0F, 0F, mWidth.toFloat(), mHeight.toFloat(), null, Canvas.ALL_SAVE_FLAG)
+        }
+
         drawItems.forEach {
             it.draw(canvas, mController.config)
+        }
+
+        if (mController.config.mask.enable) {
+            canvas.restoreToCount(mSaveLayerValue)
         }
         drawItems.clear()
     }
@@ -93,7 +106,7 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
         return null
     }
 
-    fun clear(layerType : Int = LAYER_TYPE_UNDEFINE, notClearOneself : Boolean = false) {
+    fun clear(layerType: Int = LAYER_TYPE_UNDEFINE, notClearOneself: Boolean = false) {
         if (layerType == LAYER_TYPE_UNDEFINE) {
             for (layer in mRenderLayers) {
                 layer.clear(notClearOneself)

@@ -61,6 +61,8 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_BOTTOM_CENTER_MARGIN_BOTTOM = 7005
         const val TYPE_BOTTOM_CENTER_BUFFER_SIZE = 7006
         const val TYPE_BOTTOM_CENTER_BUFFER_MAX_TIME = 7007
+
+        const val TYPE_MASK_VALUE_CHANGE = 8000
     }
 
     val debug = DebugConfig(this)
@@ -76,6 +78,8 @@ class DanmakuConfig : AbsConfig() {
     val top = TopCenterLayerConfig(this)
 
     val bottom = BottomCenterLayerConfig(this)
+
+    val mask = MaskConfig(this)
 
     ////////////////////////////////////////////////////
     //               Config Definition                //
@@ -142,7 +146,7 @@ class DanmakuConfig : AbsConfig() {
          * The rule is used in the minBy() function, that is to say the minimal one will be discard first.
          * By default, items in the buffer will be discard by their showAtTime.
          */
-        var bufferDiscardRule: ((DanmakuData?) -> Comparable<*>) = { it?.showAtTime ?: 0}
+        var bufferDiscardRule: ((DanmakuData?) -> Comparable<*>) = { it?.showAtTime ?: 0 }
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_COMMON_BUFFER_DISCARD_RULE)
@@ -574,6 +578,21 @@ class DanmakuConfig : AbsConfig() {
             set(value) {
                 field = if (value <= 0) 2000L else value
                 config.notifyConfigChanged(TYPE_BOTTOM_CENTER_BUFFER_MAX_TIME)
+            }
+    }
+
+    /**
+     * Configuration of the Mask.
+     */
+    class MaskConfig(private val config: AbsConfig) {
+        /**
+         * Danmaku Mask need to call Paint.setXfermode(Xfermode xfermode) to avoid danmaku cover people.
+         * this value need to set enable to use canvas.saveLayer() to make Paint.setXfermode(Xfermode xfermode) work normally.
+         */
+        var enable: Boolean = false
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_MASK_VALUE_CHANGE)
             }
     }
 }
