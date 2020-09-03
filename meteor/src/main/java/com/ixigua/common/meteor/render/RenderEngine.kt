@@ -41,7 +41,15 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
             return
         }
         mRenderLayers.add(layer)
-        mRenderLayers.sortBy { it.getLayerZIndex() }
+        sortRenderLayers()
+    }
+
+    private fun sortRenderLayers() {
+        val renderLayers = mutableListOf<IRenderLayer>()
+        renderLayers.addAll(mRenderLayers)
+        renderLayers.sortBy { it.getLayerZIndex() }
+        mRenderLayers.clear()
+        mRenderLayers.addAll(renderLayers)
     }
 
     fun registerDrawItemFactory(factory: IDrawItemFactory) {
