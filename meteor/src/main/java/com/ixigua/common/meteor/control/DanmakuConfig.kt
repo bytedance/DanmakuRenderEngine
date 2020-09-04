@@ -115,7 +115,11 @@ class DanmakuConfig : AbsConfig() {
          * Overall transparency, value is in the range [0..255]:
          *   1. If common.alpha < 255, it will overwrite all other alphas,
          *      including text.alpha and alpha in any other color ints.
-         *   2. If you implement your own drawItem, you should also use this alpha value.
+         *   2. This alpha will be applied to "DanmakuView", but not drawItems,
+         *      Trigger Route:
+         *       -> config.notifyConfigChanged(TYPE_COMMON_ALPHA)
+         *       -> DanmakuController.onConfigChanged()
+         *       -> mDanmakuView.alpha = config.common.alpha / 255f
          */
         var alpha = 255
             set(value) {

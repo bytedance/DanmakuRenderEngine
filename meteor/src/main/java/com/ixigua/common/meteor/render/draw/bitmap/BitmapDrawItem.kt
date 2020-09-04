@@ -39,7 +39,6 @@ class BitmapDrawItem: DrawItem<BitmapData>() {
             mRectF.set(x, y, x + width, y + height)
             val tint = data?.tintColor
             mBitmapPaint.colorFilter = if (tint == null) null else PorterDuffColorFilter(tint, PorterDuff.Mode.SRC_IN)
-            mBitmapPaint.alpha = config.common.alpha
             canvas.drawBitmap(bitmap, null, mRectF, mBitmapPaint)
         }
     }
