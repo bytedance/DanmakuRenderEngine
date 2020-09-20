@@ -24,7 +24,11 @@ object Events {
 
     fun recycleEvent(event: DanmakuEvent) {
         event.reset()
-        mPools.release(event)
+        try {
+            mPools.release(event)
+        } catch (ignore: IllegalStateException) {
+            //Ignored case: "event" may be already released and "Already in the pool!"
+        }
     }
 
 }
