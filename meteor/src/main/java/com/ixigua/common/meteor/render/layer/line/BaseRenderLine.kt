@@ -86,13 +86,22 @@ abstract class BaseRenderLine(private val mController: DanmakuController,
             }
             MotionEvent.ACTION_UP -> {
                 mCurrentTouchItem?.let { item ->
-                    handleItemClick(item, event.x, event.y)
+                    if (touchValidate(event, item)) {
+                        handleItemClick(item, event.x, event.y)
+                    }
                     return true
                 }
                 mCurrentTouchItem = null
             }
         }
         return false
+    }
+
+    /**
+     * Do not handle click if touch event is out of item area
+     */
+    private fun touchValidate(event: MotionEvent, item: DrawItem<DanmakuData>): Boolean {
+        return event.x in item.x..item.x + item.width && event.y in item.y..item.y + item.height
     }
 
     open fun handleItemClick(item: DrawItem<DanmakuData>, upX: Float, upY: Float) {
