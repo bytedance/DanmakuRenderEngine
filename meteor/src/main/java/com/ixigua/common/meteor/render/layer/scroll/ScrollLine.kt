@@ -5,6 +5,7 @@ import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.render.IRenderLayer
 import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.render.layer.line.BaseRenderLine
+import com.ixigua.common.meteor.utils.HIGH_REFRESH_MAX_TIME
 import com.ixigua.common.meteor.utils.STEPPER_TIME
 
 /**
@@ -12,6 +13,9 @@ import com.ixigua.common.meteor.utils.STEPPER_TIME
  */
 class ScrollLine(controller: DanmakuController,
                  private val mLayer: IRenderLayer) : BaseRenderLine(controller, mLayer) {
+
+    private var mLastTypeSettingTime = -1L
+    private var mStepperTime = STEPPER_TIME
 
     override fun onLayoutChanged(width: Float, height: Float, x: Float, y: Float) {
         super.onLayoutChanged(width, height, x, y)
@@ -37,12 +41,24 @@ class ScrollLine(controller: DanmakuController,
      * @param configChanged need to re-measure and re-layout items if config changed
      */
     override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean) {
+        if (mLastTypeSettingTime < 0) {
+            mLastTypeSettingTime = System.currentTimeMillis()
+        } else {
+            val newTypeSettingTime = System.currentTimeMillis()
+            mStepperTime = if (newTypeSettingTime - mLastTypeSettingTime < HIGH_REFRESH_MAX_TIME) {
+                newTypeSettingTime - mLastTypeSettingTime
+            } else {
+                STEPPER_TIME
+            }
+            mLastTypeSettingTime = newTypeSettingTime
+        }
+
         if (isPlaying) {
             // move drawing items if is playing
             mDrawingItems.forEach { item ->
                 if (!item.isPaused) {
-                    item.x -= getItemSpeed(item) * STEPPER_TIME
-                    item.showDuration += STEPPER_TIME
+                    item.x -= getItemSpeed(item) * mStepperTime
+                    item.showDuration += mStepperTime
                 }
             }
             // remove items that already out of screen
@@ -55,6 +71,7 @@ class ScrollLine(controller: DanmakuController,
                 }
             }
         }
+
         if (configChanged) {
             measureAndLayout()
         }

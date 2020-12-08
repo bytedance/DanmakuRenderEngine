@@ -9,6 +9,13 @@ import com.ixigua.common.meteor.data.DanmakuData
 
 const val STEPPER_TIME = 16L
 
+/**
+ * The maximum interval time for the view to be drawn on a high-FPS mobile phone.
+ * Considering that the draw interval is about 11ms at 90Hz and about 8ms at 120Hz,
+ * set the HIGH_REFRESH_MAX_TIME to 14.
+ */
+const val HIGH_REFRESH_MAX_TIME = 14L
+
 const val LAYER_TYPE_UNDEFINE = 1000
 const val LAYER_TYPE_SCROLL = 1001
 const val LAYER_TYPE_TOP_CENTER = 1002
