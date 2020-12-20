@@ -187,6 +187,11 @@ class DanmakuConfig : AbsConfig() {
                 field = value
                 config.notifyConfigChanged(TYPE_COMMON_COLOURS_CHANGE)
             }
+
+        /**
+         * Item discard listener
+         */
+        var discardListener: ((DanmakuData?, Int) -> Unit)? = null
     }
 
     /**

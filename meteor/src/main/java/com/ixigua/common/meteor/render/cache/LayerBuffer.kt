@@ -3,6 +3,8 @@ package com.ixigua.common.meteor.render.cache
 import com.ixigua.common.meteor.control.DanmakuConfig
 import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.render.draw.DrawItem
+import com.ixigua.common.meteor.utils.DISCARD_TYPE_EXPIRE
+import com.ixigua.common.meteor.utils.DISCARD_TYPE_SCORE
 import java.util.*
 
 /**
@@ -43,7 +45,12 @@ class LayerBuffer(private val mConfig: DanmakuConfig,
             return
         }
         mBufferItems.removeWhen {
-            playTime - (it.data?.showAtTime ?: 0L) > mBufferMaxTime
+            if (playTime - (it.data?.showAtTime ?: 0L) > mBufferMaxTime) {
+                mConfig.common.discardListener?.invoke(it.data, DISCARD_TYPE_EXPIRE)
+                true
+            } else {
+                false
+            }
         }
         while (mBufferItems.size > mBufferSize) {
             val item = mBufferItems.minBy {
@@ -51,6 +58,7 @@ class LayerBuffer(private val mConfig: DanmakuConfig,
                 mConfig.common.bufferDiscardRule.invoke(it.data) as Comparable<Any?>
             }
             item?.let {
+                mConfig.common.discardListener?.invoke(it.data, DISCARD_TYPE_SCORE)
                 mBufferItems.remove(it)
                 mCachePool.release(it)
             }

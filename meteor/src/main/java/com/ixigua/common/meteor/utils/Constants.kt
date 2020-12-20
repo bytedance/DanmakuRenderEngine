@@ -66,3 +66,9 @@ const val EVENT_DANMAKU_DISMISS = 1001
  * param type: [RectF]
  */
 const val EVENT_DANMAKU_REMEASURE = 1002
+
+/**
+ * Item discard type
+ */
+const val DISCARD_TYPE_EXPIRE = 1
+const val DISCARD_TYPE_SCORE = 2
