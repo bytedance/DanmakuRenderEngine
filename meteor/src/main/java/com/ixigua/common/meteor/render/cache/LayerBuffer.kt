@@ -45,11 +45,15 @@ class LayerBuffer(private val mConfig: DanmakuConfig,
             return
         }
         mBufferItems.removeWhen {
-            if (playTime - (it.data?.showAtTime ?: 0L) > mBufferMaxTime) {
-                mConfig.common.discardListener?.invoke(it.data, DISCARD_TYPE_EXPIRE)
-                true
+            if (mConfig.common.bufferExpireCheck != null) {
+                mConfig.common.bufferExpireCheck?.invoke(it.data, playTime) == true
             } else {
-                false
+                if (playTime - (it.data?.showAtTime ?: 0L) > mBufferMaxTime) {
+                    mConfig.common.discardListener?.invoke(it.data, DISCARD_TYPE_EXPIRE)
+                    true
+                } else {
+                    false
+                }
             }
         }
         while (mBufferItems.size > mBufferSize) {
