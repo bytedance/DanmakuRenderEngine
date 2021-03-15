@@ -106,6 +106,20 @@ class DataManager(controller: DanmakuController) {
     }
 
     @UiThread
+    fun getRemainDanmakuCount(): Int {
+        return mList.size - mCurrentIndex
+    }
+
+    @UiThread
+    fun nextDanmakuShowAfter(): Long {
+        return if (mList.size > 0 && mCurrentIndex < mList.size) {
+            mList[mCurrentIndex].showAtTime - mCurrentPlayTime
+        } else {
+            -1
+        }
+    }
+
+    @UiThread
     fun onPause() {
         mIsPlaying = false
     }

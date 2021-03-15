@@ -13,7 +13,7 @@ interface IRenderLine {
 
     fun addItem(playTime:Long, item: DrawItem<DanmakuData>): Boolean
 
-    fun typesetting(playTime:Long, isPlaying: Boolean, configChanged: Boolean = false)
+    fun typesetting(playTime:Long, isPlaying: Boolean, configChanged: Boolean = false): Int
 
     fun getPreDrawItems(): List<DrawItem<DanmakuData>>
 

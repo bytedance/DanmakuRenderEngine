@@ -64,6 +64,8 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_BOTTOM_CENTER_BUFFER_MAX_TIME = 7007
 
         const val TYPE_MASK_VALUE_CHANGE = 8000
+
+        const val TYPE_DRAW_PAUSE_INVALIDATE_WHEN_BLANK = 9000
     }
 
     val debug = DebugConfig(this)
@@ -202,6 +204,15 @@ class DanmakuConfig : AbsConfig() {
          * Item discard listener
          */
         var discardListener: ((DanmakuData?, Int) -> Unit)? = null
+
+        /**
+         * Pause invalidate when there's no danmaku on screen
+         */
+        var pauseInvalidateWhenBlank = false
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_DRAW_PAUSE_INVALIDATE_WHEN_BLANK)
+            }
     }
 
     /**

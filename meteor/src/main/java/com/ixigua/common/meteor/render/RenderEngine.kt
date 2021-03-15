@@ -1,6 +1,7 @@
 package com.ixigua.common.meteor.render
 
 import android.graphics.Canvas
+import android.util.Log
 import android.view.MotionEvent
 import com.ixigua.common.meteor.control.DanmakuController
 import com.ixigua.common.meteor.data.DanmakuData
@@ -27,6 +28,8 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
     private var mWidth = 0
     private var mHeight = 0
     private var mSaveLayerValue = 0
+
+    private var onDrawingDanmakuCount = 0
 
     init {
         mRenderLayers.add(ScrollLayer(mController, mDrawCachePool))
@@ -72,10 +75,12 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
         }
     }
 
-    fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean = false) {
+    fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean = false): Int {
+        onDrawingDanmakuCount = 0
         mRenderLayers.forEach {
-            it.typesetting(playTime, isPlaying, configChanged)
+            onDrawingDanmakuCount += it.typesetting(playTime, isPlaying, configChanged)
         }
+        return onDrawingDanmakuCount
     }
 
     fun draw(canvas: Canvas) {

@@ -135,6 +135,9 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      * If you change the configs of Danmakus when paused, please invalidate the view.
      */
     fun invalidateView() {
+//        if (config.debug.printDrawTimeCostLog) {
+//            Log.d("DanmakuController", "invalidateView")
+//        }
         mDanmakuView.postInvalidateCompat()
     }
 
@@ -210,13 +213,38 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
             val t1 = System.nanoTime()
             mRenderEngine.addItems(playTime, newItems)
             val t2 = System.nanoTime()
-            mRenderEngine.typesetting(playTime, true)
+            val typesettingCount = mRenderEngine.typesetting(playTime, true)
             val t3 = System.nanoTime()
             mRenderEngine.draw(canvas)
             val t4 = System.nanoTime()
-            view.postInvalidateCompat()
+            if (!config.common.pauseInvalidateWhenBlank || config.mask.enable) {
+                view.postInvalidateCompat()
+            } else if (typesettingCount > 0) {
+//                if (config.debug.printDrawTimeCostLog) {
+//                    Log.d("DanmakuController", "typesetting count $typesettingCount")
+//                }
+                view.postInvalidateCompat()
+            } else if (mDataManager.getRemainDanmakuCount() > 0) {
+//                if (config.debug.printDrawTimeCostLog) {
+//                    Log.d("DanmakuController", "remain count ${mDataManager.getRemainDanmakuCount()}")
+//                    Log.d("DanmakuController", "hasDanmakuInSecond ${mDataManager.nextDanmakuShowAfter()}")
+//                }
+                mDataManager.nextDanmakuShowAfter().let { showAfter ->
+                    if (showAfter in 0..NEXT_DANMAKU_SHOW_MIN_INTERVAL) {
+                        view.postInvalidateCompat()
+                    } else if (showAfter >= 0) {
+                        view.postDelayed({
+                            view.postInvalidateCompat()
+                        }, showAfter - NEXT_DANMAKU_SHOW_MIN_INTERVAL / 2)
+                    }
+                }
+            }
             if (config.debug.printDrawTimeCostLog) {
-                Log.d("DanmakuController", "draw(): query=${String.format("%07d", t1-t0)}, add=${String.format("%07d", t2-t1)}, typesetting=${String.format("%07d", t3-t2)}, draw=${String.format("%07d", t4-t3)}")
+                Log.d("DanmakuController", "draw(): " +
+                        "query=${String.format("%07d", t1 - t0)}, " +
+                        "add=${String.format("%07d", t2 - t1)}, " +
+                        "typesetting=${String.format("%07d", t3 - t2)}, " +
+                        "draw=${String.format("%07d", t4 - t3)}")
             }
         } else {
             mRenderEngine.typesetting(playTime, false)

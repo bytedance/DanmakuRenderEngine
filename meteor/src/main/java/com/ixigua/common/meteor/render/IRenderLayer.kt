@@ -22,7 +22,7 @@ interface IRenderLayer {
 
     fun releaseItem(item: DrawItem<DanmakuData>)
 
-    fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean = false)
+    fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean = false): Int
 
     fun drawLayoutBounds(canvas: Canvas)
 

@@ -40,7 +40,7 @@ class ScrollLine(controller: DanmakuController,
      * @param isPlaying move item forward if is playing
      * @param configChanged need to re-measure and re-layout items if config changed
      */
-    override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean) {
+    override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean): Int {
         if (mLastTypeSettingTime < 0) {
             mLastTypeSettingTime = System.currentTimeMillis()
         } else {
@@ -75,6 +75,7 @@ class ScrollLine(controller: DanmakuController,
         if (configChanged) {
             measureAndLayout()
         }
+        return mDrawingItems.size
     }
 
     private fun hasEnoughSpace(item: DrawItem<DanmakuData>, newItem: DrawItem<DanmakuData>): Boolean {

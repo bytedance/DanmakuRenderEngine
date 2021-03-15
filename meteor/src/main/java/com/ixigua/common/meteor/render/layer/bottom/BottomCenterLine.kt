@@ -41,9 +41,9 @@ class BottomCenterLine(controller: DanmakuController,
         return mDrawingItems.takeIf { it.isNotEmpty() }?.get(0)?.showDuration
     }
 
-    override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean) {
+    override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean): Int {
         if (isPlaying) {
-            val item = mDrawingItems.takeIf { it.isNotEmpty() }?.get(0) ?: return
+            val item = mDrawingItems.takeIf { it.isNotEmpty() }?.get(0) ?: return 0
             if (!item.isPaused) {
                 item.showDuration += STEPPER_TIME
             }
@@ -56,6 +56,7 @@ class BottomCenterLine(controller: DanmakuController,
         if (configChanged) {
             measureAndLayout()
         }
+        return mDrawingItems.size
     }
 
     /**

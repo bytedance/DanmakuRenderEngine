@@ -35,6 +35,8 @@ class BottomCenterLayer(private val mController: DanmakuController,
     private var mWidth = 0
     private var mHeight = 0
 
+    private var totalDanmakuCountInLayer = 0
+
     init {
         mConfig.addListener(this)
     }
@@ -63,16 +65,18 @@ class BottomCenterLayer(private val mController: DanmakuController,
         mCachePool.release(item)
     }
 
-    override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean) {
+    override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean): Int {
         mBuffer.forEach {
             distributeItemToLines(playTime, it)
         }
+        totalDanmakuCountInLayer = 0
         mLines.forEach { line ->
-            line.typesetting(playTime, isPlaying, configChanged)
+            totalDanmakuCountInLayer += line.typesetting(playTime, isPlaying, configChanged)
         }
         if (configChanged) {
             mBuffer.measureItems()
         }
+        return totalDanmakuCountInLayer
     }
 
     override fun drawLayoutBounds(canvas: Canvas) {
