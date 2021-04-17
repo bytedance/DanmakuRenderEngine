@@ -17,11 +17,10 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_COMMON_ALPHA = 2000
         const val TYPE_COMMON_PLAY_SPEED = 2001
         const val TYPE_COMMON_BUFFER_DISCARD_RULE = 2002
-        const val TYPE_COMMON_AVATAR_VISIBLE_CHANGE = 2003
-        const val TYPE_COMMON_TOP_CENTER_VISIBLE_CHANGE = 2004
-        const val TYPE_COMMON_BOTTOM_CENTER_VISIBLE_CHANGE = 2005
-        const val TYPE_COMMON_COLOURS_CHANGE = 2006
-        const val TYPE_COMMON_BUFFER_EXPIRE_CHECK = 2007
+        const val TYPE_COMMON_TOP_CENTER_VISIBLE_CHANGE = 2003
+        const val TYPE_COMMON_BOTTOM_CENTER_VISIBLE_CHANGE = 2004
+        const val TYPE_COMMON_BUFFER_EXPIRE_CHECK = 2005
+        const val TYPE_COMMON_PAUSE_INVALIDATE_WHEN_BLANK = 2006
 
         const val TYPE_TEXT_SIZE = 3000
         const val TYPE_TEXT_COLOR = 3001
@@ -64,8 +63,6 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_BOTTOM_CENTER_BUFFER_MAX_TIME = 7007
 
         const val TYPE_MASK_VALUE_CHANGE = 8000
-
-        const val TYPE_DRAW_PAUSE_INVALIDATE_WHEN_BLANK = 9000
     }
 
     val debug = DebugConfig(this)
@@ -156,21 +153,12 @@ class DanmakuConfig : AbsConfig() {
             }
 
         /**
-         * Custom buffer expire check, default expire time is bufferMaxTime
+         * Custom buffer expire check, default expire time is by bufferMaxTime
          */
-        var bufferExpireCheck: ((DanmakuData?, Long) -> Boolean)? = null
+        var bufferExpireRule: ((DanmakuData?, Long) -> Boolean)? = null
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_COMMON_BUFFER_EXPIRE_CHECK)
-            }
-
-        /**
-         * whether to display avatar
-         */
-        var avatarVisible = true
-            set(value) {
-                field = value
-                config.notifyConfigChanged(TYPE_COMMON_AVATAR_VISIBLE_CHANGE)
             }
 
         /**
@@ -192,15 +180,6 @@ class DanmakuConfig : AbsConfig() {
             }
 
         /**
-         * whether to display color text
-         */
-        var coloursEnable = true
-            set(value) {
-                field = value
-                config.notifyConfigChanged(TYPE_COMMON_COLOURS_CHANGE)
-            }
-
-        /**
          * Item discard listener
          */
         var discardListener: ((DanmakuData?, Int) -> Unit)? = null
@@ -211,7 +190,7 @@ class DanmakuConfig : AbsConfig() {
         var pauseInvalidateWhenBlank = false
             set(value) {
                 field = value
-                config.notifyConfigChanged(TYPE_DRAW_PAUSE_INVALIDATE_WHEN_BLANK)
+                config.notifyConfigChanged(TYPE_COMMON_PAUSE_INVALIDATE_WHEN_BLANK)
             }
     }
 

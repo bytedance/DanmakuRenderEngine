@@ -12,10 +12,12 @@ import com.ixigua.common.meteor.control.DanmakuController
  * Created by dss886 on 2018/11/6.
  * The view danmaku will be drawn on.
  */
+@Suppress("unused")
 class DanmakuView @JvmOverloads constructor(context: Context,
                                             attrs: AttributeSet? = null,
                                             defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
 
+    @Suppress("MemberVisibilityCanBePrivate")
     val controller: DanmakuController = DanmakuController(this)
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {

@@ -18,11 +18,6 @@ class BitmapData: DanmakuData() {
      */
     var bitmap: Bitmap? = null
     /**
-     * A url associate to the bitmap.
-     * This is just an extra storage field, how to use is up to you.
-     */
-    var url: String? = null
-    /**
      * TintColor will be used with the mode of [android.graphics.PorterDuff.Mode.SRC_IN]
      */
     var tintColor: Int? = null

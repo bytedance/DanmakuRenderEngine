@@ -90,13 +90,11 @@ class ScrollLayer(private val mController: DanmakuController,
         return mPreDrawItems
     }
 
-    override fun clear(notClearOneself : Boolean) {
+    override fun clear() {
         mLines.forEach { line ->
-            line.clearRender(notClearOneself)
+            line.clearRender()
         }
-        if (!notClearOneself) {
-            mBuffer.clear()
-        }
+        mBuffer.clear()
     }
 
     override fun findTouchTarget(event: MotionEvent): ITouchTarget? {

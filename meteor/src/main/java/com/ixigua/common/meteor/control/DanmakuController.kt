@@ -1,6 +1,5 @@
 package com.ixigua.common.meteor.control
 
-import android.content.Context
 import android.graphics.Canvas
 import android.util.Log
 import android.view.MotionEvent
@@ -24,7 +23,6 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     val config: DanmakuConfig = DanmakuConfig().apply {
         addListener(this@DanmakuController)
     }
-    val context: Context = mDanmakuView.context
     var itemClickListener: IItemClickListener? = null
 
     private val mCmdMonitors = mutableListOf<ICommandMonitor>()
@@ -77,8 +75,8 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      * Simply clear the items on the screen,
      * and has no effect on the data set or timeline.
      */
-    fun clear(layerType: Int = LAYER_TYPE_UNDEFINE, notClearOneself : Boolean = false) {
-        mRenderEngine.clear(layerType, notClearOneself)
+    fun clear(layerType: Int = LAYER_TYPE_UNDEFINE) {
+        mRenderEngine.clear(layerType)
         if (layerType == LAYER_TYPE_UNDEFINE) {
             mDanmakuView.postInvalidateCompat()
         }
@@ -185,20 +183,16 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         when (type) {
             DanmakuConfig.TYPE_COMMON_TOP_CENTER_VISIBLE_CHANGE -> {
                 if (!config.common.topVisible) {
-                    mRenderEngine.clear(LAYER_TYPE_TOP_CENTER, true)
+                    mRenderEngine.clear(LAYER_TYPE_TOP_CENTER)
                 }
             }
             DanmakuConfig.TYPE_COMMON_BOTTOM_CENTER_VISIBLE_CHANGE -> {
                 if (!config.common.bottomVisible) {
-                    mRenderEngine.clear(LAYER_TYPE_BOTTOM_CENTER, true)
+                    mRenderEngine.clear(LAYER_TYPE_BOTTOM_CENTER)
                 }
             }
         }
         mDanmakuView.postInvalidateCompat()
-    }
-
-    fun getDanmakuData() : List<DanmakuData>{
-        return mDataManager.getData()
     }
 
     internal fun onLayoutSizeChanged(width: Int, height: Int) {

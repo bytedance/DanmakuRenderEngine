@@ -73,7 +73,7 @@ class TextDrawItem: DrawItem<TextData>() {
             }
             // draw drawText
             paint.style = Paint.Style.FILL
-            paint.color = data?.textDrawColor ?: config.text.color
+            paint.color = data?.textColor ?: config.text.color
             paint.typeface = data?.typeface ?: config.text.typeface
             paint.textSize = data?.textSize ?: config.text.size
             paint.strokeWidth = 0f
@@ -96,7 +96,7 @@ class TextDrawItem: DrawItem<TextData>() {
             }
             // draw underline
             underlinePaint.style = Paint.Style.FILL
-            underlinePaint.color = data?.textDrawColor ?: config.text.color
+            underlinePaint.color = data?.textColor ?: config.underline.color
             underlinePaint.strokeWidth = 0f
             canvas.drawRect(x, underlineY, x + width, underlineY + config.underline.width, underlinePaint)
         }

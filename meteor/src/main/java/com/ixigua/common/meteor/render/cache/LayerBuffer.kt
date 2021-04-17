@@ -38,15 +38,15 @@ class LayerBuffer(private val mConfig: DanmakuConfig,
 
     /**
      * Trim Buffer down to the mBufferSize.
-     * Using [DanmakuConfig.common.bufferDiscardRule] to discard items.
+     * Using [DanmakuConfig.CommonConfig.bufferDiscardRule] to discard items.
      */
     fun trimBuffer(playTime: Long) {
         if (mBufferItems.isEmpty() || mBufferItems.size <= mBufferSize) {
             return
         }
         mBufferItems.removeWhen {
-            if (mConfig.common.bufferExpireCheck != null) {
-                mConfig.common.bufferExpireCheck?.invoke(it.data, playTime) == true
+            if (mConfig.common.bufferExpireRule != null) {
+                mConfig.common.bufferExpireRule?.invoke(it.data, playTime) == true
             } else {
                 if (playTime - (it.data?.showAtTime ?: 0L) > mBufferMaxTime) {
                     mConfig.common.discardListener?.invoke(it.data, DISCARD_TYPE_EXPIRE)

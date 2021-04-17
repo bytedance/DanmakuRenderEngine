@@ -48,7 +48,7 @@ class TopCenterLine(controller: DanmakuController,
                 item.showDuration += STEPPER_TIME
             }
             // remove items that has shown enough time
-            if (item.showDuration >= mConfig.bottom.showTimeMax) {
+            if (item.showDuration >= mConfig.top.showTimeMax) {
                 mLayer.releaseItem(item)
                 mDrawingItems.clear()
             }

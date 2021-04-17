@@ -12,7 +12,6 @@ abstract class DanmakuData {
 
     open var isOneselfSend : Boolean = false
     open var showAtTime: Long = 0
-    open var originLayerType: Int = LAYER_TYPE_UNDEFINE
     open var layerType: Int = LAYER_TYPE_UNDEFINE
     open var drawType: Int = DRAW_TYPE_UNDEFINE
     /**

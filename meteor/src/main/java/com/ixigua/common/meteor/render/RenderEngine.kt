@@ -1,7 +1,6 @@
 package com.ixigua.common.meteor.render
 
 import android.graphics.Canvas
-import android.util.Log
 import android.view.MotionEvent
 import com.ixigua.common.meteor.control.DanmakuController
 import com.ixigua.common.meteor.data.DanmakuData
@@ -97,6 +96,7 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
         drawItems.sortBy { it.showTime }
         drawItems.sortBy { it.data?.drawOrder }
         if (mController.config.mask.enable) {
+            @Suppress("DEPRECATION")
             mSaveLayerValue = canvas.saveLayer(0F, 0F, mWidth.toFloat(), mHeight.toFloat(), null, Canvas.ALL_SAVE_FLAG)
         }
 
@@ -119,15 +119,15 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
         return null
     }
 
-    fun clear(layerType: Int = LAYER_TYPE_UNDEFINE, notClearOneself: Boolean = false) {
+    fun clear(layerType: Int = LAYER_TYPE_UNDEFINE) {
         if (layerType == LAYER_TYPE_UNDEFINE) {
             for (layer in mRenderLayers) {
-                layer.clear(notClearOneself)
+                layer.clear()
             }
         } else {
             mRenderLayers.forEach {
                 if (it.getLayerType() == layerType) {
-                    it.clear(notClearOneself)
+                    it.clear()
                 }
             }
         }

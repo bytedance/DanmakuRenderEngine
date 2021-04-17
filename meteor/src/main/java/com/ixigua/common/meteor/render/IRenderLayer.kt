@@ -13,6 +13,9 @@ interface IRenderLayer {
 
     fun getLayerZIndex(): Int
 
+    /**
+     * Calculate the width and height in this callback and rearrange your RenderLines (if has).
+     */
     fun onLayoutSizeChanged(width: Int, height: Int)
 
     /**
@@ -28,6 +31,6 @@ interface IRenderLayer {
 
     fun getPreDrawItems(): List<DrawItem<DanmakuData>>
 
-    fun clear(notClearOneself : Boolean = false)
+    fun clear()
 
 }
