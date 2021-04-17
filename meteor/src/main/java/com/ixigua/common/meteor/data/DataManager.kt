@@ -1,6 +1,6 @@
 package com.ixigua.common.meteor.data
 
-import android.support.annotation.UiThread
+import androidx.annotation.UiThread
 import com.ixigua.common.meteor.control.DanmakuConfig
 import com.ixigua.common.meteor.control.DanmakuController
 import com.ixigua.common.meteor.render.cache.LayerBuffer

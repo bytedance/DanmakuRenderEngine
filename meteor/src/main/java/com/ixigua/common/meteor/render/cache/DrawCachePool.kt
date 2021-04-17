@@ -1,7 +1,7 @@
 package com.ixigua.common.meteor.render.cache
 
-import android.support.v4.util.Pools
-import android.support.v4.util.SparseArrayCompat
+import androidx.core.util.Pools
+import androidx.collection.SparseArrayCompat
 import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.render.draw.IDrawItemFactory
