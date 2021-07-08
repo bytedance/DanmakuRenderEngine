@@ -202,7 +202,7 @@ class DanmakuConfig : AbsConfig() {
         /**
          * Pause invalidate when there's no danmaku on screen
          */
-        var pauseInvalidateWhenBlank = false
+        var pauseInvalidateWhenBlank = true
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_COMMON_PAUSE_INVALIDATE_WHEN_BLANK)

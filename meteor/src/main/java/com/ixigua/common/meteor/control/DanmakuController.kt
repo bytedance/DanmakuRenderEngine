@@ -127,6 +127,9 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      */
     fun addFakeData(data: DanmakuData) {
         mDataManager.addFakeData(data)
+        if (config.common.pauseInvalidateWhenBlank) {
+            mDanmakuView.postInvalidateCompat()
+        }
     }
 
     /**
