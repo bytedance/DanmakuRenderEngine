@@ -1,10 +1,11 @@
 package com.ixigua.common.meteor.render.cache
 
-import androidx.core.util.Pools
 import androidx.collection.SparseArrayCompat
+import androidx.core.util.Pools
 import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.render.draw.IDrawItemFactory
+import com.ixigua.common.meteor.utils.DRAW_TYPE_UNDEFINE
 
 /**
  * Created by dss886 on 2019-08-15.
@@ -20,6 +21,10 @@ class DrawCachePool : IDrawCachePool {
     }
 
     override fun acquire(drawType: Int): DrawItem<DanmakuData> {
+        if (drawType == DRAW_TYPE_UNDEFINE) {
+            throw IllegalArgumentException("drawType is DRAW_TYPE_UNDEFINE! Did you forget to " +
+                    "define the drawType in your custom DanmakuData?")
+        }
         var pool = mCachedPool[drawType]
         if (pool == null) {
             pool = Pools.SimplePool(8)

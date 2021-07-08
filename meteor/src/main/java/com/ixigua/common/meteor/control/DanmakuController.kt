@@ -1,7 +1,6 @@
 package com.ixigua.common.meteor.control
 
 import android.graphics.Canvas
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import com.ixigua.common.meteor.data.DanmakuData
@@ -30,6 +29,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     private val mRenderEngine: RenderEngine = RenderEngine(this)
     private val mDataManager: DataManager = DataManager(this)
     private val mTouchHelper: TouchHelper = TouchHelper()
+    private val mProfiler: Profiler = Profiler(config)
 
     private var mIsPlaying = false
     private var mIsTouchable = true
@@ -45,7 +45,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     /**
      * Play or resume from paused
      */
-    fun start(playTime: Long) {
+    fun start(playTime: Long = 0L) {
         if (mIsPlaying) {
             return
         }
@@ -120,8 +120,8 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     }
 
     /**
-     * Fake items will be added to the DataManager and push into RenderEngine immediately.
-     * Even so, there is no guarantee that them will be displayed 100%,
+     * Fake item will be added to the DataManager and pushed into RenderEngine immediately.
+     * Even so, there is no guarantee that it will be displayed 100%,
      * as the render layers will discard data when the amount of data is too large.
      * See [LayerBuffer]
      */
@@ -133,9 +133,9 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      * If you change the configs of Danmakus when paused, please invalidate the view.
      */
     fun invalidateView() {
-//        if (config.debug.printDrawTimeCostLog) {
-//            Log.d("DanmakuController", "invalidateView")
-//        }
+        if (Logger.isVerboseLoggable()) {
+            Logger.v(LOG_TAG_PERFORMANCE, "invalidateView")
+        }
         mDanmakuView.postInvalidateCompat()
     }
 
@@ -214,15 +214,8 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
             if (!config.common.pauseInvalidateWhenBlank || config.mask.enable) {
                 view.postInvalidateCompat()
             } else if (typesettingCount > 0) {
-//                if (config.debug.printDrawTimeCostLog) {
-//                    Log.d("DanmakuController", "typesetting count $typesettingCount")
-//                }
                 view.postInvalidateCompat()
             } else if (mDataManager.getRemainDanmakuCount() > 0) {
-//                if (config.debug.printDrawTimeCostLog) {
-//                    Log.d("DanmakuController", "remain count ${mDataManager.getRemainDanmakuCount()}")
-//                    Log.d("DanmakuController", "hasDanmakuInSecond ${mDataManager.nextDanmakuShowAfter()}")
-//                }
                 mDataManager.nextDanmakuShowAfter().let { showAfter ->
                     if (showAfter in 0..NEXT_DANMAKU_SHOW_MIN_INTERVAL) {
                         view.postInvalidateCompat()
@@ -233,13 +226,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
                     }
                 }
             }
-            if (config.debug.printDrawTimeCostLog) {
-                Log.d("DanmakuController", "draw(): " +
-                        "query=${String.format("%07d", t1 - t0)}, " +
-                        "add=${String.format("%07d", t2 - t1)}, " +
-                        "typesetting=${String.format("%07d", t3 - t2)}, " +
-                        "draw=${String.format("%07d", t4 - t3)}")
-            }
+            mProfiler.profilerDrawTimeCost(canvas, t0, t1, t2, t3, t4)
         } else {
             mRenderEngine.typesetting(playTime, false)
             mRenderEngine.draw(canvas)

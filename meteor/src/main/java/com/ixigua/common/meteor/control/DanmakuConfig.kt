@@ -2,7 +2,9 @@ package com.ixigua.common.meteor.control
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.util.Log
 import com.ixigua.common.meteor.data.DanmakuData
+import com.ixigua.common.meteor.utils.Logger
 
 /**
  * Created by dss886 on 2018/11/6.
@@ -12,7 +14,8 @@ class DanmakuConfig : AbsConfig() {
 
     companion object {
         const val TYPE_DEBUG_SHOW_LAYOUT_BOUNDS = 1000
-        const val TYPE_DEBUG_PRINT_DRAW_TIME_COST = 1001
+        const val TYPE_DEBUG_LOGGER_LEVEL = 1001
+        const val TYPE_DEBUG_SHOW_DRAW_TIME_COST = 1001
 
         const val TYPE_COMMON_ALPHA = 2000
         const val TYPE_COMMON_PLAY_SPEED = 2001
@@ -100,14 +103,22 @@ class DanmakuConfig : AbsConfig() {
             }
 
         /**
-         * Print the cost time of every method in draw(),
-         * usually used to debug the drawing performance.
-         * Log Tag: DanmakuController.
+         * Priority constant for the Logger, default is [Log.INFO]
          */
-        var printDrawTimeCostLog = false
+        var logLevel = Log.INFO
             set(value) {
                 field = value
-                config.notifyConfigChanged(TYPE_DEBUG_PRINT_DRAW_TIME_COST)
+                Logger.logLevel = value
+                config.notifyConfigChanged(TYPE_DEBUG_LOGGER_LEVEL)
+            }
+
+        /**
+         * Print the time cost of draw() method on the screen.
+         */
+        var showDrawTimeCost = false
+            set(value) {
+                field = value
+                config.notifyConfigChanged(TYPE_DEBUG_SHOW_DRAW_TIME_COST)
             }
     }
 
@@ -134,6 +145,10 @@ class DanmakuConfig : AbsConfig() {
         /**
          * The speed of playback in percent, used for time axis synchronous by DataManager.
          * Default is 100 (means 100%), value must be greater than or equal to zero.
+         *
+         * Notice: this value only affect the DataManager and its timeline.
+         * If you want to speed up the Danmaku scrolling when the playSpeed increased,
+         * you need to change the config.scroll.moveTime manually
          */
         var playSpeed = 100
             set(value) {
@@ -557,7 +572,7 @@ class DanmakuConfig : AbsConfig() {
          * Margin from DanmakuView's bottom.
          * Value in pixel units.
          */
-        var marginBottom = 0f
+        var marginBottom = 18f
             set(value) {
                 field = if (value < 0) 0f else value
                 config.notifyConfigChanged(TYPE_BOTTOM_CENTER_MARGIN_BOTTOM)

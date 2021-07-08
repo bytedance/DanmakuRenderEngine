@@ -74,3 +74,5 @@ const val EVENT_DANMAKU_REMEASURE = 1002
  */
 const val DISCARD_TYPE_EXPIRE = 1
 const val DISCARD_TYPE_SCORE = 2
+
+const val LOG_TAG_PERFORMANCE = "MeteorPerformance"
