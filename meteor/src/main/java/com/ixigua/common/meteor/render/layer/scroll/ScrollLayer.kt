@@ -22,19 +22,23 @@ import java.util.*
 /**
  * Created by dss886 on 2018/11/8.
  */
-class ScrollLayer(private val mController: DanmakuController,
-                  private val mCachePool: IDrawCachePool) : IRenderLayer, ITouchDelegate, ConfigChangeListener {
+class ScrollLayer : IRenderLayer, ITouchDelegate, ConfigChangeListener {
 
+    private lateinit var mController: DanmakuController
+    private lateinit var mCachePool: IDrawCachePool
+    private lateinit var mBuffer: LayerBuffer
+    private lateinit var mConfig: DanmakuConfig
     private val mLines = LinkedList<ScrollLine>()
     private val mPreDrawItems = LinkedList<DrawItem<DanmakuData>>()
-    private val mConfig = mController.config
-    private val mBuffer = LayerBuffer(mConfig, mCachePool, mConfig.scroll.bufferSize, mConfig.scroll.bufferMaxTime)
+    private var mTotalDanmakuCountInLayer = 0
     private var mWidth = 0
     private var mHeight = 0
 
-    private var totalDanmakuCountInLayer = 0
-
-    init {
+    override fun init(controller: DanmakuController, cachePool: IDrawCachePool) {
+        mController = controller
+        mCachePool = cachePool
+        mConfig = mController.config
+        mBuffer = LayerBuffer(mConfig, mCachePool, mConfig.scroll.bufferSize, mConfig.scroll.bufferMaxTime)
         mConfig.addListener(this)
     }
 
@@ -66,14 +70,14 @@ class ScrollLayer(private val mController: DanmakuController,
         mBuffer.forEach {
             distributeItemToLines(playTime, it)
         }
-        totalDanmakuCountInLayer = 0
+        mTotalDanmakuCountInLayer = 0
         mLines.forEach { line ->
-            totalDanmakuCountInLayer += line.typesetting(playTime, isPlaying, configChanged)
+            mTotalDanmakuCountInLayer += line.typesetting(playTime, isPlaying, configChanged)
         }
         if (configChanged) {
             mBuffer.measureItems()
         }
-        return totalDanmakuCountInLayer
+        return mTotalDanmakuCountInLayer
     }
 
     override fun drawLayoutBounds(canvas: Canvas) {

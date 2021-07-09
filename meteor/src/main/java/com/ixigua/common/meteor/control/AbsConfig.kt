@@ -7,12 +7,12 @@ abstract class AbsConfig {
 
     private val mListenerList = mutableListOf<ConfigChangeListener>()
 
-    internal fun addListener(listener: ConfigChangeListener) {
+    fun addListener(listener: ConfigChangeListener) {
         mListenerList.add(listener)
     }
 
     @Suppress("unused")
-    internal fun removeListener(listener: ConfigChangeListener) {
+    fun removeListener(listener: ConfigChangeListener) {
         mListenerList.remove(listener)
     }
 

@@ -31,9 +31,9 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
     private var onDrawingDanmakuCount = 0
 
     init {
-        mRenderLayers.add(ScrollLayer(mController, mDrawCachePool))
-        mRenderLayers.add(TopCenterLayer(mController, mDrawCachePool))
-        mRenderLayers.add(BottomCenterLayer(mController, mDrawCachePool))
+        mRenderLayers.add(ScrollLayer().apply { init(mController, mDrawCachePool) })
+        mRenderLayers.add(TopCenterLayer().apply { init(mController, mDrawCachePool) })
+        mRenderLayers.add(BottomCenterLayer().apply { init(mController, mDrawCachePool) })
         registerDrawItemFactory(TextDrawItemFactory())
         registerDrawItemFactory(BitmapDrawItemFactory())
     }
@@ -42,7 +42,7 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
         if (mRenderLayers.contains(layer)) {
             return
         }
-        mRenderLayers.add(layer)
+        mRenderLayers.add(layer.apply { init(mController, mDrawCachePool) })
         sortRenderLayers()
     }
 

@@ -89,6 +89,12 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      */
     @Suppress("unused")
     fun addRenderLayer(layer: IRenderLayer) {
+        if (layer.getLayerType() < 2000) {
+            throw IllegalArgumentException("The custom LayerType must not be less than 2000.")
+        }
+        if (LAYER_Z_INDEXES.contains(layer.getLayerZIndex())) {
+            throw IllegalArgumentException("The custom Z-Index conflicts with the built-in Z-Index.")
+        }
         mRenderEngine.addRenderLayer(layer)
     }
 
@@ -97,6 +103,9 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      * Make sure your DrawType is not the same as the others.
      */
     fun registerDrawItemFactory(factory: IDrawItemFactory) {
+        if (factory.getDrawType() < 2000) {
+            throw IllegalArgumentException("The custom DrawType must not be less than 2000.")
+        }
         mRenderEngine.registerDrawItemFactory(factory)
     }
 
@@ -175,15 +184,6 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
             DanmakuConfig.TYPE_COMMON_PLAY_SPEED -> mDataManager.onPlaySpeedChanged()
             DanmakuConfig.TYPE_TEXT_SIZE -> mRenderEngine.typesetting(mDataManager.queryPlayTime(), mIsPlaying, true)
             DanmakuConfig.TYPE_COMMON_ALPHA -> mDanmakuView.alpha = config.common.alpha / 255f
-        }
-
-        /**
-         * Render a frame effect with pause
-         */
-        if (mIsPlaying) {
-            return
-        }
-        when (type) {
             DanmakuConfig.TYPE_COMMON_TOP_CENTER_VISIBLE_CHANGE -> {
                 if (!config.common.topVisible) {
                     mRenderEngine.clear(LAYER_TYPE_TOP_CENTER)
@@ -243,7 +243,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         return mTouchHelper.onTouchEvent(event, mRenderEngine)
     }
 
-    internal fun registerCmdMonitor(monitor: ICommandMonitor) {
+    fun registerCmdMonitor(monitor: ICommandMonitor) {
         mCmdMonitors.add(monitor)
     }
 
@@ -251,7 +251,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         mCmdMonitors.remove(monitor)
     }
 
-    internal fun notifyEvent(event: DanmakuEvent) {
+    fun notifyEvent(event: DanmakuEvent) {
         mEventListeners.forEach {
             it.onEvent(event)
         }

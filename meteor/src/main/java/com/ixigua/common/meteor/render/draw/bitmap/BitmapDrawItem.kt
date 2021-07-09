@@ -8,7 +8,7 @@ import com.ixigua.common.meteor.utils.DRAW_TYPE_BITMAP
 /**
  * Created by dss886 on 2019-05-20.
  */
-class BitmapDrawItem: DrawItem<BitmapData>() {
+open class BitmapDrawItem: DrawItem<BitmapData>() {
 
     private val mBitmapPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
     private val mRectF = RectF()

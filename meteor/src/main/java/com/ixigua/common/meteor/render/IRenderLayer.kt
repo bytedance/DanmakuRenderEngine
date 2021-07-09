@@ -1,13 +1,17 @@
 package com.ixigua.common.meteor.render
 
 import android.graphics.Canvas
+import com.ixigua.common.meteor.control.DanmakuController
 import com.ixigua.common.meteor.data.DanmakuData
+import com.ixigua.common.meteor.render.cache.IDrawCachePool
 import com.ixigua.common.meteor.render.draw.DrawItem
 
 /**
  * Created by dss886 on 2018/11/8.
  */
 interface IRenderLayer {
+
+    fun init(controller: DanmakuController, cachePool: IDrawCachePool)
 
     fun getLayerType(): Int
 

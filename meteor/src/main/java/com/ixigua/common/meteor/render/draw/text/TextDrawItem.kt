@@ -18,7 +18,7 @@ import com.ixigua.common.meteor.utils.DRAW_TYPE_TEXT
  *
  * Turn TextData.includeFontPadding to false will cut the space between Top and Ascent.
  */
-class TextDrawItem: DrawItem<TextData>() {
+open class TextDrawItem: DrawItem<TextData>() {
 
     private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
     private val mUnderlinePaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)

@@ -31,7 +31,10 @@ class DrawCachePool : IDrawCachePool {
             mCachedPool.put(drawType, pool)
         }
         @Suppress("UNCHECKED_CAST")
-        return pool.acquire() ?: mFactoryMap[drawType]?.generateDrawItem() as DrawItem<DanmakuData>
+        return pool.acquire()
+            ?: mFactoryMap[drawType]?.generateDrawItem() as? DrawItem<DanmakuData>
+            ?: throw IllegalArgumentException("Unknown drawType=${drawType}, did you forget to " +
+                    "register your custom DanmakuFactory?")
     }
 
     override fun release(item: DrawItem<DanmakuData>) {

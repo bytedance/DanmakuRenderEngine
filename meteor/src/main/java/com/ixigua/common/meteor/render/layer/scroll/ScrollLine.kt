@@ -23,7 +23,7 @@ class ScrollLine(controller: DanmakuController,
     }
 
     override fun addItem(playTime: Long, item: DrawItem<DanmakuData>): Boolean {
-        mDrawingItems.maxBy { it.x + it.width }
+        mDrawingItems.maxByOrNull { it.x + it.width }
                 ?.takeUnless { hasEnoughSpace(it, item) }
                 ?.let {
                     return false

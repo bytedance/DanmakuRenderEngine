@@ -7,7 +7,7 @@ import com.ixigua.common.meteor.utils.DRAW_TYPE_BITMAP
 /**
  * Created by dss886 on 2019-05-20.
  */
-class BitmapData: DanmakuData() {
+open class BitmapData: DanmakuData() {
 
     override var drawType: Int = DRAW_TYPE_BITMAP
 

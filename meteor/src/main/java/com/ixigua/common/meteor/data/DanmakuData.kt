@@ -10,7 +10,6 @@ import com.ixigua.common.meteor.utils.LAYER_TYPE_UNDEFINE
  */
 abstract class DanmakuData {
 
-    open var isOneselfSend : Boolean = false
     open var showAtTime: Long = 0
     open var layerType: Int = LAYER_TYPE_UNDEFINE
     open var drawType: Int = DRAW_TYPE_UNDEFINE

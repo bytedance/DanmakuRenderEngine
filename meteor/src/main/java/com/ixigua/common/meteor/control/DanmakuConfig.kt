@@ -17,55 +17,55 @@ class DanmakuConfig : AbsConfig() {
         const val TYPE_DEBUG_LOGGER_LEVEL = 1001
         const val TYPE_DEBUG_SHOW_DRAW_TIME_COST = 1001
 
-        const val TYPE_COMMON_ALPHA = 2000
-        const val TYPE_COMMON_PLAY_SPEED = 2001
-        const val TYPE_COMMON_BUFFER_DISCARD_RULE = 2002
-        const val TYPE_COMMON_TOP_CENTER_VISIBLE_CHANGE = 2003
-        const val TYPE_COMMON_BOTTOM_CENTER_VISIBLE_CHANGE = 2004
-        const val TYPE_COMMON_BUFFER_EXPIRE_CHECK = 2005
-        const val TYPE_COMMON_PAUSE_INVALIDATE_WHEN_BLANK = 2006
+        const val TYPE_COMMON_ALPHA = 1100
+        const val TYPE_COMMON_PLAY_SPEED = 1101
+        const val TYPE_COMMON_BUFFER_DISCARD_RULE = 1102
+        const val TYPE_COMMON_TOP_CENTER_VISIBLE_CHANGE = 1103
+        const val TYPE_COMMON_BOTTOM_CENTER_VISIBLE_CHANGE = 1104
+        const val TYPE_COMMON_BUFFER_EXPIRE_CHECK = 1105
+        const val TYPE_COMMON_PAUSE_INVALIDATE_WHEN_BLANK = 1106
 
-        const val TYPE_TEXT_SIZE = 3000
-        const val TYPE_TEXT_COLOR = 3001
-        const val TYPE_TEXT_TYPEFACE = 3002
-        const val TYPE_TEXT_STROKE_WIDTH = 3003
-        const val TYPE_TEXT_STROKE_COLOR = 3004
-        const val TYPE_TEXT_INCLUDE_FONT_PADDING = 3005
+        const val TYPE_TEXT_SIZE = 1200
+        const val TYPE_TEXT_COLOR = 1201
+        const val TYPE_TEXT_TYPEFACE = 1202
+        const val TYPE_TEXT_STROKE_WIDTH = 1203
+        const val TYPE_TEXT_STROKE_COLOR = 1204
+        const val TYPE_TEXT_INCLUDE_FONT_PADDING = 1205
 
-        const val TYPE_UNDERLINE_WIDTH = 4000
-        const val TYPE_UNDERLINE_COLOR = 4001
-        const val TYPE_UNDERLINE_STROKE_WIDTH = 4002
-        const val TYPE_UNDERLINE_STROKE_COLOR = 4003
-        const val TYPE_UNDERLINE_MARGIN_TOP = 4004
+        const val TYPE_UNDERLINE_WIDTH = 1300
+        const val TYPE_UNDERLINE_COLOR = 1301
+        const val TYPE_UNDERLINE_STROKE_WIDTH = 1302
+        const val TYPE_UNDERLINE_STROKE_COLOR = 1303
+        const val TYPE_UNDERLINE_MARGIN_TOP = 1304
 
-        const val TYPE_SCROLL_MOVE_TIME = 5000
-        const val TYPE_SCROLL_LINE_HEIGHT = 5001
-        const val TYPE_SCROLL_LINE_COUNT = 5002
-        const val TYPE_SCROLL_LINE_MARGIN = 5003
-        const val TYPE_SCROLL_MARGIN_TOP = 5004
-        const val TYPE_SCROLL_ITEM_MARGIN = 5005
-        const val TYPE_SCROLL_BUFFER_SIZE = 5006
-        const val TYPE_SCROLL_BUFFER_MAX_TIME = 5007
+        const val TYPE_SCROLL_MOVE_TIME = 1400
+        const val TYPE_SCROLL_LINE_HEIGHT = 1401
+        const val TYPE_SCROLL_LINE_COUNT = 1402
+        const val TYPE_SCROLL_LINE_MARGIN = 1403
+        const val TYPE_SCROLL_MARGIN_TOP = 1404
+        const val TYPE_SCROLL_ITEM_MARGIN = 1405
+        const val TYPE_SCROLL_BUFFER_SIZE = 1406
+        const val TYPE_SCROLL_BUFFER_MAX_TIME = 1407
 
-        const val TYPE_TOP_CENTER_SHOW_TIME_MAX = 6000
-        const val TYPE_TOP_CENTER_SHOW_TIME_MIN = 6001
-        const val TYPE_TOP_CENTER_LINE_HEIGHT = 6002
-        const val TYPE_TOP_CENTER_LINE_COUNT = 6003
-        const val TYPE_TOP_CENTER_LINE_MARGIN = 6004
-        const val TYPE_TOP_CENTER_MARGIN_TOP = 6005
-        const val TYPE_TOP_CENTER_BUFFER_SIZE = 6006
-        const val TYPE_TOP_CENTER_BUFFER_MAX_TIME = 6007
+        const val TYPE_TOP_CENTER_SHOW_TIME_MAX = 1500
+        const val TYPE_TOP_CENTER_SHOW_TIME_MIN = 1501
+        const val TYPE_TOP_CENTER_LINE_HEIGHT = 1502
+        const val TYPE_TOP_CENTER_LINE_COUNT = 1503
+        const val TYPE_TOP_CENTER_LINE_MARGIN = 1504
+        const val TYPE_TOP_CENTER_MARGIN_TOP = 1505
+        const val TYPE_TOP_CENTER_BUFFER_SIZE = 1506
+        const val TYPE_TOP_CENTER_BUFFER_MAX_TIME = 1507
 
-        const val TYPE_BOTTOM_CENTER_SHOW_TIME_MAX = 7000
-        const val TYPE_BOTTOM_CENTER_SHOW_TIME_MIN = 7001
-        const val TYPE_BOTTOM_CENTER_LINE_HEIGHT = 7002
-        const val TYPE_BOTTOM_CENTER_LINE_COUNT = 7003
-        const val TYPE_BOTTOM_CENTER_LINE_MARGIN = 7004
-        const val TYPE_BOTTOM_CENTER_MARGIN_BOTTOM = 7005
-        const val TYPE_BOTTOM_CENTER_BUFFER_SIZE = 7006
-        const val TYPE_BOTTOM_CENTER_BUFFER_MAX_TIME = 7007
+        const val TYPE_BOTTOM_CENTER_SHOW_TIME_MAX = 1600
+        const val TYPE_BOTTOM_CENTER_SHOW_TIME_MIN = 1601
+        const val TYPE_BOTTOM_CENTER_LINE_HEIGHT = 1602
+        const val TYPE_BOTTOM_CENTER_LINE_COUNT = 1603
+        const val TYPE_BOTTOM_CENTER_LINE_MARGIN = 1604
+        const val TYPE_BOTTOM_CENTER_MARGIN_BOTTOM = 1605
+        const val TYPE_BOTTOM_CENTER_BUFFER_SIZE = 1606
+        const val TYPE_BOTTOM_CENTER_BUFFER_MAX_TIME = 1607
 
-        const val TYPE_MASK_VALUE_CHANGE = 8000
+        const val TYPE_MASK_VALUE_CHANGE = 1700
     }
 
     val debug = DebugConfig(this)
@@ -105,7 +105,7 @@ class DanmakuConfig : AbsConfig() {
         /**
          * Priority constant for the Logger, default is [Log.INFO]
          */
-        var logLevel = Log.INFO
+        var logLevel = Logger.logLevel
             set(value) {
                 field = value
                 Logger.logLevel = value

@@ -22,19 +22,23 @@ import java.util.*
 /**
  * Created by dss886 on 2019/9/23.
  */
-class TopCenterLayer(private val mController: DanmakuController,
-                     private val mCachePool: IDrawCachePool) : IRenderLayer, ITouchDelegate, ConfigChangeListener {
+class TopCenterLayer : IRenderLayer, ITouchDelegate, ConfigChangeListener {
 
+    private lateinit var mController: DanmakuController
+    private lateinit var mCachePool: IDrawCachePool
+    private lateinit var mBuffer: LayerBuffer
+    private lateinit var mConfig: DanmakuConfig
     private val mLines = LinkedList<TopCenterLine>()
     private val mPreDrawItems = LinkedList<DrawItem<DanmakuData>>()
-    private val mConfig = mController.config
-    private val mBuffer = LayerBuffer(mConfig, mCachePool, mConfig.top.bufferSize, mConfig.top.bufferMaxTime)
+    private var mTotalDanmakuCountInLayer = 0
     private var mWidth = 0
     private var mHeight = 0
 
-    private var totalDanmakuCountInLayer = 0
-
-    init {
+    override fun init(controller: DanmakuController, cachePool: IDrawCachePool) {
+        mController = controller
+        mCachePool = cachePool
+        mConfig = mController.config
+        mBuffer = LayerBuffer(mConfig, mCachePool, mConfig.top.bufferSize, mConfig.top.bufferMaxTime)
         mConfig.addListener(this)
     }
 
@@ -66,14 +70,14 @@ class TopCenterLayer(private val mController: DanmakuController,
         mBuffer.forEach {
             distributeItemToLines(playTime, it)
         }
-        totalDanmakuCountInLayer = 0
+        mTotalDanmakuCountInLayer = 0
         mLines.forEach { line ->
-            totalDanmakuCountInLayer += line.typesetting(playTime, isPlaying, configChanged)
+            mTotalDanmakuCountInLayer += line.typesetting(playTime, isPlaying, configChanged)
         }
         if (configChanged) {
             mBuffer.measureItems()
         }
-        return totalDanmakuCountInLayer
+        return mTotalDanmakuCountInLayer
     }
 
     override fun drawLayoutBounds(canvas: Canvas) {
@@ -128,7 +132,7 @@ class TopCenterLayer(private val mController: DanmakuController,
      * Return true if find a line to add, return false otherwise.
      */
     private fun distributeItemToLines(playTime: Long, item: DrawItem<DanmakuData>): Boolean {
-        mLines.maxBy { it.getCurrentItemShowDuration() ?: Long.MAX_VALUE }?.let { line ->
+        mLines.maxByOrNull { it.getCurrentItemShowDuration() }?.let { line ->
             if (line.addItem(playTime, item)) {
                 mController.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_SHOW, item.data))
                 return true

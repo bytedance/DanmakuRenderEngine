@@ -37,8 +37,12 @@ class TopCenterLine(controller: DanmakuController,
         return true
     }
 
-    fun getCurrentItemShowDuration(): Long? {
-        return mDrawingItems.takeIf { it.isNotEmpty() }?.get(0)?.showDuration
+    /**
+     * Return the duration the item has been showed. The longer the duration, the easier it is
+     * to be replaced by new item. If there is no item showing, return the [Long.MAX_VALUE]
+     */
+    fun getCurrentItemShowDuration(): Long {
+        return mDrawingItems.takeIf { it.isNotEmpty() }?.get(0)?.showDuration ?: Long.MAX_VALUE
     }
 
     override fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean): Int {
