@@ -83,9 +83,9 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
     }
 
     fun draw(canvas: Canvas) {
-        if (mController.config.debug.showLayoutBounds) {
+        if (mController.config.debug.showBounds) {
             mRenderLayers.forEach {
-                it.drawLayoutBounds(canvas)
+                it.drawBounds(canvas)
             }
         }
         val drawItems = mutableListOf<DrawItem<DanmakuData>>()
@@ -102,6 +102,9 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
 
         drawItems.forEach {
             it.draw(canvas, mController.config)
+            if (mController.config.debug.showBounds) {
+                it.drawBounds(canvas)
+            }
         }
 
         if (mController.config.mask.enable) {

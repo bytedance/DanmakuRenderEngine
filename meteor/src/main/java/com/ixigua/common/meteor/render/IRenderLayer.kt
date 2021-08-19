@@ -31,7 +31,7 @@ interface IRenderLayer {
 
     fun typesetting(playTime: Long, isPlaying: Boolean, configChanged: Boolean = false): Int
 
-    fun drawLayoutBounds(canvas: Canvas)
+    fun drawBounds(canvas: Canvas)
 
     fun getPreDrawItems(): List<DrawItem<DanmakuData>>
 

@@ -17,7 +17,7 @@ interface IRenderLine {
 
     fun getPreDrawItems(): List<DrawItem<DanmakuData>>
 
-    fun drawLayoutBounds(canvas: Canvas)
+    fun drawBounds(canvas: Canvas)
 
     fun clearRender()
 

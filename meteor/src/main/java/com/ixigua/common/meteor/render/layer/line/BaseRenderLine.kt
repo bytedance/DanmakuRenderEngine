@@ -25,7 +25,9 @@ abstract class BaseRenderLine(private val mController: DanmakuController,
     protected val mConfig = mController.config
     protected val mDrawingItems = LinkedList<DrawItem<DanmakuData>>()
 
-    private val mLayoutBoundsPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
+    private val mBoundsPaint: Paint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
+    }
     private var mCurrentTouchItem: DrawItem<DanmakuData>? = null
     private var mClickPositionRect = RectF()
     private var mClickPoint = PointF()
@@ -54,14 +56,10 @@ abstract class BaseRenderLine(private val mController: DanmakuController,
         return mDrawingItems
     }
 
-    override fun drawLayoutBounds(canvas: Canvas) {
-        mLayoutBoundsPaint.color = Color.argb(50, 0, 255, 0)
-        mLayoutBoundsPaint.style = Paint.Style.FILL
-        canvas.drawRect(0F, y, width, y + height, mLayoutBoundsPaint)
-        mDrawingItems.forEach { item ->
-            mLayoutBoundsPaint.color = Color.argb(100, 255, 0, 0)
-            canvas.drawRect(item.x, item.y, item.x + item.width, item.y + item.height, mLayoutBoundsPaint)
-        }
+    override fun drawBounds(canvas: Canvas) {
+        mBoundsPaint.color = Color.argb(50, 0, 255, 0)
+        mBoundsPaint.style = Paint.Style.FILL
+        canvas.drawRect(x, y, x + width, y + height, mBoundsPaint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

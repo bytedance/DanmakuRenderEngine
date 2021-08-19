@@ -83,9 +83,9 @@ class BottomCenterLayer : IRenderLayer, ITouchDelegate, ConfigChangeListener {
         return mTotalDanmakuCountInLayer
     }
 
-    override fun drawLayoutBounds(canvas: Canvas) {
+    override fun drawBounds(canvas: Canvas) {
         mLines.forEach { line ->
-            line.drawLayoutBounds(canvas)
+            line.drawBounds(canvas)
         }
     }
 

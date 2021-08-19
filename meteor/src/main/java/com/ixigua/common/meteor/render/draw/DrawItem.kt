@@ -1,6 +1,8 @@
 package com.ixigua.common.meteor.render.draw
 
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import com.ixigua.common.meteor.control.DanmakuConfig
 import com.ixigua.common.meteor.data.DanmakuData
 
@@ -19,6 +21,10 @@ abstract class DrawItem<T: DanmakuData> {
     open var rotate: Float = 0F
     open var width: Float = 0F
     open var height: Float = 0F
+
+    private val mBoundsPaint: Paint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
+    }
 
     /**
      * When this item has been put on the screen.
@@ -57,8 +63,16 @@ abstract class DrawItem<T: DanmakuData> {
      */
     fun draw(canvas: Canvas, config: DanmakuConfig) {
         canvas.save()
-        canvas.rotate(rotate)
+        canvas.rotate(rotate, x, y)
         onDraw(canvas, config)
+        canvas.restore()
+    }
+
+    fun drawBounds(canvas: Canvas) {
+        canvas.save()
+        canvas.rotate(rotate, x, y)
+        mBoundsPaint.color = Color.argb(100, 255, 0, 0)
+        canvas.drawRect(x, y, x + width, y + height, mBoundsPaint)
         canvas.restore()
     }
 

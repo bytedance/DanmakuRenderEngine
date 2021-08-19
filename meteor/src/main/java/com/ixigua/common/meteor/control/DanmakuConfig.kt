@@ -93,10 +93,10 @@ class DanmakuConfig : AbsConfig() {
      */
     class DebugConfig(private val config: AbsConfig) {
         /**
-         * Draw layout bounds of the lines and items in layers,
+         * Draw bounds of the lines and items in layers,
          * Works like the 'Show Layout Bounds' option in Android Developer Settings.
          */
-        var showLayoutBounds = false
+        var showBounds = false
             set(value) {
                 field = value
                 config.notifyConfigChanged(TYPE_DEBUG_SHOW_LAYOUT_BOUNDS)
