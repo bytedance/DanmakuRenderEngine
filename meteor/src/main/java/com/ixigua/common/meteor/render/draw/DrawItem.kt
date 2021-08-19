@@ -16,6 +16,7 @@ abstract class DrawItem<T: DanmakuData> {
 
     open var x: Float = 0F
     open var y: Float = 0F
+    open var rotate: Float = 0F
     open var width: Float = 0F
     open var height: Float = 0F
 
@@ -54,7 +55,17 @@ abstract class DrawItem<T: DanmakuData> {
     /**
      * Actually do the drawing work in main thread.
      */
-    abstract fun draw(canvas: Canvas, config: DanmakuConfig)
+    fun draw(canvas: Canvas, config: DanmakuConfig) {
+        canvas.save()
+        canvas.rotate(rotate)
+        onDraw(canvas, config)
+        canvas.restore()
+    }
+
+    /**
+     * Do the custom drawing work in main thread.
+     */
+    abstract fun onDraw(canvas: Canvas, config: DanmakuConfig)
 
     /**
      * If you define extra fields in subclass,
@@ -64,6 +75,7 @@ abstract class DrawItem<T: DanmakuData> {
         data = null
         x = 0F
         y = 0F
+        rotate = 0F
         width = 0F
         height = 0F
         showTime = 0L

@@ -34,7 +34,7 @@ open class BitmapDrawItem: DrawItem<BitmapData>() {
         }
     }
 
-    override fun draw(canvas: Canvas, config: DanmakuConfig) {
+    override fun onDraw(canvas: Canvas, config: DanmakuConfig) {
         data?.bitmap?.let { bitmap ->
             mRectF.set(x, y, x + width, y + height)
             val tint = data?.tintColor

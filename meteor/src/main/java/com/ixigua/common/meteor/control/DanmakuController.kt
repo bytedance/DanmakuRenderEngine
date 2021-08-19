@@ -247,7 +247,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         mCmdMonitors.add(monitor)
     }
 
-    internal fun unRegisterCmdMonitor(monitor: ICommandMonitor) {
+    fun unRegisterCmdMonitor(monitor: ICommandMonitor) {
         mCmdMonitors.remove(monitor)
     }
 

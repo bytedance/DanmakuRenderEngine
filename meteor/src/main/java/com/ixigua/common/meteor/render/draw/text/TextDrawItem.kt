@@ -45,7 +45,7 @@ open class TextDrawItem: DrawItem<TextData>() {
         }
     }
 
-    override fun draw(canvas: Canvas, config: DanmakuConfig) {
+    override fun onDraw(canvas: Canvas, config: DanmakuConfig) {
         drawText(canvas, mTextPaint, config)
         drawUnderline(canvas, mTextPaint, mUnderlinePaint, config)
     }
