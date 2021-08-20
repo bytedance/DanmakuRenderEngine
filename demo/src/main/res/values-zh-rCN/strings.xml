@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MeteorDemo</string>
+
+    <string-array name="danmaku_text_contents">
+        <item>awsl</item>
+        <item>厉害了</item>
+        <item>爷青回</item>
+        <item>23333</item>
+        <item>有内味了</item>
+        <item>666666666</item>
+        <item>前方高能预警</item>
+        <item>请收下我的膝盖</item>
+        <item>地主家的傻儿子</item>
+        <item>官方吐槽最为致命</item>
+        <item>当然是选择原谅他</item>
+        <item>如果真爱有颜色那么一定是蓝色</item>
+        <item>我从未见过有如此厚颜无耻之人!</item>
+    </string-array>
+
+    <string name="main_title_quick_start">快速接入</string>
+    <string name="main_title_basic_features">基本功能</string>
+    <string name="main_item_simplest_demo">一个简单的接入示例</string>
+    <string name="main_item_timeline_sync">时间轴同步</string>
+    <string name="main_item_build_in_layers">内置的弹幕Layer</string>
+    <string name="main_item_style_configuration">弹幕样式配置</string>
+    <string name="main_title_advanced_features">高级功能</string>
+    <string name="main_item_custom_danmaku_item">自定义高级弹幕</string>
+    <string name="main_item_command_and_event">命令和事件</string>
+    <string name="main_item_custom_layer">自定义弹幕Layer</string>
+    <string name="main_item_danmaku_mask">智能蒙版弹幕</string>
+
+    <string name="btn_add_scroll_item">添加一条滚动弹幕</string>
+    <string name="btn_add_top_item">添加一条顶部弹幕</string>
+    <string name="btn_add_bottom_item">添加一条底部弹幕</string>
+    <string name="btn_add_common_danmaku">添加一条普通弹幕</string>
+    <string name="btn_add_danmaku_with_digg">添加一条带点赞的弹幕</string>
+    <string name="btn_add_danmaku_with_self_digg">添加一条被你自己点赞过的弹幕</string>
+    <string name="btn_add_danmaku_to_custom_layer_1">向旋转弹幕层添加一个弹幕</string>
+    <string name="btn_add_danmaku_to_custom_layer_2">向流星弹幕层添加一个弹幕</string>
+
+    <string name="tips_mask_demo">演示用 SVG 遮罩</string>
+
+</resources>

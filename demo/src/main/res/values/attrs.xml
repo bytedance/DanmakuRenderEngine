@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="title" format="string" />
+    <attr name="content" format="string" />
+    <attr name="hideDivider" format="boolean" />
+    <attr name="hideTopPadding" format="boolean" />
+    <attr name="hideRightArrow" format="boolean" />
+
+    <declare-styleable name="SectionItemView">
+        <attr name="title" />
+        <attr name="hideDivider"/>
+        <attr name="hideTopPadding"/>
+    </declare-styleable>
+
+    <declare-styleable name="TextItemView">
+        <attr name="title"/>
+        <attr name="content"/>
+        <attr name="hideDivider"/>
+        <attr name="hideRightArrow"/>
+    </declare-styleable>
+
+    <declare-styleable name="RatioRelativeLayout">
+        <attr name="ratioHeightByWidth" format="float" />
+    </declare-styleable>
+
+</resources>
