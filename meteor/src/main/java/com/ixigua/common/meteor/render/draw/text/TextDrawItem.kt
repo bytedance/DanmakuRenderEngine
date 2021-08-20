@@ -27,13 +27,12 @@ open class TextDrawItem: DrawItem<TextData>() {
         return DRAW_TYPE_TEXT
     }
 
-    override fun bindData(data: TextData) {
-        this.data = data
+    override fun onBindData(data: TextData) {
         mTextPaint.flags = Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG
         mUnderlinePaint.flags = Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG
     }
 
-    override fun measure(config: DanmakuConfig) {
+    override fun onMeasure(config: DanmakuConfig) {
         if (!TextUtils.isEmpty(data?.text)) {
             mTextPaint.textSize = data?.textSize ?: config.text.size
             width = mTextPaint.measureText(data?.text)

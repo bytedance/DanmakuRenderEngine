@@ -17,12 +17,11 @@ open class BitmapDrawItem: DrawItem<BitmapData>() {
         return DRAW_TYPE_BITMAP
     }
 
-    override fun bindData(data: BitmapData) {
-        this.data = data
+    override fun onBindData(data: BitmapData) {
         mBitmapPaint.flags = Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG
     }
 
-    override fun measure(config: DanmakuConfig) {
+    override fun onMeasure(config: DanmakuConfig) {
         val width = data?.width ?: 0F
         val height = data?.height ?: 0F
         if (width > 0 && height > 0) {

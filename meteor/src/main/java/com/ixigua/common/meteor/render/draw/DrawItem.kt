@@ -51,12 +51,21 @@ abstract class DrawItem<T: DanmakuData> {
     /**
      * Tell DrawItem which data should be drawn.
      */
-    abstract fun bindData(data: T)
+    fun bindData(data: T) {
+        this.data = data
+        onBindData(data)
+    }
+
+    abstract fun onBindData(data: T)
 
     /**
      * Measure width/height according to the content of [data].
      */
-    abstract fun measure(config: DanmakuConfig)
+    fun measure(config: DanmakuConfig) {
+        onMeasure(config)
+    }
+
+    abstract fun onMeasure(config: DanmakuConfig)
 
     /**
      * Actually do the drawing work in main thread.
