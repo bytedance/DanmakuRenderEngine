@@ -69,7 +69,7 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
     fun addItems(playTime: Long, items: List<DanmakuData>) {
         mRenderLayers.forEach { layer ->
             items.filter { it.layerType == layer.getLayerType() }.takeIf { it.isNotEmpty() }?.let { list ->
-                layer.addItems(playTime, list.map { wrapData(it) })
+                layer.addItems(playTime, list.map { wrapData(layer, it) })
             }
         }
     }
@@ -93,8 +93,13 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
         mRenderLayers.forEach {
             drawItems.addAll(it.getPreDrawItems())
         }
-        drawItems.sortBy { it.showTime }
-        drawItems.sortBy { it.data?.drawOrder }
+
+        drawItems.sortWith(compareBy(
+            { it.data?.drawOrder },
+            { it.layerZIndex },
+            { it.showTime }
+        ))
+
         if (mController.config.mask.enable) {
             @Suppress("DEPRECATION")
             mSaveLayerValue = canvas.saveLayer(0F, 0F, mWidth.toFloat(), mHeight.toFloat(), null, Canvas.ALL_SAVE_FLAG)
@@ -136,8 +141,9 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
         }
     }
 
-    private fun wrapData(data: DanmakuData): DrawItem<DanmakuData> {
+    private fun wrapData(layer: IRenderLayer, data: DanmakuData): DrawItem<DanmakuData> {
         return mDrawCachePool.acquire(data.drawType).apply {
+            layerZIndex = layer.getLayerZIndex()
             bindData(data)
             measure(mController.config)
         }

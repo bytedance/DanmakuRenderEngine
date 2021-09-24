@@ -46,10 +46,12 @@ class CmdEventActivity : BaseDemoActivity() {
             override fun onDanmakuClick(data: DanmakuData, itemRect: RectF, clickPoint: PointF) {
                 mPausingItem = if (mPausingItem == null) {
                     mController.executeCommand(CMD_PAUSE_ITEM, data)
+                    data.drawOrder = Integer.MAX_VALUE
                     mConsoleView.log("Cmd", "Pause: text=${(data as? TextData)?.text}")
                     data
                 } else {
                     mController.executeCommand(CMD_RESUME_ITEM, mPausingItem)
+                    data.drawOrder = DRAW_ORDER_DEFAULT
                     mConsoleView.log("Cmd", "Resume: text=${(mPausingItem as? TextData)?.text}")
                     null
                 }

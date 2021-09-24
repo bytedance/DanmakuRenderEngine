@@ -21,6 +21,7 @@ abstract class DrawItem<T: DanmakuData> {
     open var rotate: Float = 0F
     open var width: Float = 0F
     open var height: Float = 0F
+    open var layerZIndex: Int = 0
 
     private val mBoundsPaint: Paint by lazy {
         Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
@@ -101,6 +102,7 @@ abstract class DrawItem<T: DanmakuData> {
         rotate = 0F
         width = 0F
         height = 0F
+        layerZIndex = 0
         showTime = 0L
         showDuration = 0L
         isPaused = false
