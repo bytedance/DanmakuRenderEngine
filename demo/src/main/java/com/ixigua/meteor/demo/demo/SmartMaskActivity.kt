@@ -6,16 +6,13 @@ import androidx.core.graphics.PathParser
 import com.ixigua.common.meteor.DanmakuView
 import com.ixigua.common.meteor.control.DanmakuController
 import com.ixigua.common.meteor.data.DanmakuData
+import com.ixigua.common.meteor.render.draw.mask.MaskData
 import com.ixigua.common.meteor.touch.IItemClickListener
 import com.ixigua.common.meteor.utils.CMD_PAUSE_ITEM
 import com.ixigua.common.meteor.utils.CMD_RESUME_ITEM
 import com.ixigua.common.meteor.utils.DRAW_ORDER_DEFAULT
 import com.ixigua.meteor.demo.R
 import com.ixigua.meteor.demo.base.BaseDemoActivity
-import com.ixigua.meteor.demo.demo.mask.MaskDanmakuFactory
-import com.ixigua.meteor.demo.demo.mask.MaskData
-import com.ixigua.meteor.demo.demo.mask.MaskLayer
-
 
 /**
  * Created by dss886 on 2021/08/19.
@@ -31,8 +28,6 @@ class SmartMaskActivity: BaseDemoActivity() {
 
     override fun init() {
         mController = findViewById<DanmakuView>(R.id.danmaku_view).controller
-        mController.registerDrawItemFactory(MaskDanmakuFactory())
-        mController.addRenderLayer(MaskLayer())
 
         /**
          * Load SVG path data to [android.graphics.Path],

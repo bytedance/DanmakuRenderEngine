@@ -1,4 +1,4 @@
-package com.ixigua.meteor.demo.demo.mask
+package com.ixigua.common.meteor.render.layer.mask
 
 import android.graphics.Canvas
 import android.graphics.Matrix
@@ -7,8 +7,9 @@ import com.ixigua.common.meteor.data.DanmakuData
 import com.ixigua.common.meteor.render.IRenderLayer
 import com.ixigua.common.meteor.render.cache.IDrawCachePool
 import com.ixigua.common.meteor.render.draw.DrawItem
-import com.ixigua.meteor.demo.utils.LAYER_TYPE_MASK
-import com.ixigua.meteor.demo.utils.LAYER_Z_INDEX_MASK
+import com.ixigua.common.meteor.render.draw.mask.MaskDrawItem
+import com.ixigua.common.meteor.utils.LAYER_TYPE_MASK
+import com.ixigua.common.meteor.utils.LAYER_Z_INDEX_MASK
 
 /**
  * Created by dss886 on 2021/08/20.

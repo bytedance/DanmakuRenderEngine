@@ -5,14 +5,11 @@ package com.ixigua.meteor.demo.utils
  */
 
 const val DRAW_TYPE_ADVANCED = 2000
-const val DRAW_TYPE_MASK = 2001
 
 const val LAYER_TYPE_ROTATE = 2000
 const val LAYER_TYPE_METEOR = 2001
-const val LAYER_TYPE_MASK = 2002
 const val LAYER_Z_INDEX_ROTATE = 2000
 const val LAYER_Z_INDEX_METEOR = 2001
-const val LAYER_Z_INDEX_MASK = 2002
 
 const val DIGG_STATE_NONE = 0
 const val DIGG_STATE_OTHER_DIGG = 1

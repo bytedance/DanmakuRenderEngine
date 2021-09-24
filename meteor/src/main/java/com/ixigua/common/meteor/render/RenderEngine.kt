@@ -8,8 +8,10 @@ import com.ixigua.common.meteor.render.cache.DrawCachePool
 import com.ixigua.common.meteor.render.draw.DrawItem
 import com.ixigua.common.meteor.render.draw.IDrawItemFactory
 import com.ixigua.common.meteor.render.draw.bitmap.BitmapDrawItemFactory
+import com.ixigua.common.meteor.render.draw.mask.MaskDanmakuFactory
 import com.ixigua.common.meteor.render.draw.text.TextDrawItemFactory
 import com.ixigua.common.meteor.render.layer.bottom.BottomCenterLayer
+import com.ixigua.common.meteor.render.layer.mask.MaskLayer
 import com.ixigua.common.meteor.render.layer.scroll.ScrollLayer
 import com.ixigua.common.meteor.render.layer.top.TopCenterLayer
 import com.ixigua.common.meteor.touch.ITouchDelegate
@@ -34,8 +36,10 @@ class RenderEngine(private val mController: DanmakuController) : ITouchDelegate 
         mRenderLayers.add(ScrollLayer().apply { init(mController, mDrawCachePool) })
         mRenderLayers.add(TopCenterLayer().apply { init(mController, mDrawCachePool) })
         mRenderLayers.add(BottomCenterLayer().apply { init(mController, mDrawCachePool) })
+        mRenderLayers.add(MaskLayer().apply { init(mController, mDrawCachePool) })
         registerDrawItemFactory(TextDrawItemFactory())
         registerDrawItemFactory(BitmapDrawItemFactory())
+        registerDrawItemFactory(MaskDanmakuFactory())
     }
 
     fun addRenderLayer(layer: IRenderLayer) {
