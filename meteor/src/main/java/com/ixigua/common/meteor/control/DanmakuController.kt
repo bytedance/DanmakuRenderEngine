@@ -219,7 +219,8 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
             } else if (typesettingCount > 0) {
                 view.postInvalidateCompat()
             } else if (mDataManager.getRemainDanmakuCount() > 0) {
-                mDataManager.nextDanmakuShowAfter().let { showAfter ->
+                mDataManager.nextDanmakuShowAfter().let { after ->
+                    val showAfter = after * 100 / config.common.playSpeed
                     if (showAfter in 0..NEXT_DANMAKU_SHOW_MIN_INTERVAL) {
                         view.postInvalidateCompat()
                     } else if (showAfter >= 0) {
