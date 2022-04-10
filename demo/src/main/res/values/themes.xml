@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.Meteor" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.Danmaku.Render.Engine" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/blue_700</item>
         <item name="colorPrimaryDark">@color/blue_800</item>
         <item name="colorAccent">@color/blue_500</item>

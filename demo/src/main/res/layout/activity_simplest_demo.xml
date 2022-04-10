@@ -8,13 +8,13 @@
     android:orientation="vertical"
     tools:context=".demo.SimplestDemoActivity">
 
-    <com.ixigua.meteor.demo.view.RatioRelativeLayout
+    <com.ixigua.danmaku.render.engine.demo.view.RatioRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
         app:ratioHeightByWidth="0.5625" >
 
-        <com.ixigua.meteor.demo.view.CustomVideoView
+        <com.ixigua.danmaku.render.engine.demo.view.CustomVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -24,9 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </com.ixigua.meteor.demo.view.RatioRelativeLayout>
+    </com.ixigua.danmaku.render.engine.demo.view.RatioRelativeLayout>
 
-    <com.ixigua.meteor.demo.view.DanmakuRecyclerView
+    <com.ixigua.danmaku.render.engine.demo.view.DanmakuRecyclerView
         android:id="@+id/danmaku_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

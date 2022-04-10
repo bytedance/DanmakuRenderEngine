@@ -8,13 +8,13 @@
     android:orientation="vertical"
     tools:context=".demo.SimplestDemoActivity">
 
-    <com.ixigua.meteor.demo.view.RatioRelativeLayout
+    <com.ixigua.danmaku.render.engine.demo.view.RatioRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
         app:ratioHeightByWidth="0.5625" >
 
-        <com.ixigua.meteor.demo.view.CustomVideoView
+        <com.ixigua.danmaku.render.engine.demo.view.CustomVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </com.ixigua.meteor.demo.view.RatioRelativeLayout>
+    </com.ixigua.danmaku.render.engine.demo.view.RatioRelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -47,11 +47,11 @@
                 android:textColor="@color/black"
                 android:text="DebugConfig"
                 tools:ignore="HardcodedText" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_1_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_1_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -67,27 +67,27 @@
                 android:textColor="@color/black"
                 android:text="CommonConfig"
                 tools:ignore="HardcodedText" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_2_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_2_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_2_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_2_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_2_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_2_6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -103,19 +103,19 @@
                 android:textColor="@color/black"
                 android:text="ScrollConfig"
                 tools:ignore="HardcodedText" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_3_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_3_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_3_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_3_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -131,19 +131,19 @@
                 android:textColor="@color/black"
                 android:text="TopConfig"
                 tools:ignore="HardcodedText" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_4_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_4_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_4_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_4_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -159,19 +159,19 @@
                 android:textColor="@color/black"
                 android:text="BottomConfig"
                 tools:ignore="HardcodedText" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_5_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_5_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_5_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.ixigua.meteor.demo.view.RadioButtonGroupView
+            <com.ixigua.danmaku.render.engine.demo.view.RadioButtonGroupView
                 android:id="@+id/config_5_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

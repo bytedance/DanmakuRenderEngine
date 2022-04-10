@@ -5,73 +5,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".MainActivity">
+    tools:context="com.ixigua.danmaku.render.engine.demo.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.ixigua.meteor.demo.view.SectionItemView
+        <com.ixigua.danmaku.render.engine.demo.view.SectionItemView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hideTopPadding="true"
             app:title="@string/main_title_quick_start"/>
 
-        <com.ixigua.meteor.demo.view.TextItemView
+        <com.ixigua.danmaku.render.engine.demo.view.TextItemView
             android:id="@+id/simplest_demo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hideDivider="true"
             app:title="@string/main_item_simplest_demo"/>
 
-        <com.ixigua.meteor.demo.view.SectionItemView
+        <com.ixigua.danmaku.render.engine.demo.view.SectionItemView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/main_title_basic_features"/>
 
-        <com.ixigua.meteor.demo.view.TextItemView
+        <com.ixigua.danmaku.render.engine.demo.view.TextItemView
             android:id="@+id/timeline_sync"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/main_item_timeline_sync"/>
 
-        <com.ixigua.meteor.demo.view.TextItemView
+        <com.ixigua.danmaku.render.engine.demo.view.TextItemView
             android:id="@+id/build_in_layers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/main_item_build_in_layers"/>
 
-        <com.ixigua.meteor.demo.view.TextItemView
+        <com.ixigua.danmaku.render.engine.demo.view.TextItemView
             android:id="@+id/style_config"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/main_item_style_configuration"/>
 
-        <com.ixigua.meteor.demo.view.SectionItemView
+        <com.ixigua.danmaku.render.engine.demo.view.SectionItemView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/main_title_advanced_features"/>
 
-        <com.ixigua.meteor.demo.view.TextItemView
+        <com.ixigua.danmaku.render.engine.demo.view.TextItemView
             android:id="@+id/custom_advanced_danmaku"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/main_item_custom_danmaku_item"/>
 
-        <com.ixigua.meteor.demo.view.TextItemView
+        <com.ixigua.danmaku.render.engine.demo.view.TextItemView
             android:id="@+id/custom_layer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/main_item_custom_layer"/>
 
-        <com.ixigua.meteor.demo.view.TextItemView
+        <com.ixigua.danmaku.render.engine.demo.view.TextItemView
             android:id="@+id/command_and_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/main_item_command_and_event"/>
 
-        <com.ixigua.meteor.demo.view.TextItemView
+        <com.ixigua.danmaku.render.engine.demo.view.TextItemView
             android:id="@+id/smart_mask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

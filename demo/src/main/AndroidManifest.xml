@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ixigua.meteor.demo">
+    package="com.ixigua.danmaku.render.engine.demo">
 
     <application
-        android:name=".base.App"
+        android:name="com.ixigua.danmaku.render.engine.demo.base.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Meteor">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.Danmaku.Render.Engine">
+        <activity android:name="com.ixigua.danmaku.render.engine.demo.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".demo.SimplestDemoActivity" android:label="@string/main_item_simplest_demo"/>
-        <activity android:name=".demo.TimelineSyncActivity" android:label="@string/main_item_timeline_sync"/>
-        <activity android:name=".demo.BuildInLayersActivity" android:label="@string/main_item_build_in_layers"/>
-        <activity android:name=".demo.StyleConfigActivity" android:label="@string/main_item_style_configuration"/>
+        <activity android:name="com.ixigua.danmaku.render.engine.demo.demo.TimelineSyncActivity" android:label="@string/main_item_timeline_sync"/>
+        <activity android:name="com.ixigua.danmaku.render.engine.demo.demo.BuildInLayersActivity" android:label="@string/main_item_build_in_layers"/>
+        <activity android:name="com.ixigua.danmaku.render.engine.demo.demo.StyleConfigActivity" android:label="@string/main_item_style_configuration"/>
         <activity android:name=".demo.AdvancedDanmakuActivity" android:label="@string/main_item_custom_danmaku_item"/>
-        <activity android:name=".demo.CustomLayerActivity" android:label="@string/main_item_custom_layer"/>
-        <activity android:name=".demo.CmdEventActivity" android:label="@string/main_item_command_and_event"/>
-        <activity android:name=".demo.SmartMaskActivity" android:label="@string/main_item_danmaku_mask"/>
+        <activity android:name="com.ixigua.danmaku.render.engine.demo.demo.CustomLayerActivity" android:label="@string/main_item_custom_layer"/>
+        <activity android:name="com.ixigua.danmaku.render.engine.demo.demo.CmdEventActivity" android:label="@string/main_item_command_and_event"/>
+        <activity android:name="com.ixigua.danmaku.render.engine.demo.demo.SmartMaskActivity" android:label="@string/main_item_danmaku_mask"/>
     </application>
 
 </manifest>
