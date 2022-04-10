@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ixigua.common.meteor.data.DanmakuData
-import com.ixigua.common.meteor.render.draw.text.TextData
+import com.ixigua.common.danmaku.render.engine.data.DanmakuData
+import com.ixigua.common.danmaku.render.engine.render.draw.text.TextData
 import com.ixigua.danmaku.render.engine.demo.R
 import com.ixigua.danmaku.render.engine.demo.utils.toDisplayDuration
 import kotlin.time.ExperimentalTime

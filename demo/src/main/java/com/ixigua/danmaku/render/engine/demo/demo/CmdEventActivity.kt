@@ -2,14 +2,14 @@ package com.ixigua.danmaku.render.engine.demo.demo
 
 import android.graphics.PointF
 import android.graphics.RectF
-import com.ixigua.common.meteor.DanmakuView
-import com.ixigua.common.meteor.control.DanmakuController
-import com.ixigua.common.meteor.control.DanmakuEvent
-import com.ixigua.common.meteor.control.IEventListener
-import com.ixigua.common.meteor.data.DanmakuData
-import com.ixigua.common.meteor.render.draw.text.TextData
-import com.ixigua.common.meteor.touch.IItemClickListener
-import com.ixigua.common.meteor.utils.*
+import com.ixigua.common.danmaku.render.engine.DanmakuView
+import com.ixigua.common.danmaku.render.engine.control.DanmakuController
+import com.ixigua.common.danmaku.render.engine.control.DanmakuEvent
+import com.ixigua.common.danmaku.render.engine.control.IEventListener
+import com.ixigua.common.danmaku.render.engine.data.DanmakuData
+import com.ixigua.common.danmaku.render.engine.render.draw.text.TextData
+import com.ixigua.common.danmaku.render.engine.touch.IItemClickListener
+import com.ixigua.common.danmaku.render.engine.utils.*
 import com.ixigua.danmaku.render.engine.demo.R
 import com.ixigua.danmaku.render.engine.demo.base.BaseDemoActivity
 import com.ixigua.danmaku.render.engine.demo.view.ConsoleRecyclerView

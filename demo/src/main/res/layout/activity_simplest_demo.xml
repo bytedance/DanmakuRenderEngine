@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.ixigua.common.meteor.DanmakuView
+        <com.ixigua.common.danmaku.render.engine.DanmakuView
             android:id="@+id/danmaku_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

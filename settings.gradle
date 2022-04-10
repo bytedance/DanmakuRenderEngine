@@ -1,2 +1,2 @@
 include ':demo'
-include ':meteor'
+include ':danmaku-render-engine'

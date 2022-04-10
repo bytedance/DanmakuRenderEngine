@@ -1,7 +1,7 @@
 package com.ixigua.danmaku.render.engine.demo.demo
 
-import com.ixigua.common.meteor.DanmakuView
-import com.ixigua.common.meteor.control.DanmakuController
+import com.ixigua.common.danmaku.render.engine.DanmakuView
+import com.ixigua.common.danmaku.render.engine.control.DanmakuController
 import com.ixigua.danmaku.render.engine.demo.R
 import com.ixigua.danmaku.render.engine.demo.base.BaseDemoActivity
 

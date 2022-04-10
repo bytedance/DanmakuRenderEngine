@@ -1,12 +1,12 @@
 package com.ixigua.danmaku.render.engine.demo.demo.advanced
 
 import android.graphics.Canvas
-import com.ixigua.common.meteor.control.DanmakuConfig
-import com.ixigua.common.meteor.data.DanmakuData
-import com.ixigua.common.meteor.render.draw.DrawItem
-import com.ixigua.common.meteor.render.draw.IDrawItemFactory
-import com.ixigua.common.meteor.render.draw.text.TextData
-import com.ixigua.common.meteor.render.draw.text.TextDrawItem
+import com.ixigua.common.danmaku.render.engine.control.DanmakuConfig
+import com.ixigua.common.danmaku.render.engine.data.DanmakuData
+import com.ixigua.common.danmaku.render.engine.render.draw.DrawItem
+import com.ixigua.common.danmaku.render.engine.render.draw.IDrawItemFactory
+import com.ixigua.common.danmaku.render.engine.render.draw.text.TextData
+import com.ixigua.common.danmaku.render.engine.render.draw.text.TextDrawItem
 import com.ixigua.danmaku.render.engine.demo.utils.DRAW_TYPE_ADVANCED
 import com.ixigua.danmaku.render.engine.demo.utils.dp
 

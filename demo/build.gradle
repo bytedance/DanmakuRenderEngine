@@ -34,5 +34,5 @@ dependencies {
     implementation KOTLIN_LIB
     implementation ANDROIDX_LIB
     implementation RECYCLER_VIEW
-    implementation project(':meteor')
+    implementation project(':danmaku-render-engine')
 }

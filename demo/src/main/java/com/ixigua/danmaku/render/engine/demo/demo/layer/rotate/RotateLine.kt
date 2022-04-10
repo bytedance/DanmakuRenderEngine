@@ -1,12 +1,12 @@
 package com.ixigua.danmaku.render.engine.demo.demo.layer.rotate
 
 import android.graphics.Canvas
-import com.ixigua.common.meteor.control.DanmakuController
-import com.ixigua.common.meteor.data.DanmakuData
-import com.ixigua.common.meteor.render.IRenderLayer
-import com.ixigua.common.meteor.render.draw.DrawItem
-import com.ixigua.common.meteor.render.layer.line.BaseRenderLine
-import com.ixigua.common.meteor.utils.STEPPER_TIME
+import com.ixigua.common.danmaku.render.engine.control.DanmakuController
+import com.ixigua.common.danmaku.render.engine.data.DanmakuData
+import com.ixigua.common.danmaku.render.engine.render.IRenderLayer
+import com.ixigua.common.danmaku.render.engine.render.draw.DrawItem
+import com.ixigua.common.danmaku.render.engine.render.layer.line.BaseRenderLine
+import com.ixigua.common.danmaku.render.engine.utils.STEPPER_TIME
 
 /**
  * Created by dss886 on 2021/07/08.

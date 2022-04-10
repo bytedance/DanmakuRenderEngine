@@ -3,14 +3,14 @@ package com.ixigua.danmaku.render.engine.demo.demo
 import android.graphics.PointF
 import android.graphics.RectF
 import androidx.core.graphics.PathParser
-import com.ixigua.common.meteor.DanmakuView
-import com.ixigua.common.meteor.control.DanmakuController
-import com.ixigua.common.meteor.data.DanmakuData
-import com.ixigua.common.meteor.render.draw.mask.MaskData
-import com.ixigua.common.meteor.touch.IItemClickListener
-import com.ixigua.common.meteor.utils.CMD_PAUSE_ITEM
-import com.ixigua.common.meteor.utils.CMD_RESUME_ITEM
-import com.ixigua.common.meteor.utils.DRAW_ORDER_DEFAULT
+import com.ixigua.common.danmaku.render.engine.DanmakuView
+import com.ixigua.common.danmaku.render.engine.control.DanmakuController
+import com.ixigua.common.danmaku.render.engine.data.DanmakuData
+import com.ixigua.common.danmaku.render.engine.render.draw.mask.MaskData
+import com.ixigua.common.danmaku.render.engine.touch.IItemClickListener
+import com.ixigua.common.danmaku.render.engine.utils.CMD_PAUSE_ITEM
+import com.ixigua.common.danmaku.render.engine.utils.CMD_RESUME_ITEM
+import com.ixigua.common.danmaku.render.engine.utils.DRAW_ORDER_DEFAULT
 import com.ixigua.danmaku.render.engine.demo.R
 import com.ixigua.danmaku.render.engine.demo.base.BaseDemoActivity
 

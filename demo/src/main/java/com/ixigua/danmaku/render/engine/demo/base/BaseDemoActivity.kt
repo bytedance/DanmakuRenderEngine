@@ -4,9 +4,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.ixigua.common.meteor.data.DanmakuData
-import com.ixigua.common.meteor.render.draw.text.TextData
-import com.ixigua.common.meteor.utils.LAYER_TYPE_SCROLL
+import com.ixigua.common.danmaku.render.engine.data.DanmakuData
+import com.ixigua.common.danmaku.render.engine.render.draw.text.TextData
+import com.ixigua.common.danmaku.render.engine.utils.LAYER_TYPE_SCROLL
 import com.ixigua.danmaku.render.engine.demo.R
 import com.ixigua.danmaku.render.engine.demo.view.CustomVideoView
 import com.ixigua.danmaku.render.engine.demo.view.DanmakuRecyclerView

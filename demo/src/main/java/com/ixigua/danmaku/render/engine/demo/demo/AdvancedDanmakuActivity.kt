@@ -3,11 +3,11 @@ package com.ixigua.danmaku.render.engine.demo.demo
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.View
-import com.ixigua.common.meteor.DanmakuView
-import com.ixigua.common.meteor.control.DanmakuController
-import com.ixigua.common.meteor.render.draw.bitmap.BitmapData
-import com.ixigua.common.meteor.render.draw.text.TextData
-import com.ixigua.common.meteor.utils.LAYER_TYPE_SCROLL
+import com.ixigua.common.danmaku.render.engine.DanmakuView
+import com.ixigua.common.danmaku.render.engine.control.DanmakuController
+import com.ixigua.common.danmaku.render.engine.render.draw.bitmap.BitmapData
+import com.ixigua.common.danmaku.render.engine.render.draw.text.TextData
+import com.ixigua.common.danmaku.render.engine.utils.LAYER_TYPE_SCROLL
 import com.ixigua.danmaku.render.engine.demo.R
 import com.ixigua.danmaku.render.engine.demo.base.BaseDemoActivity
 import com.ixigua.danmaku.render.engine.demo.demo.advanced.AdvancedDanmakuData
