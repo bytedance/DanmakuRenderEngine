@@ -1,9 +1,9 @@
-# Meteor
+# DanmakuRenderEngine
 
 [![GitHub license](https://img.shields.io/github/license/bytedance/scene)](/LICENSE)
 [![API](https://img.shields.io/badge/api-14%2B-green)](https://developer.android.com/about/dashboards)
 
-Meteor 是一个轻量级、高扩展性的通用弹幕库，主要特性：
+DanmakuRenderEngine 是一个轻量级、高扩展性的通用弹幕库，主要特性：
 
 1. 高性能的渲染和绘制
 2. 简单易用的接口和低成本的接入方式
@@ -12,7 +12,7 @@ Meteor 是一个轻量级、高扩展性的通用弹幕库，主要特性：
 
 [下载 Demo >>>]()
 
-## 正在使用 Meteor 的应用
+## 正在使用 DanmakuRenderEngine 的应用
 
 | <img src="misc/xigua.png" alt="xigua" width="100"/> | <img src="misc/toutiao.png" alt="toutiao" width="100"/> | <img src="misc/dongchedi.png" alt="dongchedi" width="100"/> |
 |:-----------:|:-------:|:-----:|
@@ -23,7 +23,7 @@ Meteor 是一个轻量级、高扩展性的通用弹幕库，主要特性：
 在依赖中添加：
 
 ```gradle
-implementation 'com.ixigua.common:meteor:$latest_version'
+implementation 'com.ixigua.common:danmaku-render-engine:$latest_version'
 ```
 
 在最简单的场景下，仅需要四步即可接入并开始播放弹幕：
@@ -49,7 +49,7 @@ fun clear()                // 清屏，单独清除屏幕上已经显示的弹�
 ### 播放同步
 
 按照业界弹幕较通用的实现逻辑，播放器的回调和`DanmakuController`控制方法对应如下，  
-如果有特殊需求也可以对 Meteor 框架的控制逻辑进行定制：
+如果有特殊需求也可以对 DanmakuRenderEngine 框架的控制逻辑进行定制：
 
 | 播放器回调 | 含义 | DanmakuController方法 | 注释 |
 |:--------:|:----:|:--------------------:|:----:|
@@ -66,27 +66,27 @@ fun clear()                // 清屏，单独清除屏幕上已经显示的弹�
 
 ### 其他形态的业务
 
-Meteor 弹幕库并不与视频播放逻辑耦合，如果想要实现类似 QQ 空间的图片弹幕，做法也是类似的。
+DanmakuRenderEngine 弹幕库并不与视频播放逻辑耦合，如果想要实现类似 QQ 空间的图片弹幕，做法也是类似的。
 
 ## 自定义运动方式
 
-Meteor 弹幕库的渲染结构根据运动方式的不同被分为不同的层（Layer），  
+DanmakuRenderEngine 弹幕库的渲染结构根据运动方式的不同被分为不同的层（Layer），  
 每个渲染层自己管理排版和渲染，渲染层之间则由`z-index`属性来控制层级顺序。
 
-Meteor 弹幕库默认情况下支持三种弹幕的运动方式：
+DanmakuRenderEngine 弹幕库默认情况下支持三种弹幕的运动方式：
 
 1. ScrollLayer：从右往左滚动
 2. TopCenterLayer：在屏幕顶部中间显示
 3. BottomCenterLayer：在屏幕底部中间显示
 
 若想开发自定义的运动方式，只需要按照`IRenderLayer`的要求对接口进行实现，调用`DanmakuController.addRenderLayer()`进行注册，  
-然后在弹幕数据中指定`LayerType`为你定义的`Layer`，Meteor 就会在渲染时自动将这条弹幕交给对应的`Layer`进行排版和绘制了。
+然后在弹幕数据中指定`LayerType`为你定义的`Layer`，DanmakuRenderEngine 就会在渲染时自动将这条弹幕交给对应的`Layer`进行排版和绘制了。
 
 ## 自定义弹幕样式
 
 ### 定义
 
-Meteor 弹幕库在设计时将一条弹幕分成了数据实体（DanmakuData）和绘制实体(DrawItem)：
+DanmakuRenderEngine 弹幕库在设计时将一条弹幕分成了数据实体（DanmakuData）和绘制实体(DrawItem)：
 
 1. DanmakuData只包含这条弹幕的属性信息，在设置后除非主动修改否则内容不会变化
 2. DrawItem定义这条弹幕是如何绘制的，同时包含这条弹幕绘制时的属性（x/y/宽/高等）
@@ -99,11 +99,11 @@ Meteor 弹幕库在设计时将一条弹幕分成了数据实体（DanmakuData�
 3. CustomDrawItemFactory：绘制实体的工厂类
 
 然后调用`DanmakuController.registerDrawItemFactory`对自定义的工厂类进行注册，  
-这样 Meteor 在遇到自定义的`CustomDanmakuData`时就会使用会注册的工厂类生成`CustomDrawItem`进行渲染了。
+这样 DanmakuRenderEngine 在遇到自定义的`CustomDanmakuData`时就会使用会注册的工厂类生成`CustomDrawItem`进行渲染了。
 
 ### 实现
 
-基于组合优于继承的思想，Meteor 弹幕库默认提供文字（TextData）和图片（BitmapData）两种弹幕样式，  
+基于组合优于继承的思想，DanmakuRenderEngine 弹幕库默认提供文字（TextData）和图片（BitmapData）两种弹幕样式，  
 高级自定义弹幕样式则由业务方将上述两种样式组合而成。
 
 自定义的Data和DrawItem需要定义相同的层级结构，  
@@ -130,7 +130,7 @@ Meteor 弹幕库在设计时将一条弹幕分成了数据实体（DanmakuData�
 2. 点赞弹幕后字体变色
 3. 全局修改字体大小、透明度等
 
-在 Meteor 框架中，主要通过`DanmakuController.config`来对弹幕进行控制
+在 DanmakuRenderEngine 框架中，主要通过`DanmakuController.config`来对弹幕进行控制
 
 ### 层叠与优先级
 
@@ -169,7 +169,7 @@ val bottom = BottomCenterLayerConfig(this)
     2. 一条弹幕被移出屏幕
     3. 一条弹幕的大小变化了
 
-Meteor框架针对这两类需求，设计了**命令**和**事件**两套机制来进行处理
+DanmakuRenderEngine框架针对这两类需求，设计了**命令**和**事件**两套机制来进行处理
 
 ### 命令
 
@@ -207,21 +207,21 @@ override fun onEvent(event: DanmakuEvent) {
 「蒙版弹幕」是一种高级弹幕功能，能实现「不遮挡人像」的效果，  
 即开启该功能后，弹幕就不会再覆盖人像，而是呈现从人体身后穿过的效果。
 
-Meteor 框架内置了该功能的实现，只需简单几步即可实现「蒙版弹幕」：
+DanmakuRenderEngine 框架内置了该功能的实现，只需简单几步即可实现「蒙版弹幕」：
 
 1. 提前分析视频的画面内容，计算出每一帧需要抠出人像的闭合SVG路径
 2. 将遮罩路径通过`Path`的形式组装成`MaskData`数据结构
 3. 将`MaskData`数据和其他弹幕数据一样设置给`DanmakuController`
 4. 打开蒙版弹幕功能开关即可：`DanmakuController.config.mask.enable = true`
 
-（上述代码可以参考Demo工程中的[SmartMaskActivity.kt](/demo/src/main/java/com/ixigua/meteor/demo/demo/SmartMaskActivity.kt)）
+（上述代码可以参考Demo工程中的[SmartMaskActivity.kt](/demo/src/main/java/com/ixigua/danmaku/render/engine/demo/demo/SmartMaskActivity.kt)）
 
 需要注意的是：
 
-1. Meteor 框架仅提供了「蒙版弹幕」功能在Android平台的具体实现，不提供对画面内容进行分析生成遮罩路径的功能， 
+1. DanmakuRenderEngine 框架仅提供了「蒙版弹幕」功能在Android平台的具体实现，不提供对画面内容进行分析生成遮罩路径的功能， 
    通常情况下需要业务方自己在服务端提前通过AI工具对画面内容进行分析处理，然后在播放时将数据下发给客户端
-2. Meteor 框架本身对于`MaskData`遮罩的帧率没有限制，但出于性能和数据传输方面的考虑，一般来说不会高于30Hz（大于10Hz时效果已经非常好了），
-   同时 Meteor 框架也支持动态帧率的遮罩，在组装`MaskData`时指定每一项数据的起止时间即可
+2. DanmakuRenderEngine 框架本身对于`MaskData`遮罩的帧率没有限制，但出于性能和数据传输方面的考虑，一般来说不会高于30Hz（大于10Hz时效果已经非常好了），
+   同时 DanmakuRenderEngine 框架也支持动态帧率的遮罩，在组装`MaskData`时指定每一项数据的起止时间即可
 
 ## Q&A
 

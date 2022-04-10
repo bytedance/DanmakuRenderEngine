@@ -1,11 +1,11 @@
-# Meteor
+# DanmakuRenderEngine
 
 [简体中文版说明 >>>](/README_cn.md)
 
 [![GitHub license](https://img.shields.io/github/license/bytedance/scene)](/LICENSE)
 [![API](https://img.shields.io/badge/api-14%2B-green)](https://developer.android.com/about/dashboards)
 
-Meteor is a lightweight and scalable danmaku library.
+DanmakuRenderEngine is a lightweight and scalable danmaku library.
 
 1. High-performance rendering and low memory usage
 2. Easy-to-use interface with high scalability
@@ -14,7 +14,7 @@ Meteor is a lightweight and scalable danmaku library.
 
 [Download the Demo >>>]()
 
-## Apps Using Meteor
+## Apps Using DanmakuRenderEngine
 
 | <img src="misc/xigua.png" alt="xigua" width="100"/> | <img src="misc/toutiao.png" alt="toutiao" width="100"/> | <img src="misc/dongchedi.png" alt="dongchedi" width="100"/> |
 |:-----------:|:-------:|:-----:|
@@ -25,7 +25,7 @@ Meteor is a lightweight and scalable danmaku library.
 Add dependency to your build.gradle:
 
 ```gradle
-implementation 'com.ixigua.common:meteor:$latest_version'
+implementation 'com.ixigua.common:danmaku-render-engine:$latest_version'
 ```
 
 In the simplest case, it only takes four steps to start playing danmakus:
@@ -67,25 +67,25 @@ According to the industry's common implementation logic, the callback of the pla
 
 ### Other Forms of Business
 
-Meteor library is not coupled with the video. If you want to achieve a picture danmaku similar to Qzone, the approach is similar.
+DanmakuRenderEngine library is not coupled with the video. If you want to achieve a picture danmaku similar to Qzone, the approach is similar.
 
 ## Custom Motion Modes
 
-The rendering structure of Meteor is divided into different layers by motion modes. Each rendering layer manages the layout and rendering by itself, and they are controlled by the `z-index` attribute.
+The rendering structure of DanmakuRenderEngine is divided into different layers by motion modes. Each rendering layer manages the layout and rendering by itself, and they are controlled by the `z-index` attribute.
 
-Meteor supports three motion modes by default:
+DanmakuRenderEngine supports three motion modes by default:
 
 1. ScrollLayer: scroll from the right to the left
 2. TopCenterLayer: display in the top middle of the screen
 3. BottomCenterLayer: display in the bottom middle of the screen
 
-Implement `IRenderLayer` interface to develop your custom layer and then call `DanmakuController.addRenderLayer()` to register it. After that, Meteor will automatically delivery every `DanmakuData` with the specify `LayerType` to the corresponding `Layer` for typesetting and drawing.
+Implement `IRenderLayer` interface to develop your custom layer and then call `DanmakuController.addRenderLayer()` to register it. After that, DanmakuRenderEngine will automatically delivery every `DanmakuData` with the specify `LayerType` to the corresponding `Layer` for typesetting and drawing.
 
 ## Custom Danmaku Style
 
 ### Definition
 
-Meteor library divides a danmaku into two part during design: a data entity (DanmakuData) and a drawing entity (DrawItem):
+DanmakuRenderEngine library divides a danmaku into two part during design: a data entity (DanmakuData) and a drawing entity (DrawItem):
 
 1. DanmakuData only contains the data attribute of this danmaku, which will not change unless modified manually
 2. DrawItem defines how this danmaku will be drawn, and also contains the attributes will be using by drawing (x/y/width/height, etc.)
@@ -97,11 +97,11 @@ To make a custom danmaku you need to inherit the three classes below:
 2. CustomDrawItem
 3. CustomDrawItemFactory
 
-Then call `DanmakuController.registerDrawItemFactory()` to register your custom factory, and Meteor will use the registered factory to generate a `CustomDrawItem` automatically when there is a custom `CustomDanmakuData`.
+Then call `DanmakuController.registerDrawItemFactory()` to register your custom factory, and DanmakuRenderEngine will use the registered factory to generate a `CustomDrawItem` automatically when there is a custom `CustomDanmakuData`.
 
 ### Implementation
 
-Based on the idea that combination is better than inheritance, Meteor only provides two types of danmaku by default: text (TextData) and picture (BitmapData).
+Based on the idea that combination is better than inheritance, DanmakuRenderEngine only provides two types of danmaku by default: text (TextData) and picture (BitmapData).
 Most advanced types of danmaku can be implemented by combining the two basic ones.
 
 The custom DanmakuData and DrawItem need to be defined by the same structure. When the x, y and other attributes is changing, the new value will be distributed downward.
@@ -126,11 +126,11 @@ Under typical circumstances, we have to modify the properties of danmaku sometim
 2. The font color of a danmaku should be changed after being give a like.
 3. Changing the font size, transparency, etc. of all danmaku from the setting panel.
 
-Similar requirements can mainly achieved through the `DanmakuController.config` in Meteor.
+Similar requirements can mainly achieved through the `DanmakuController.config` in DanmakuRenderEngine.
 
 ### Cascade and Priority
 
-Meteor is designed to use the concept of cascade and priority in configuration similar to CSS according to actual needs.
+DanmakuRenderEngine is designed to use the concept of cascade and priority in configuration similar to CSS according to actual needs.
 
 `Config` is the global configuration with the lowest priority, which is divided into:
 
@@ -161,11 +161,11 @@ For a danmaku library, there are usually two requirements:
     2. a danmaku has been removed from the screen.
     3. the size of a danmaku changed.
 
-In response to these requirements, Meteor has designed two sets of mechanisms: **command** and **event**
+In response to these requirements, DanmakuRenderEngine has designed two sets of mechanisms: **command** and **event**
 
 ### Command
 
-`DanmakuCommand` is used to let Meteor to do something which main entrance is`DanmakuController.executeCommand()`, such as:
+`DanmakuCommand` is used to let DanmakuRenderEngine to do something which main entrance is`DanmakuController.executeCommand()`, such as:
 
 ```kotlin
 mController?.executeCommand(CMD_PAUSE_ITEM, data)           // pause a danmaku
@@ -195,19 +195,19 @@ override fun onEvent(event: DanmakuEvent) {
 
 "Masked Danmaku" is an advanced feature that can achieve the effect of "not blocking the portrait". After turning on this function, the danmakus will no longer cover the portrait, but will pass through behind the human body.
 
-Meteor has built-in the realization of "Masked Danmaku", and it only takes a few simple steps to turn it on.
+DanmakuRenderEngine has built-in the realization of "Masked Danmaku", and it only takes a few simple steps to turn it on.
 
 1. Analyze the content of the video content in advance, and calculate the closed SVG path that needs to be cut out for each frame.
 2. Assemble each mask `Path` data into a `MaskData` structure.
 3. Set these `MaskData` to `DanmakuController` like other danmaku data
 4. Turn on the switch: `DanmakuController.config.mask.enable = true`
 
-（The above code can refer to [SmartMaskActivity.kt](/demo/src/main/java/com/ixigua/meteor/demo/demo/SmartMaskActivity.kt)）
+（The above code can refer to [SmartMaskActivity.kt](/demo/src/main/java/com/ixigua/danmaku/render/engine/demo/demo/SmartMaskActivity.kt)）
 
 Requires attention:
 
-1. Meteor only provides the implementation of "Masked Danmaku" on Android, and does not provide the function of content analyzing or mask path generating. You need to analyzing the screen content on server side by using AI tools in advance and deliver the data to client.
-2. Meteor has no restrictions on the frame rate of the `MaskData`. But it is recommended not to be higher than 30Hz for performance and data transmission considerations (the effect is already good enough when greater than 10Hz). At the same time, Meteor also supports dynamic frame rate masks by specifying the start and end time of each `MaskData`.
+1. DanmakuRenderEngine only provides the implementation of "Masked Danmaku" on Android, and does not provide the function of content analyzing or mask path generating. You need to analyzing the screen content on server side by using AI tools in advance and deliver the data to client.
+2. DanmakuRenderEngine has no restrictions on the frame rate of the `MaskData`. But it is recommended not to be higher than 30Hz for performance and data transmission considerations (the effect is already good enough when greater than 10Hz). At the same time, DanmakuRenderEngine also supports dynamic frame rate masks by specifying the start and end time of each `MaskData`.
 
 ## Q&A
 
