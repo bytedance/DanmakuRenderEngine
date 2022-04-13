@@ -15,8 +15,6 @@
  */
 package com.ixigua.common.danmaku.render.engine.control
 
-import com.ixigua.common.danmaku.render.engine.control.DanmakuEvent
-
 /**
  * Created by dss886 on 2019/9/26.
  *
