@@ -14,6 +14,9 @@ DanmakuRenderEngine is a lightweight and scalable danmaku library.
 
 [Download the Demo >>>](https://github.com/bytedance/DanmakuRenderEngine/releases/download/v0.1.0/demo.apk)
 
+| <img src="misc/screenshot1.png" alt="screenshot1" width="320"/> | <img src="misc/screenshot2.png" alt="screenshot2" width="320"/> | <img src="misc/screenshot3.png" alt="screenshot3" width="320"/> | <img src="misc/screenshot4.png" alt="screenshot4" width="320"/>
+|:-----------:|:-----------:|:-----------:|:-----------:|
+
 ## Apps Using DanmakuRenderEngine
 
 | <img src="misc/xigua.png" alt="xigua" width="100"/> | <img src="misc/douyin.png" alt="douyin" width="100"/> | <img src="misc/toutiao.png" alt="toutiao" width="100"/> | <img src="misc/dongchedi.png" alt="dongchedi" width="100"/> |
