@@ -12,6 +12,9 @@ DanmakuRenderEngine 是一个轻量级、高扩展性的通用弹幕库，主要
 
 [下载 Demo >>>](https://github.com/bytedance/DanmakuRenderEngine/releases/download/v0.1.0/demo.apk)
 
+| <img src="misc/scrennshot1.png" alt="scrennshot1" width="540"/> | <img src="misc/scrennshot2.png" alt="scrennshot2" width="540"/> | <img src="misc/scrennshot3.png" alt="scrennshot3" width="540"/> |
+|:-----------:|:-----------:|:-----------:|
+
 ## 正在使用 DanmakuRenderEngine 的应用
 
 | <img src="misc/xigua.png" alt="xigua" width="100"/> | <img src="misc/douyin.png" alt="xigua" width="100"/> | <img src="misc/toutiao.png" alt="toutiao" width="100"/> | <img src="misc/dongchedi.png" alt="dongchedi" width="100"/> |

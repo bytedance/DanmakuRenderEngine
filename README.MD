@@ -16,7 +16,7 @@ DanmakuRenderEngine is a lightweight and scalable danmaku library.
 
 ## Apps Using DanmakuRenderEngine
 
-| <img src="misc/xigua.png" alt="xigua" width="100"/> | <img src="misc/douyin.png" alt="xigua" width="100"/> | <img src="misc/toutiao.png" alt="toutiao" width="100"/> | <img src="misc/dongchedi.png" alt="dongchedi" width="100"/> |
+| <img src="misc/xigua.png" alt="xigua" width="100"/> | <img src="misc/douyin.png" alt="douyin" width="100"/> | <img src="misc/toutiao.png" alt="toutiao" width="100"/> | <img src="misc/dongchedi.png" alt="dongchedi" width="100"/> |
 |:-----------:|:----:|:-------:|:-----:|
 | Xigua Video | Douyin | Toutiao | DongCheDi |
 
