@@ -10,7 +10,7 @@ DanmakuRenderEngine 是一个轻量级、高扩展性的通用弹幕库，主要
 3. 支持复杂的自定义弹幕样式
 4. 支持自定义弹幕运动方式
 
-[下载 Demo >>>]()
+[下载 Demo >>>](https://github.com/bytedance/DanmakuRenderEngine/releases/download/v0.1.0/demo.apk)
 
 ## 正在使用 DanmakuRenderEngine 的应用
 
