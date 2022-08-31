@@ -14,9 +14,9 @@ DanmakuRenderEngine 是一个轻量级、高扩展性的通用弹幕库，主要
 
 ## 正在使用 DanmakuRenderEngine 的应用
 
-| <img src="misc/xigua.png" alt="xigua" width="100"/> | <img src="misc/toutiao.png" alt="toutiao" width="100"/> | <img src="misc/dongchedi.png" alt="dongchedi" width="100"/> |
-|:-----------:|:-------:|:-----:|
-| 西瓜视频 | 今日头条 | 懂车帝 |
+| <img src="misc/xigua.png" alt="xigua" width="100"/> | <img src="misc/douyin.png" alt="xigua" width="100"/> | <img src="misc/toutiao.png" alt="toutiao" width="100"/> | <img src="misc/dongchedi.png" alt="dongchedi" width="100"/> |
+|:-----------:|:----:|:-------:|:-----:|
+| 西瓜视频 | 抖音 | 今日头条 | 懂车帝 |
 
 ## 快速接入
 
