@@ -22,10 +22,21 @@ DanmakuRenderEngine is a lightweight and scalable danmaku library.
 
 ## Quick Startup
 
+Add it to your root build.gradle at the end of repositories:
+
+```gradle
+allprojects {
+	repositories {
+		...
+		maven { url 'https://artifact.bytedance.com/repository/releases/' }
+	}
+}
+```
+
 Add dependency to your build.gradle:
 
 ```gradle
-implementation 'com.ixigua.common:danmaku-render-engine:$latest_version'
+implementation 'com.github.bytedance:danmaku-render-engine:$latest_version'
 ```
 
 In the simplest case, it only takes four steps to start playing danmakus:

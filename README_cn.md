@@ -20,10 +20,21 @@ DanmakuRenderEngine 是一个轻量级、高扩展性的通用弹幕库，主要
 
 ## 快速接入
 
+添加仓库源：
+
+```gradle
+allprojects {
+	repositories {
+		...
+		maven { url 'https://artifact.bytedance.com/repository/releases/' }
+	}
+}
+```
+
 在依赖中添加：
 
 ```gradle
-implementation 'com.ixigua.common:danmaku-render-engine:$latest_version'
+implementation 'com.github.bytedance:danmaku-render-engine:$latest_version'
 ```
 
 在最简单的场景下，仅需要四步即可接入并开始播放弹幕：

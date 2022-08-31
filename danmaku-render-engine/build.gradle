@@ -2,12 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
-}
-
-ext {
-    GROUP = 'com.ixigua.common'
-    POM_ARTIFACT_ID = 'danmaku-render-engine'
-    VERSION_NAME = '0.0.9'
+    id 'maven-publish'
 }
 
 android {
@@ -18,14 +13,24 @@ android {
     }
 
     buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+
     }
 }
 
 dependencies {
     implementation KOTLIN_LIB
     implementation ANDROIDX_LIB
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId 'com.github.bytedance'
+                artifactId 'danmaku-render-engine'
+                version = '0.1.0'
+            }
+        }
+    }
 }
