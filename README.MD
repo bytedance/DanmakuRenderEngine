@@ -202,7 +202,7 @@ DanmakuRenderEngine has built-in the realization of "Masked Danmaku", and it onl
 3. Set these `MaskData` to `DanmakuController` like other danmaku data
 4. Turn on the switch: `DanmakuController.config.mask.enable = true`
 
-（The above code can refer to [SmartMaskActivity.kt](/demo/src/main/java/com/ixigua/danmaku/render/engine/demo/demo/SmartMaskActivity.kt)）
+（The above code can refer to [SmartMaskActivity.kt](/demo/src/main/java/com/bytedance/danmaku/render/engine/demo/demo/SmartMaskActivity.kt)）
 
 Requires attention:
 

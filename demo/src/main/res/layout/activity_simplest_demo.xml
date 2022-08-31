@@ -6,27 +6,27 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".demo.SimplestDemoActivity">
+    tools:context="com.bytedance.danmaku.render.engine.demo.demo.SimplestDemoActivity">
 
-    <com.ixigua.danmaku.render.engine.demo.view.RatioRelativeLayout
+    <com.bytedance.danmaku.render.engine.demo.view.RatioRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
         app:ratioHeightByWidth="0.5625" >
 
-        <com.ixigua.danmaku.render.engine.demo.view.CustomVideoView
+        <com.bytedance.danmaku.render.engine.demo.view.CustomVideoView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.ixigua.common.danmaku.render.engine.DanmakuView
+        <com.bytedance.danmaku.render.engine.DanmakuView
             android:id="@+id/danmaku_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </com.ixigua.danmaku.render.engine.demo.view.RatioRelativeLayout>
+    </com.bytedance.danmaku.render.engine.demo.view.RatioRelativeLayout>
 
-    <com.ixigua.danmaku.render.engine.demo.view.DanmakuRecyclerView
+    <com.bytedance.danmaku.render.engine.demo.view.DanmakuRecyclerView
         android:id="@+id/danmaku_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

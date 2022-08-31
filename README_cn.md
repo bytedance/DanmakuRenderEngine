@@ -214,7 +214,7 @@ DanmakuRenderEngine 框架内置了该功能的实现，只需简单几步即可
 3. 将`MaskData`数据和其他弹幕数据一样设置给`DanmakuController`
 4. 打开蒙版弹幕功能开关即可：`DanmakuController.config.mask.enable = true`
 
-（上述代码可以参考Demo工程中的[SmartMaskActivity.kt](/demo/src/main/java/com/ixigua/danmaku/render/engine/demo/demo/SmartMaskActivity.kt)）
+（上述代码可以参考Demo工程中的[SmartMaskActivity.kt](/demo/src/main/java/com/bytedance/danmaku/render/engine/demo/demo/SmartMaskActivity.kt)）
 
 需要注意的是：
 
